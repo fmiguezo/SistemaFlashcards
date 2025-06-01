@@ -79,20 +79,20 @@ Encargado de transformar objetos `Flashcard` entre sus representaciones:
 
 #### 📃 ENTITY ↔ DOMAIN
 ```java
-Flashcard toDomain(FlashcardEntity entity)
-FlashcardEntity toEntity(Flashcard domain, DeckEntity deck)
+//Flashcard toDomain(FlashcardEntity entity)
+//FlashcardEntity toEntity(Flashcard domain, DeckEntity deck)
 ```
 
 #### 📦 JSON ↔ DOMAIN
 ```java
-Flashcard toDomain(FlashcardJson json)
-FlashcardJson toJson(Flashcard domain)
+//Flashcard toDomain(FlashcardJson json)
+//FlashcardJson toJson(Flashcard domain)
 ```
 
 #### 📥 DTO (Request/Response) ↔ DOMAIN
 ```java
-Flashcard toDomain(CreateFlashcardRequest request)
-FlashcardResponse toResponse(Flashcard domain)
+//Flashcard toDomain(CreateFlashcardRequest request)
+//FlashcardResponse toResponse(Flashcard domain)
 ```
 
 ---
@@ -102,20 +102,20 @@ Realiza el mapeo completo de los objetos `Deck` incluyendo sus listas de `Flashc
 
 #### 📃 ENTITY ↔ DOMAIN
 ```java
-Deck toDomain(DeckEntity entity)
-DeckEntity toEntity(Deck domain)
+//Deck toDomain(DeckEntity entity)
+//DeckEntity toEntity(Deck domain)
 ```
 
 #### 📦 JSON ↔ DOMAIN
 ```java
-Deck toDomain(DeckJson json)
-DeckJson toJson(Deck domain)
+// toDomain(DeckJson json)
+//DeckJson toJson(Deck domain)
 ```
 
 #### 📥 DTO (Request/Response) ↔ DOMAIN
 ```java
-Deck toDomain(CreateDeckRequest request)
-DeckResponse toResponse(Deck domain)
+//Deck toDomain(CreateDeckRequest request)
+//DeckResponse toResponse(Deck domain)
 ```
 
 ---
