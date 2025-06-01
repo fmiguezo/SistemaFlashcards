@@ -1,31 +1,32 @@
-package edu.utn.domain.model;
+package edu.utn.infrastructure.adapters.out.jsonmodel;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-public class Deck {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class DeckJson {
+
     private UUID id;
     private String nombre;
     private String descripcion;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private List<Flashcard> flashcards;
+    private List<FlashcardJson> flashcards;
 
-    public Deck() {}
+    public DeckJson() {}
 
-    public Deck(UUID id, String nombre, String descripcion, List<Flashcard> flashcards) {
+    public DeckJson(UUID id, String nombre, String descripcion, List<FlashcardJson> flashcards) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.flashcards = flashcards;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+
+    public UUID getId() {
+        return id;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
@@ -36,20 +37,24 @@ public class Deck {
         this.updatedAt = updatedAt;
     }
 
-    public void setFlashcards(List<Flashcard> flashcards) {
+    public void setFlashcards(List<FlashcardJson> flashcards) {
         this.flashcards = flashcards;
-    }
-
-    public UUID getId() {
-        return id;
     }
 
     public String getNombre() {
         return nombre;
     }
 
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
     public String getDescripcion() {
         return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -60,7 +65,7 @@ public class Deck {
         return updatedAt;
     }
 
-    public List<Flashcard> getFlashcards() {
+    public List<FlashcardJson> getFlashcards() {
         return flashcards;
     }
 }
