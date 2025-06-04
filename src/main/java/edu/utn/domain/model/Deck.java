@@ -10,13 +10,13 @@ public class Deck implements IDeck{
     private String descripcion;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private List<Flashcard> flashcards;
+    private List<IFlashcard> flashcards;
 
     public Deck( String nombre, String descripcion) {
         this.id = UUID.randomUUID();
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.flashcards = new ArrayList<Flashcard>();
+        this.flashcards = new ArrayList<IFlashcard>();
         this.createdAt = LocalDateTime.now();
     }
 
@@ -52,7 +52,7 @@ public class Deck implements IDeck{
         return updatedAt;
     }
 
-    public List<Flashcard> getFlashcards() {
+    public List<IFlashcard> getFlashcards() {
         return flashcards;
     }
 }
