@@ -1,13 +1,12 @@
 package edu.utn.infrastructure.ports.out;
-import edu.utn.domain.model.Deck;
+import edu.utn.domain.model.IDeck;
 import java.util.List;
+import java.util.UUID;
 
 public interface IDeckRepository {
-    List<Deck> getDecks();
-    Deck getDeckById(String id);
-    void addDeck(Deck deck);
-    void updateDeck(Deck deck);
-    void updateDeckById(String id, Deck deck);
-    void deleteDeck(Deck deck);
-    void deleteDeckById(String id);
+    List<IDeck> getAllDecks();
+    IDeck getDeckById(UUID id);
+    void createDeck(IDeck deck);
+    void updateDeck(IDeck deck);
+    void deleteDeckById(UUID id);
 }
