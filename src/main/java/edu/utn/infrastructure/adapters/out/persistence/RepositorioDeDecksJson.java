@@ -3,6 +3,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import edu.utn.domain.model.Deck;
+import edu.utn.domain.model.IDeck;
 import edu.utn.infrastructure.adapters.out.exception.ArchivoNoEncontradoException;
 import edu.utn.infrastructure.adapters.out.exception.DeckVacioException;
 import edu.utn.infrastructure.ports.out.IDeckRepository;
@@ -12,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 @Profile("json") //Esto se activa cuando el perfil está en JSON
@@ -26,7 +28,7 @@ public class RepositorioDeDecksJson implements IDeckRepository {
     }
 
     @Override
-    public List<Deck> getDecks() {
+    public List<IDeck> getAllDecks() {
         try {
             File file = new File(jsonFilePath);
             if (!file.exists()) {
@@ -42,7 +44,7 @@ public class RepositorioDeDecksJson implements IDeckRepository {
             }
 
             // Convertir cada nodo del array a un Deck
-            List<Deck> decks = new ArrayList<>();
+            List<IDeck> decks = new ArrayList<>();
             for (JsonNode deckNode : decksNode) {
                 Deck deck = objectMapper.treeToValue(deckNode, Deck.class);
                 decks.add(deck);
@@ -57,38 +59,22 @@ public class RepositorioDeDecksJson implements IDeckRepository {
     }
 
     @Override
-    public Deck getDeckById(String id) {
-        //  Auto-generated method stub
+    public IDeck getDeckById(UUID id) {
         throw new UnsupportedOperationException("Unimplemented method 'getDeckById'");
     }
 
     @Override
-    public void addDeck(Deck deck) {
-        //  Auto-generated method stub
+    public void createDeck(IDeck deck) {
         throw new UnsupportedOperationException("Unimplemented method 'addDeck'");
     }
 
     @Override
-    public void updateDeck(Deck deck) {
-        //  Auto-generated method stub
+    public void updateDeck(IDeck deck) {
         throw new UnsupportedOperationException("Unimplemented method 'updateDeck'");
     }
 
     @Override
-    public void updateDeckById(String id, Deck deck) {
-        //  Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateDeckById'");
-    }
-
-    @Override
-    public void deleteDeck(Deck deck) {
-        //  Auto-generated method stub
+    public void deleteDeckById(UUID id) {
         throw new UnsupportedOperationException("Unimplemented method 'deleteDeck'");
-    }
-
-    @Override
-    public void deleteDeckById(String id) {
-        //  Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteDeckById'");
     }
 }
