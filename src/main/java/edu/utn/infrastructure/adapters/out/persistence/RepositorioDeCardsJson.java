@@ -3,6 +3,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import edu.utn.domain.model.Flashcard;
+import edu.utn.domain.model.IFlashcard;
 import edu.utn.infrastructure.ports.out.IFlashcardRepository;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
@@ -10,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 @Repository
@@ -24,8 +26,10 @@ public class RepositorioDeCardsJson implements IFlashcardRepository {
         objectMapper.registerModule(new JavaTimeModule());
     }
 
+
+
     @Override
-    public List<Flashcard> getCards(String deckId) {
+    public List<IFlashcard> getCards(UUID id) {
         try {
             File file = new File(jsonFilePath);
             if (!file.exists()) {
@@ -69,5 +73,25 @@ public class RepositorioDeCardsJson implements IFlashcardRepository {
     public void deleteCard(Flashcard card) {
         //  Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteCard'");
+    }
+
+    @Override
+    public IFlashcard createCard(IFlashcard card) {
+        return null;
+    }
+
+    @Override
+    public IFlashcard getCardById(UUID id) {
+        return null;
+    }
+
+    @Override
+    public void updateCard(IFlashcard card) {
+
+    }
+
+    @Override
+    public void deleteCard(UUID id) {
+
     }
 }
