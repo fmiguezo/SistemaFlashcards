@@ -4,7 +4,7 @@ import edu.utn.infrastructure.ports.out.IFlashcardRepository;
 
 import java.util.UUID;
 
-public class FlashcardService implements IFlashcardService{
+public class FlashcardService implements IFlashcardService {
     private IFlashcardRepository flashcardRepository;
 
     public FlashcardService(IFlashcardRepository flashcardRepository) {
