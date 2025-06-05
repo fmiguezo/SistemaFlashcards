@@ -1,23 +1,23 @@
 package edu.utn.domain.model;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Deck {
+public class Deck implements IDeck{
     private UUID id;
     private String nombre;
     private String descripcion;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private List<Flashcard> flashcards;
+    private List<IFlashcard> flashcards;
 
-    public Deck() {}
-
-    public Deck(UUID id, String nombre, String descripcion, List<Flashcard> flashcards) {
-        this.id = id;
+    public Deck( String nombre, String descripcion) {
+        this.id = UUID.randomUUID();
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.flashcards = flashcards;
+        this.flashcards = new ArrayList<IFlashcard>();
+        this.createdAt = LocalDateTime.now();
     }
 
     public void setNombre(String nombre) {
@@ -28,16 +28,8 @@ public class Deck {
         this.descripcion = descripcion;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public void setFlashcards(List<Flashcard> flashcards) {
-        this.flashcards = flashcards;
     }
 
     public UUID getId() {
@@ -60,7 +52,7 @@ public class Deck {
         return updatedAt;
     }
 
-    public List<Flashcard> getFlashcards() {
+    public List<IFlashcard> getFlashcards() {
         return flashcards;
     }
 }

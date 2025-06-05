@@ -1,9 +1,12 @@
 package edu.utn.infrastructure.ports.out;
 import edu.utn.domain.model.Flashcard;
-import java.util.List;
+import edu.utn.domain.model.IFlashcard;
+
+import java.util.UUID;
 
 public interface IFlashcardRepository {
-    List<Flashcard> getCards(String deckId);
-    void updateCard(Flashcard card);
-    void deleteCard(Flashcard card);
+    IFlashcard createCard(IFlashcard card);
+    IFlashcard getCardById(UUID id);
+    void updateCard(IFlashcard card);
+    void deleteCard(UUID id);
 }
