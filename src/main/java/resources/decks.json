@@ -1,0 +1,85 @@
+{
+  "decks": [
+    {
+      "id": "1",
+      "nombre": "Historia Antigua",
+      "descripcion": "Flashcards sobre civilizaciones antiguas",
+      "flashcards": [
+        {
+          "id": "1",
+          "front": "¿Cuál fue la primera civilización de la historia?",
+          "back": "Sumerios",
+          "createdAt": "2024-03-20T10:00:00",
+          "updatedAt": "2024-03-20T10:00:00",
+          "estrategiaDeRepeticion": "PROXIMO_REPASO",
+          "fechaDeUltimaRevision": "2024-03-20T10:00:00",
+          "deckId": "1"
+        },
+        {
+          "id": "2",
+          "front": "¿En qué año cayó el Imperio Romano de Occidente?",
+          "back": "476 d.C.",
+          "createdAt": "2024-03-20T10:05:00",
+          "updatedAt": "2024-03-20T10:05:00",
+          "estrategiaDeRepeticion": "DIA_SIGUIENTE",
+          "fechaDeUltimaRevision": "2024-03-20T10:05:00",
+          "deckId": "1"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "nombre": "Matemáticas Básicas",
+      "descripcion": "Conceptos fundamentales de matemáticas",
+      "flashcards": [
+        {
+          "id": "3",
+          "front": "¿Cuál es la fórmula del teorema de Pitágoras?",
+          "back": "a² + b² = c²",
+          "createdAt": "2024-03-20T10:10:00",
+          "updatedAt": "2024-03-20T10:10:00",
+          "estrategiaDeRepeticion": "SEMANAL",
+          "fechaDeUltimaRevision": "2024-03-20T10:10:00",
+          "deckId": "2"
+        },
+        {
+          "id": "4",
+          "front": "¿Cuánto es π (pi) redondeado a dos decimales?",
+          "back": "3.14",
+          "createdAt": "2024-03-20T10:15:00",
+          "updatedAt": "2024-03-20T10:15:00",
+          "estrategiaDeRepeticion": "NUNCA_MAS",
+          "fechaDeUltimaRevision": "2024-03-20T10:15:00",
+          "deckId": "2"
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "nombre": "Geografía Mundial",
+      "descripcion": "Capitales y países del mundo",
+      "flashcards": [
+        {
+          "id": "5",
+          "front": "¿Cuál es la capital de Japón?",
+          "back": "Tokio",
+          "createdAt": "2024-03-20T10:20:00",
+          "updatedAt": "2024-03-20T10:20:00",
+          "estrategiaDeRepeticion": "PROXIMO_REPASO",
+          "fechaDeUltimaRevision": "2024-03-20T10:20:00",
+          "deckId": "3"
+        },
+        {
+          "id": "6",
+          "front": "¿Cuál es el país más grande del mundo?",
+          "back": "Rusia",
+          "createdAt": "2024-03-20T10:25:00",
+          "updatedAt": "2024-03-20T10:25:00",
+          "estrategiaDeRepeticion": "DIA_SIGUIENTE",
+          "fechaDeUltimaRevision": "2024-03-20T10:25:00",
+          "deckId": "3"
+        }
+      ]
+    }
+  ]
+}

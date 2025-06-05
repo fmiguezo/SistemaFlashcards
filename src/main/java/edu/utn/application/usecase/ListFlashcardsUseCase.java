@@ -1,5 +1,4 @@
 package edu.utn.application.usecase;
 
-public class DeleteDeckUseCase {
-
+public class ListFlashcardsUseCase {
 }
