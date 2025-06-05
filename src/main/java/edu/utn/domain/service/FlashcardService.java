@@ -31,11 +31,18 @@ public class FlashcardService implements IFlashcardService{
         flashcardRepository.deleteCard(id);
     }
 
+    @Override
     public IFlashcardRepository getFlashcardRepository() {
         return flashcardRepository;
     }
 
+    @Override
     public void setFlashcardRepository(IFlashcardRepository flashcardRepository) {
         this.flashcardRepository = flashcardRepository;
+    }
+
+    @Override
+    public void addFlashcardToDeck(IFlashcard flashcard, UUID deckId) {
+
     }
 }

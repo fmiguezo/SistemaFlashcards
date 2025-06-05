@@ -2,14 +2,15 @@ package edu.utn.domain.model;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class Flashcard implements IFlashcard{
+public class Flashcard implements IFlashcard {
     private UUID id;
     private String pregunta;
     private String respuesta;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private LocalDateTime fechaDeUltimaRevision;
 
-    public Flashcard(String pregunta, String respuesta) {
+    public Flashcard(String front, String respuesta) {
         this.id = UUID.randomUUID();
         this.pregunta = pregunta;
         this.respuesta = respuesta;
@@ -48,4 +49,11 @@ public class Flashcard implements IFlashcard{
         this.updatedAt = updatedAt;
     }
 
+    public LocalDateTime getFechaDeUltimaRevision() {
+        return fechaDeUltimaRevision;
+    }
+
+    public void setFechaDeUltimaRevision(LocalDateTime fechaDeUltimaRevision) {
+        this.fechaDeUltimaRevision = fechaDeUltimaRevision;
+    }
 }
