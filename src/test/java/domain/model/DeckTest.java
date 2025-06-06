@@ -31,7 +31,7 @@ class DeckTest {
 
     @Test
     void testSetNombre() {
-        Deck deck = new Deck("Deck 1", "Descripción 1");
+        IDeck deck = new Deck("Deck 1", "Descripción 1");
         deck.setNombre("Deck 2");
 
         assertEquals("Deck 2", deck.getNombre());
@@ -39,7 +39,7 @@ class DeckTest {
 
     @Test
     void testSetDescripcion() {
-        Deck deck = new Deck("Deck 1", "Descripción 1");
+        IDeck deck = new Deck("Deck 1", "Descripción 1");
         deck.setDescripcion("Descripción 2");
 
         assertEquals("Descripción 2", deck.getDescripcion());
@@ -47,7 +47,7 @@ class DeckTest {
 
     @Test
     void testSetUpdatedAt() {
-        Deck deck = new Deck("Deck 1", "Descripción 1");
+        IDeck deck = new Deck("Deck 1", "Descripción 1");
         LocalDateTime now = LocalDateTime.now();
         deck.setUpdatedAt(now);
 
@@ -56,12 +56,20 @@ class DeckTest {
 
     @Test
     void testAddFlashcardToDeck() {
-        Deck deck = new Deck("nombre", "desc");
+        IDeck deck = new Deck("Deck 1", "Descripción 1");
 
         IFlashcard flashcard = new Flashcard("Pregunta", "Respuesta");
         deck.getFlashcards().add(flashcard);
 
         assertEquals(1, deck.getFlashcards().size());
         assertEquals(flashcard, deck.getFlashcards().get(0));
+    }
+
+    @Test
+    void testIdUnico() {
+        IDeck d1 = new Deck("Deck 1", "Descripción 1");
+        IDeck d2 = new Deck("Deck 2", "Descripción 2");
+
+        assertNotEquals(d1.getId(), d2.getId());
     }
 }
