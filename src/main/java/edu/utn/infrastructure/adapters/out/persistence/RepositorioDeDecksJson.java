@@ -27,6 +27,18 @@ public class RepositorioDeDecksJson implements IDeckRepository {
         objectMapper.registerModule(new JavaTimeModule());
     }
 
+    private void saveDecks(List<IDeck> decks) {
+        try {
+            // Convertir la lista de decks a un objeto con la estructura {"decks": [...]}
+            var rootNode = objectMapper.createObjectNode();
+            rootNode.set("decks", objectMapper.valueToTree(decks));
+
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(jsonFilePath), rootNode);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public List<IDeck> getAllDecks() {
         try {
@@ -60,21 +72,41 @@ public class RepositorioDeDecksJson implements IDeckRepository {
 
     @Override
     public IDeck getDeckById(UUID id) {
-        throw new UnsupportedOperationException("Unimplemented method 'getDeckById'");
+        return getAllDecks().stream()
+                .filter(deck -> deck.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
     public void createDeck(IDeck deck) {
-        throw new UnsupportedOperationException("Unimplemented method 'addDeck'");
+        List<IDeck> decks = getAllDecks();
+        decks.add(deck);
+        saveDecks(decks);
     }
 
     @Override
     public void updateDeck(IDeck deck) {
-        throw new UnsupportedOperationException("Unimplemented method 'updateDeck'");
+        List<IDeck> decks = getAllDecks();
+        for (int i = 0; i < decks.size(); i++) {
+            if (decks.get(i).getId().equals(deck.getId())) {
+                decks.set(i, deck);
+                saveDecks(decks);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("No se encontre ningun deck con el id: " + deck.getId());
     }
 
     @Override
     public void deleteDeckById(UUID id) {
-        throw new UnsupportedOperationException("Unimplemented method 'deleteDeck'");
+        List<IDeck> decks = getAllDecks();
+        boolean removed = decks.removeIf(deck -> deck.getId().equals(id));
+
+        if (removed) {
+            saveDecks(decks);
+        } else {
+            throw new IllegalArgumentException("No se encontró un deck con ID: " + id);
+        }
     }
 }

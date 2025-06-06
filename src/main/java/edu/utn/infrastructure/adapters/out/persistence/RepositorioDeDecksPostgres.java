@@ -1,6 +1,5 @@
 package edu.utn.infrastructure.adapters.out.persistence;
 import edu.utn.application.mappers.DeckMapper;
-import edu.utn.domain.model.Deck;
 import edu.utn.domain.model.IDeck;
 import edu.utn.infrastructure.adapters.out.exception.DeckNoExisteException;
 import edu.utn.infrastructure.ports.out.IDeckRepository;
@@ -25,13 +24,13 @@ public class RepositorioDeDecksPostgres implements IDeckRepository {
 
     @Override
     public IDeck getDeckById(UUID id) {
-        return jpaDeckRepository.findById(id)
+        return jpaDeckRepository.findDeckById(id)
                 .orElseThrow(() -> new DeckNoExisteException("Deck not found with id: " + id));
     }
 
     @Override
     public void createDeck(IDeck deck) {
-        jpaDeckRepository.save(deck);
+        jpaDeckRepository.saveDeck(deck);
     }
 
     @Override
@@ -41,6 +40,6 @@ public class RepositorioDeDecksPostgres implements IDeckRepository {
 
     @Override
     public void deleteDeckById(UUID id) {
-        jpaDeckRepository.deleteById(id);
+        jpaDeckRepository.deleteDeckById(id);
     }
 }
