@@ -65,14 +65,8 @@ class FlashcardTest {
     @Test
     void setNextReviewDate_deberiaActualizarCorrectamente() {
         IFlashcard flashcard = new Flashcard("Pregunta", "Respuesta");
-        IEstrategiaRepeticion estrategia = new EstrategiaRepeticionEstandar();
-
-        flashcard.setNextReviewDate(estrategia, 5);
-        LocalDateTime esperadoMin = LocalDateTime.now().plusDays(7).minusSeconds(5);
-        LocalDateTime esperadoMax = LocalDateTime.now().plusDays(7).plusSeconds(5);
-
-        assertNotNull(flashcard.getNextReviewDate());
-        assertTrue(flashcard.getNextReviewDate().isAfter(esperadoMin));
-        assertTrue(flashcard.getNextReviewDate().isBefore(esperadoMax));
+        LocalDateTime nextReviewDate = LocalDateTime.now().plusDays(1);
+        flashcard.setNextReviewDate(nextReviewDate);
+        assertEquals(nextReviewDate, flashcard.getNextReviewDate());
     }
 }

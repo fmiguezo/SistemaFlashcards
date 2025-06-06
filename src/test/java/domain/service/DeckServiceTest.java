@@ -3,6 +3,7 @@ package domain.service;
 import edu.utn.domain.model.IDeck;
 import edu.utn.domain.model.IEstrategiaRepeticion;
 import edu.utn.domain.service.DeckService;
+import edu.utn.domain.service.IFlashcardService;
 import edu.utn.infrastructure.ports.out.IDeckRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,12 +18,14 @@ class DeckServiceTest {
     private IDeckRepository deckRepository;
     private IEstrategiaRepeticion estrategiaRepeticion;
     private DeckService deckService;
+    IFlashcardService flashcardService;
 
     @BeforeEach
     void setUp() {
         deckRepository = mock(IDeckRepository.class);
         estrategiaRepeticion = mock(IEstrategiaRepeticion.class);
-        deckService = new DeckService(deckRepository, estrategiaRepeticion);
+        flashcardService = mock(IFlashcardService.class);
+        deckService = new DeckService(deckRepository, estrategiaRepeticion, flashcardService);
     }
 
     @Test
@@ -92,7 +95,7 @@ class DeckServiceTest {
         IDeck deck = mock(IDeck.class);
 
         // Falta definir el comportamiento de la estrategia de repeticion y la logica de practica para poder escribir el test
-        deckService.practiceDeck(deck);
+        deckService.practiceDeck(deck, estrategiaRepeticion);
 
         // Por ahora devolvemos true hasta tener definida la logica de practica
         assertTrue(true);

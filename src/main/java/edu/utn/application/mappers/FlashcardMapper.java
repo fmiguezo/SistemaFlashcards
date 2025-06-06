@@ -11,7 +11,9 @@ public class FlashcardMapper {
                 flashcard.getRespuesta(),
                 flashcard.getCreatedAt(),
                 flashcard.getUpdatedAt(),
-                flashcard.getNextReviewDate()
+                flashcard.getNextReviewDate(),
+                flashcard.getLastReviewDate(),
+                flashcard.getScore()
         );
         return dto;
     }
