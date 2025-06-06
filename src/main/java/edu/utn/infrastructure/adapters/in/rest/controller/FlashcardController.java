@@ -1,6 +1,7 @@
 package edu.utn.infrastructure.adapters.in.rest.controller;
+import edu.utn.infrastructure.ports.in.IFlashcardController;
 
-public class FlashcardController {
+public class FlashcardController implements IFlashcardController {
 
     // Aquí irían los métodos para manejar las solicitudes HTTP relacionadas con las flashcards
     // Por ejemplo, crear, actualizar, eliminar y obtener flashcards
