@@ -1,4 +1,4 @@
-/*package edu.utn.infrastructure.adapters.out.persistence;
+package edu.utn.infrastructure.adapters.out.persistence;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -95,4 +95,3 @@ public class RepositorioDeCardsJson implements IFlashcardRepository {
 
     }
 }
-*/
