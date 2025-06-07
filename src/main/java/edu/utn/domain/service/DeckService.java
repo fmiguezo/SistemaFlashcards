@@ -79,4 +79,9 @@ public class DeckService implements IDeckService {
             flashcardService.practiceFlashcard(flashcard, estrategia);
         }
     }
+
+    @Override
+    public List<IFlashcard> getFlashcardsByDeckId(UUID deckId) {
+        return deckRepository.getFlashcardsByDeckId(deckId);
+    }
 }

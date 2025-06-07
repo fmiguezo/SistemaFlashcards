@@ -23,7 +23,7 @@ class FlashcardTest {
         assertEquals(pregunta, flashcard.getPregunta());
         assertEquals(respuesta, flashcard.getRespuesta());
         assertNotNull(flashcard.getCreatedAt());
-        assertNull(flashcard.getUpdatedAt());
+        assertNotNull(flashcard.getUpdatedAt());
     }
 
     @Test

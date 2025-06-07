@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import edu.utn.domain.model.Deck;
 import edu.utn.domain.model.IDeck;
+import edu.utn.domain.model.IFlashcard;
 import edu.utn.infrastructure.adapters.out.exception.ArchivoNoEncontradoException;
 import edu.utn.infrastructure.adapters.out.exception.DeckVacioException;
 import edu.utn.infrastructure.ports.out.IDeckRepository;
@@ -108,5 +109,11 @@ public class RepositorioDeDecksJson implements IDeckRepository {
         } else {
             throw new IllegalArgumentException("No se encontró un deck con ID: " + id);
         }
+    }
+
+    @Override
+    public List<IFlashcard> getFlashcardsByDeckId(UUID deckId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getFlashcardsByDeckId'");
     }
 }

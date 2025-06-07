@@ -17,6 +17,9 @@ public interface IDeckService {
     IEstrategiaRepeticion getEstrategiaRepeticion();
     void setDeckRepository(IDeckRepository deckRepository);
     IDeckRepository getDeckRepository();
+    List<IFlashcard> getFlashcardsByDeckId(UUID deckId);
+
+
     List<IFlashcard> getFlashcardsToPractice(IDeck deck);
     void practiceDeck(IDeck deck, IEstrategiaRepeticion estrategia);
 }
