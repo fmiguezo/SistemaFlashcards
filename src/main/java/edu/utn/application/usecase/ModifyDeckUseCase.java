@@ -5,6 +5,9 @@ import edu.utn.application.mappers.DeckMapper;
 import edu.utn.domain.model.IDeck;
 import edu.utn.domain.service.IDeckService;
 import edu.utn.domain.service.ValidationService;
+
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 
 @Service

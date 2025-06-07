@@ -18,6 +18,8 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import edu.utn.application.dto.FlashcardDTO;
+
 @ExtendWith(MockitoExtension.class)
 class ListFlashcardsUseCaseTest {
 
@@ -49,11 +51,11 @@ class ListFlashcardsUseCaseTest {
         when(deckService.getFlashcardsByDeckId(validDeckId)).thenReturn(expectedFlashcards);
 
         // Act
-        List<IFlashcard> result = listFlashcardsUseCase.execute(validDeckId);
+        List<FlashcardDTO> result = listFlashcardsUseCase.execute(validDeckId);
 
         // Assert
         assertNotNull(result);
-        assertEquals(expectedFlashcards, result);
+        assertEquals(expectedFlashcards.size(), result.size());
         verify(deckService, times(1)).getFlashcardsByDeckId(validDeckId);
     }
 

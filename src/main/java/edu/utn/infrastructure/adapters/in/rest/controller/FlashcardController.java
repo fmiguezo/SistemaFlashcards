@@ -1,5 +1,6 @@
 package edu.utn.infrastructure.adapters.in.rest.controller;
 import edu.utn.application.dto.FlashcardDTO;
+import edu.utn.application.usecase.AddFlashcardToDeckUseCase;
 import edu.utn.application.usecase.CreateFlashcardUseCase;
 import edu.utn.application.usecase.DeleteFlashcardUseCase;
 import edu.utn.application.usecase.ListFlashcardsUseCase;
@@ -31,14 +32,14 @@ public class FlashcardController implements IFlashcardController {
     @PostMapping("/deck/{deckId}")
     @Override
     public ResponseEntity<?> createFlashcard(@PathVariable UUID deckId, @RequestBody FlashcardDTO flashcardDto) {
-        FlashcardDTO result = createFlashcardUseCase.createFlashcard(deckId, flashcardDto);
+        FlashcardDTO result = AddFlashcardToDeckUseCase.execute(deckId, flashcardDto);
         return ResponseEntity.ok("Se creo la flash card: " + result.getPregunta() + " correctamente");
     }
 
     @PutMapping("/{flashcardId}")
     @Override
     public ResponseEntity<?> modifyFlashcard(@PathVariable UUID flashcardId, @RequestBody FlashcardDTO flashcardDto) {
-        FlashcardDTO result = modifyFlashcardUseCase.modifyFlashcard(flashcardId, flashcardDto);
+        FlashcardDTO result = modifyFlashcardUseCase.execute(flashcardId, flashcardDto);
         return ResponseEntity.ok("Se modifico la flash card: " + result.getPregunta() + " correctamente");
     }
 

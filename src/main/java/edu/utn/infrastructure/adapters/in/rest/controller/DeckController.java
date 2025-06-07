@@ -27,21 +27,21 @@ public class DeckController implements IDeckController {
     @PostMapping
     @Override
     public ResponseEntity<?> createDeck(@RequestBody DeckDTO deckDto) {
-        DeckDTO result = createDeckUseCase.createDeck(deckDto);
+        DeckDTO result = createDeckUseCase.execute(deckDto);
         return ResponseEntity.ok("Se creo el deck: " + result.getNombre() + " correctamente");
     }
 
     @PutMapping("/{deckId}")
     @Override
     public ResponseEntity<?> modifyDeck(@PathVariable UUID deckId, @RequestBody DeckDTO deckDto) {
-        DeckDTO result = modifyDeckUseCase.modifyDeck(deckId, deckDto);
+        DeckDTO result = modifyDeckUseCase.execute(deckId, deckDto);
         return ResponseEntity.ok("Se modifico el deck: " + result.getNombre() + " correctamente");
     }
 
     @DeleteMapping("/{deckId}")
     @Override
     public ResponseEntity<?> deleteDeck(@PathVariable UUID deckId) {
-        DeckDTO result = deleteDeckUseCase.deleteDeck(deckId);
+        DeckDTO result = deleteDeckUseCase.execute(deckId);
         return ResponseEntity.ok("Se elimino el deck: " + result.getNombre() + " correctamente");
     }
 

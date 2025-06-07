@@ -1,6 +1,8 @@
 package edu.utn.application.usecase;
 
+import edu.utn.application.dto.FlashcardDTO;
 import edu.utn.application.error.FlashcardError;
+import edu.utn.application.mappers.FlashcardMapper;
 import edu.utn.domain.model.IFlashcard;
 import edu.utn.domain.service.IFlashcardService;
 
@@ -15,7 +17,7 @@ public class DeleteFlashcardUseCase {
         this.flashcardService = flashcardService;
     }
 
-    public void execute(UUID flashcardId) {
+    public FlashcardDTO execute(UUID flashcardId) {
         if (flashcardId == null) {
             throw FlashcardError.nullFlashcardId();
         }
@@ -26,5 +28,6 @@ public class DeleteFlashcardUseCase {
         }
 
         flashcardService.deleteFlashcard(flashcardId);
+        return FlashcardMapper.toDTO(flashcard);
     }
 }

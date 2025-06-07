@@ -1,6 +1,9 @@
 package edu.utn.application.usecase;
 
+import edu.utn.application.dto.DeckDTO;
 import edu.utn.application.error.DeckError;
+import edu.utn.application.mappers.DeckMapper;
+import edu.utn.domain.model.IDeck;
 import edu.utn.domain.service.IDeckService;
 
 import java.util.UUID;
@@ -14,15 +17,16 @@ public class DeleteDeckUseCase {
         this.deckService = deckService;
     }
 
-    public void execute(UUID deckId) {
+    public DeckDTO execute(UUID deckId) {
         if (deckId == null) {
             throw DeckError.nullDeckId();
         }
-        
-        if (deckService.getDeckById(deckId) == null) {
+        IDeck deck = deckService.getDeckById(deckId);
+        if (deck == null) {
             throw DeckError.deckNotFound();
         }
 
         deckService.deleteDeck(deckId);
+        return DeckMapper.toDTO(deck);
     }
 }

@@ -2,6 +2,7 @@ package edu.utn.application.usecase;
 
 import edu.utn.application.dto.FlashcardDTO;
 import edu.utn.application.error.DeckError;
+import edu.utn.application.mappers.FlashcardMapper;
 import edu.utn.domain.model.Flashcard;
 import edu.utn.domain.model.IDeck;
 import edu.utn.domain.model.IFlashcard;
@@ -24,7 +25,7 @@ public class AddFlashcardToDeckUseCase {
         this.validationService = new ValidationService();
     }
 
-    public void execute(UUID deckId, FlashcardDTO flashcardDTO) {
+    public FlashcardDTO execute(UUID deckId, FlashcardDTO flashcardDTO) {
         if (deckId == null) {
             throw DeckError.nullDeckId();
         }
@@ -49,5 +50,6 @@ public class AddFlashcardToDeckUseCase {
         flashcardService.addFlashcard(newFlashcard);
         deck.addFlashcard(newFlashcard);
         deckService.updateDeck(deck);
+        return FlashcardMapper.toDTO(newFlashcard);
     }
 }
