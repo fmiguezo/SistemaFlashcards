@@ -55,4 +55,9 @@ public class Deck implements IDeck{
     public List<IFlashcard> getFlashcards() {
         return flashcards;
     }
+
+    @Override
+    public void addFlashcard(IFlashcard flashcard) {
+        flashcards.add(flashcard);
+    }
 }

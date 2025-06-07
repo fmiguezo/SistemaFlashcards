@@ -14,4 +14,5 @@ public interface IDeck {
     void setDescripcion(String descripcion);
     void setUpdatedAt(LocalDateTime updatedAt);
     List<IFlashcard> getFlashcards();
+    void addFlashcard(IFlashcard flashcard);
 }

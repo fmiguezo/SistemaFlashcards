@@ -6,6 +6,8 @@ import edu.utn.domain.service.IFlashcardService;
 
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
+@Service
 public class DeleteFlashcardUseCase {
     private final IFlashcardService flashcardService;
 

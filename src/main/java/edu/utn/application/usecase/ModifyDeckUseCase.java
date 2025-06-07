@@ -6,6 +6,8 @@ import edu.utn.application.error.DeckError;
 import edu.utn.domain.model.IDeck;
 import edu.utn.domain.service.IDeckService;
 
+import org.springframework.stereotype.Service;
+@Service
 public class ModifyDeckUseCase {
     private final IDeckService deckService;
     private static final int MAX_NAME_LENGTH = 100;

@@ -6,6 +6,8 @@ import edu.utn.application.error.FlashcardError;
 import edu.utn.domain.model.IFlashcard;
 import edu.utn.domain.service.IFlashcardService;
 
+import org.springframework.stereotype.Service;
+@Service
 public class ModifyFlashcardUseCase {
     private final IFlashcardService flashcardService;
     private static final int MIN_LENGTH = 10;
@@ -40,8 +42,8 @@ public class ModifyFlashcardUseCase {
         }
 
         if (flashcardDTO.getPregunta() == null && flashcardDTO.getRespuesta() == null) {
-            throw new IllegalArgumentException("Debe proporcionar al menos una pregunta o respuesta para modificar");
-        }
+                throw FlashcardError.noFieldsToModify();
+            }
 
         IFlashcard existingFlashcard = flashcardService.getFlashcardById(flashcardDTO.getId());
         if (existingFlashcard == null) {

@@ -107,11 +107,11 @@ class ModifyFlashcardUseCaseTest {
         );
 
         // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class,
+        FlashcardError exception = assertThrows(
+            FlashcardError.class,
             () -> modifyFlashcardUseCase.execute(flashcardDTO)
         );
-        assertEquals("Debe proporcionar al menos una pregunta o respuesta para modificar", exception.getMessage());
+        assertEquals(FlashcardError.NO_FIELDS_TO_MODIFY, exception.getMessage());
         verify(flashcardService, never()).updateFlashcard(any(IFlashcard.class));
     }
 

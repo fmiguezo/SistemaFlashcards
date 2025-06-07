@@ -11,8 +11,9 @@ public class FlashcardError extends RuntimeException {
     public static final String SAME_QUESTION = "La nueva pregunta no puede ser igual a la actual";
     public static final String SAME_ANSWER = "La nueva respuesta no puede ser igual a la actual";
     public static final String NULL_FLASHCARD = "La flashcard no puede ser nula";
+    public static final String NO_FIELDS_TO_MODIFY = "No hay campos para modificar";
 
-    // Errores de existencia
+
     public static final String FLASHCARD_NOT_FOUND = "No se encontró la flashcard a modificar";
     public static final String NULL_FLASHCARD_ID = "El ID de la flashcard no puede ser nulo";
 
@@ -63,5 +64,9 @@ public class FlashcardError extends RuntimeException {
 
     public static FlashcardError nullFlashcardId() {
         return new FlashcardError(NULL_FLASHCARD_ID);
+    }
+
+    public static FlashcardError noFieldsToModify() {
+        return new FlashcardError(NO_FIELDS_TO_MODIFY);
     }
 } 

@@ -5,7 +5,8 @@ import edu.utn.application.mappers.FlashcardMapper;
 import edu.utn.domain.model.Flashcard;
 import edu.utn.domain.service.IFlashcardService;
 import edu.utn.application.error.FlashcardError;
-
+import org.springframework.stereotype.Service;
+@Service
 public class CreateFlashcardUseCase {
     private final IFlashcardService flashcardService;
 
@@ -22,7 +23,7 @@ public class CreateFlashcardUseCase {
         return FlashcardMapper.toDTO(flashcard);
     }
 
-    private void validateInput(FlashcardDTO flashcardDTO) {
+    public void validateInput(FlashcardDTO flashcardDTO) {
         if (flashcardDTO == null) {
             throw FlashcardError.nullFlashcard();
         }

@@ -14,6 +14,12 @@ public class DeckError extends RuntimeException {
     public static final String DECK_NOT_FOUND = "No se encontró el deck a modificar";
     public static final String NULL_DECK_ID = "El ID del deck no puede ser nulo";
 
+    // Errores relacionados con flashcards
+    public static final String NULL_FLASHCARD = "La flashcard no puede ser nula";
+    public static final String NULL_FLASHCARD_ID = "El ID de la flashcard no puede ser nulo";
+    public static final String FLASHCARD_NOT_FOUND = "No se encontró la flashcard";
+    public static final String FLASHCARD_ALREADY_EXISTS = "La flashcard ya existe en el deck";
+
     private DeckError(String message) {
         super(message);
     }
@@ -53,5 +59,21 @@ public class DeckError extends RuntimeException {
 
     public static DeckError nullDeckId() {
         return new DeckError(NULL_DECK_ID);
+    }
+
+    public static DeckError nullFlashcard() {
+        return new DeckError(NULL_FLASHCARD);
+    }
+
+    public static DeckError nullFlashcardId() {
+        return new DeckError(NULL_FLASHCARD_ID);
+    }
+
+    public static DeckError flashcardNotFound() {
+        return new DeckError(FLASHCARD_NOT_FOUND);
+    }
+
+    public static DeckError flashcardAlreadyExists() {
+        return new DeckError(FLASHCARD_ALREADY_EXISTS);
     }
 } 

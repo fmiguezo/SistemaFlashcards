@@ -5,7 +5,8 @@ import edu.utn.application.mappers.DeckMapper;
 import edu.utn.domain.model.Deck;
 import edu.utn.domain.service.IDeckService;
 import edu.utn.application.error.DeckError;
-
+import org.springframework.stereotype.Service;
+@Service
 public class CreateDeckUseCase {
     private final IDeckService deckService;
 

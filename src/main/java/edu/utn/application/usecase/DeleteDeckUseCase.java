@@ -5,6 +5,8 @@ import edu.utn.domain.service.IDeckService;
 
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
+@Service
 public class DeleteDeckUseCase {
     private final IDeckService deckService;
 
