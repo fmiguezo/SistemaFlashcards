@@ -1,9 +1,11 @@
 package edu.utn.application.usecase;
 
+import edu.utn.application.dto.DeckDTO;
 import edu.utn.domain.model.Deck;
-import edu.utn.domain.model.IDeck;
 import edu.utn.domain.service.IDeckService;
 import edu.utn.application.error.DeckError;
+
+import java.util.ArrayList;
 
 public class CreateDeckUseCase {
     private final IDeckService deckService;
@@ -12,16 +14,21 @@ public class CreateDeckUseCase {
         this.deckService = deckService;
     }
 
-    public IDeck execute(String nombre, String descripcion) {
-        validateInput(nombre, descripcion);
+    public DeckDTO execute(DeckDTO deckDTO) {
+        validateInput(deckDTO);
         
-        Deck deck = new Deck(nombre, descripcion);
+        Deck deck = new Deck(deckDTO.getNombre(), deckDTO.getDescripcion());
         deckService.addDeck(deck);
         
-        return deck;
+        return new DeckDTO(deck.getId(), deck.getNombre(), deck.getDescripcion(), new ArrayList<>());
     }
 
-    private void validateInput(String nombre, String descripcion) {
+    private void validateInput(DeckDTO deckDTO) {
+        if (deckDTO == null) {
+            throw DeckError.nullDeck();
+        }
+
+        String nombre = deckDTO.getNombre();
         if (nombre == null || nombre.trim().isEmpty()) {
             throw DeckError.emptyName();
         }
@@ -30,6 +37,7 @@ public class CreateDeckUseCase {
             throw DeckError.nameTooLong();
         }
         
+        String descripcion = deckDTO.getDescripcion();
         if (descripcion != null && descripcion.length() > 250) {
             throw DeckError.descriptionTooLong();
         }

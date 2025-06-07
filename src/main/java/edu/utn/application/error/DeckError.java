@@ -8,6 +8,7 @@ public class DeckError extends RuntimeException {
     public static final String SAME_NAME = "El nuevo nombre no puede ser igual al actual";
     public static final String SAME_DESCRIPTION = "La nueva descripción no puede ser igual a la actual";
     public static final String NO_FIELDS_TO_MODIFY = "No hay campos para modificar";
+    public static final String NULL_DECK = "El deck no puede ser nulo";
 
     // Errores de existencia
     public static final String DECK_NOT_FOUND = "No se encontró el deck a modificar";
@@ -40,6 +41,10 @@ public class DeckError extends RuntimeException {
 
     public static DeckError noFieldsToModify() {
         return new DeckError(NO_FIELDS_TO_MODIFY);
+    }
+
+    public static DeckError nullDeck() {
+        return new DeckError(NULL_DECK);
     }
 
     // Métodos estáticos para lanzar errores de existencia

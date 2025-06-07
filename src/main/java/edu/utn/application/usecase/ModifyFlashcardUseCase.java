@@ -1,10 +1,9 @@
 package edu.utn.application.usecase;
 
+import edu.utn.application.dto.FlashcardDTO;
 import edu.utn.application.error.FlashcardError;
 import edu.utn.domain.model.IFlashcard;
 import edu.utn.domain.service.IFlashcardService;
-
-import java.util.UUID;
 
 public class ModifyFlashcardUseCase {
     private final IFlashcardService flashcardService;
@@ -15,60 +14,64 @@ public class ModifyFlashcardUseCase {
         this.flashcardService = flashcardService;
     }
 
-    public void execute(UUID flashcardId, String nuevaPregunta, String nuevaRespuesta) {
-        IFlashcard flashcard = validateInput(flashcardId, nuevaPregunta, nuevaRespuesta);
+    public void execute(FlashcardDTO flashcardDTO) {
+        IFlashcard flashcard = validateInput(flashcardDTO);
         
-        if (nuevaPregunta != null) {
-            flashcard.setPregunta(nuevaPregunta);
+        if (flashcardDTO.getPregunta() != null) {
+            flashcard.setPregunta(flashcardDTO.getPregunta());
         }
         
-        if (nuevaRespuesta != null) {
-            flashcard.setRespuesta(nuevaRespuesta);
+        if (flashcardDTO.getRespuesta() != null) {
+            flashcard.setRespuesta(flashcardDTO.getRespuesta());
         }
         
         flashcardService.updateFlashcard(flashcard);
     }
 
-    private IFlashcard validateInput(UUID flashcardId, String nuevaPregunta, String nuevaRespuesta) {
-        if (flashcardId == null) {
+    private IFlashcard validateInput(FlashcardDTO flashcardDTO) {
+        if (flashcardDTO == null) {
+            throw FlashcardError.nullFlashcard();
+        }
+
+        if (flashcardDTO.getId() == null) {
             throw FlashcardError.nullFlashcardId();
         }
 
-        if (nuevaPregunta == null && nuevaRespuesta == null) {
+        if (flashcardDTO.getPregunta() == null && flashcardDTO.getRespuesta() == null) {
             throw new IllegalArgumentException("Debe proporcionar al menos una pregunta o respuesta para modificar");
         }
 
-        IFlashcard existingFlashcard = flashcardService.getFlashcardById(flashcardId);
+        IFlashcard existingFlashcard = flashcardService.getFlashcardById(flashcardDTO.getId());
         if (existingFlashcard == null) {
             throw FlashcardError.flashcardNotFound();
         }
 
-        if (nuevaPregunta != null) {
-            if (nuevaPregunta.trim().isEmpty()) {
+        if (flashcardDTO.getPregunta() != null) {
+            if (flashcardDTO.getPregunta().trim().isEmpty()) {
                 throw FlashcardError.emptyQuestion();
             }
-            if (nuevaPregunta.length() < MIN_LENGTH) {
+            if (flashcardDTO.getPregunta().length() < MIN_LENGTH) {
                 throw FlashcardError.questionTooShort();
             }
-            if (nuevaPregunta.length() > MAX_LENGTH) {
+            if (flashcardDTO.getPregunta().length() > MAX_LENGTH) {
                 throw FlashcardError.questionTooLong();
             }
-            if (nuevaPregunta.equals(existingFlashcard.getPregunta())) {
+            if (flashcardDTO.getPregunta().equals(existingFlashcard.getPregunta())) {
                 throw FlashcardError.sameQuestion();
             }
         }
 
-        if (nuevaRespuesta != null) {
-            if (nuevaRespuesta.trim().isEmpty()) {
+        if (flashcardDTO.getRespuesta() != null) {
+            if (flashcardDTO.getRespuesta().trim().isEmpty()) {
                 throw FlashcardError.emptyAnswer();
             }
-            if (nuevaRespuesta.length() < MIN_LENGTH) {
+            if (flashcardDTO.getRespuesta().length() < MIN_LENGTH) {
                 throw FlashcardError.answerTooShort();
             }
-            if (nuevaRespuesta.length() > MAX_LENGTH) {
+            if (flashcardDTO.getRespuesta().length() > MAX_LENGTH) {
                 throw FlashcardError.answerTooLong();
             }
-            if (nuevaRespuesta.equals(existingFlashcard.getRespuesta())) {
+            if (flashcardDTO.getRespuesta().equals(existingFlashcard.getRespuesta())) {
                 throw FlashcardError.sameAnswer();
             }
         }

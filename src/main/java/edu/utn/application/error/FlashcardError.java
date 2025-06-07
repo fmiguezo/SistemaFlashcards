@@ -10,6 +10,7 @@ public class FlashcardError extends RuntimeException {
     public static final String ANSWER_TOO_LONG = "La respuesta no puede tener más de 500 caracteres";
     public static final String SAME_QUESTION = "La nueva pregunta no puede ser igual a la actual";
     public static final String SAME_ANSWER = "La nueva respuesta no puede ser igual a la actual";
+    public static final String NULL_FLASHCARD = "La flashcard no puede ser nula";
 
     // Errores de existencia
     public static final String FLASHCARD_NOT_FOUND = "No se encontró la flashcard a modificar";
@@ -50,6 +51,10 @@ public class FlashcardError extends RuntimeException {
 
     public static FlashcardError sameAnswer() {
         return new FlashcardError(SAME_ANSWER);
+    }
+
+    public static FlashcardError nullFlashcard() {
+        return new FlashcardError(NULL_FLASHCARD);
     }
 
     // Métodos estáticos para lanzar errores de existencia

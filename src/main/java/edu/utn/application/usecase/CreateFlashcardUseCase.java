@@ -1,7 +1,7 @@
 package edu.utn.application.usecase;
 
+import edu.utn.application.dto.FlashcardDTO;
 import edu.utn.domain.model.Flashcard;
-import edu.utn.domain.model.IFlashcard;
 import edu.utn.domain.service.IFlashcardService;
 import edu.utn.application.error.FlashcardError;
 
@@ -12,16 +12,28 @@ public class CreateFlashcardUseCase {
         this.flashcardService = flashcardService;
     }
 
-    public IFlashcard execute(String pregunta, String respuesta) {
-        validateInput(pregunta, respuesta);
+    public FlashcardDTO execute(FlashcardDTO flashcardDTO) {
+        validateInput(flashcardDTO);
         
-        Flashcard flashcard = new Flashcard(pregunta, respuesta);
+        Flashcard flashcard = new Flashcard(flashcardDTO.getPregunta(), flashcardDTO.getRespuesta());
         flashcardService.addFlashcard(flashcard);
         
-        return flashcard;
+        return new FlashcardDTO(
+            flashcard.getId(),
+            flashcard.getPregunta(),
+            flashcard.getRespuesta(),
+            flashcard.getCreatedAt(),
+            flashcard.getUpdatedAt(),
+            flashcard.getNextReviewDate()
+        );
     }
 
-    private void validateInput(String pregunta, String respuesta) {
+    private void validateInput(FlashcardDTO flashcardDTO) {
+        if (flashcardDTO == null) {
+            throw FlashcardError.nullFlashcard();
+        }
+
+        String pregunta = flashcardDTO.getPregunta();
         if (pregunta == null || pregunta.trim().isEmpty()) {
             throw FlashcardError.emptyQuestion();
         }
@@ -30,6 +42,7 @@ public class CreateFlashcardUseCase {
             throw FlashcardError.questionTooLong();
         }
         
+        String respuesta = flashcardDTO.getRespuesta();
         if (respuesta == null || respuesta.trim().isEmpty()) {
             throw FlashcardError.emptyAnswer();
         }

@@ -1,15 +1,18 @@
 package application.usecase;
 
+import edu.utn.application.dto.FlashcardDTO;
 import edu.utn.application.error.FlashcardError;
 import edu.utn.application.usecase.CreateFlashcardUseCase;
 import edu.utn.domain.model.Flashcard;
-import edu.utn.domain.model.IFlashcard;
 import edu.utn.domain.service.IFlashcardService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -22,37 +25,67 @@ class CreateFlashcardUseCaseTest {
     private IFlashcardService flashcardService;
 
     private CreateFlashcardUseCase createFlashcardUseCase;
-    private String validPregunta;
-    private String validRespuesta;
+    private FlashcardDTO validFlashcardDTO;
 
     @BeforeEach
     void setUp() {
         createFlashcardUseCase = new CreateFlashcardUseCase(flashcardService);
-        validPregunta = "¿Cuál es la capital de Francia?";
-        validRespuesta = "La capital de Francia es París";
+        validFlashcardDTO = new FlashcardDTO(
+            null,
+            "¿Cuál es la capital de Francia?",
+            "La capital de Francia es París",
+            null,
+            null,
+            null
+        );
     }
 
     @Test
-    void execute_WithValidQuestionAndAnswer_ShouldCreateFlashcard() {
+    void execute_WithValidFlashcardDTO_ShouldCreateFlashcard() {
         // Arrange
         doNothing().when(flashcardService).addFlashcard(any(Flashcard.class));
 
         // Act
-        IFlashcard result = createFlashcardUseCase.execute(validPregunta, validRespuesta);
+        FlashcardDTO result = createFlashcardUseCase.execute(validFlashcardDTO);
 
         // Assert
         assertNotNull(result);
-        assertEquals(validPregunta, result.getPregunta());
-        assertEquals(validRespuesta, result.getRespuesta());
+        assertEquals(validFlashcardDTO.getPregunta(), result.getPregunta());
+        assertEquals(validFlashcardDTO.getRespuesta(), result.getRespuesta());
+        assertNotNull(result.getId());
+        assertNotNull(result.getCreatedAt());
+        assertNull(result.getUpdatedAt());
+        assertNotNull(result.getNextReviewDate());
         verify(flashcardService, times(1)).addFlashcard(any(Flashcard.class));
     }
 
     @Test
-    void execute_WithNullQuestion_ShouldThrowException() {
+    void execute_WithNullFlashcardDTO_ShouldThrowException() {
         // Act & Assert
         FlashcardError exception = assertThrows(
             FlashcardError.class,
-            () -> createFlashcardUseCase.execute(null, validRespuesta)
+            () -> createFlashcardUseCase.execute(null)
+        );
+        assertEquals(FlashcardError.NULL_FLASHCARD, exception.getMessage());
+        verify(flashcardService, never()).addFlashcard(any(Flashcard.class));
+    }
+
+    @Test
+    void execute_WithNullQuestion_ShouldThrowException() {
+        // Arrange
+        FlashcardDTO flashcardDTO = new FlashcardDTO(
+            null,
+            null,
+            validFlashcardDTO.getRespuesta(),
+            null,
+            null,
+            null
+        );
+
+        // Act & Assert
+        FlashcardError exception = assertThrows(
+            FlashcardError.class,
+            () -> createFlashcardUseCase.execute(flashcardDTO)
         );
         assertEquals(FlashcardError.EMPTY_QUESTION, exception.getMessage());
         verify(flashcardService, never()).addFlashcard(any(Flashcard.class));
@@ -60,10 +93,20 @@ class CreateFlashcardUseCaseTest {
 
     @Test
     void execute_WithEmptyQuestion_ShouldThrowException() {
+        // Arrange
+        FlashcardDTO flashcardDTO = new FlashcardDTO(
+            null,
+            "",
+            validFlashcardDTO.getRespuesta(),
+            null,
+            null,
+            null
+        );
+
         // Act & Assert
         FlashcardError exception = assertThrows(
             FlashcardError.class,
-            () -> createFlashcardUseCase.execute("", validRespuesta)
+            () -> createFlashcardUseCase.execute(flashcardDTO)
         );
         assertEquals(FlashcardError.EMPTY_QUESTION, exception.getMessage());
         verify(flashcardService, never()).addFlashcard(any(Flashcard.class));
@@ -71,10 +114,20 @@ class CreateFlashcardUseCaseTest {
 
     @Test
     void execute_WithQuestionTooLong_ShouldThrowException() {
+        // Arrange
+        FlashcardDTO flashcardDTO = new FlashcardDTO(
+            null,
+            "a".repeat(101),
+            validFlashcardDTO.getRespuesta(),
+            null,
+            null,
+            null
+        );
+
         // Act & Assert
         FlashcardError exception = assertThrows(
             FlashcardError.class,
-            () -> createFlashcardUseCase.execute("a".repeat(101), validRespuesta)
+            () -> createFlashcardUseCase.execute(flashcardDTO)
         );
         assertEquals(FlashcardError.QUESTION_TOO_LONG, exception.getMessage());
         verify(flashcardService, never()).addFlashcard(any(Flashcard.class));
@@ -82,10 +135,20 @@ class CreateFlashcardUseCaseTest {
 
     @Test
     void execute_WithNullAnswer_ShouldThrowException() {
+        // Arrange
+        FlashcardDTO flashcardDTO = new FlashcardDTO(
+            null,
+            validFlashcardDTO.getPregunta(),
+            null,
+            null,
+            null,
+            null
+        );
+
         // Act & Assert
         FlashcardError exception = assertThrows(
             FlashcardError.class,
-            () -> createFlashcardUseCase.execute(validPregunta, null)
+            () -> createFlashcardUseCase.execute(flashcardDTO)
         );
         assertEquals(FlashcardError.EMPTY_ANSWER, exception.getMessage());
         verify(flashcardService, never()).addFlashcard(any(Flashcard.class));
@@ -93,10 +156,20 @@ class CreateFlashcardUseCaseTest {
 
     @Test
     void execute_WithEmptyAnswer_ShouldThrowException() {
+        // Arrange
+        FlashcardDTO flashcardDTO = new FlashcardDTO(
+            null,
+            validFlashcardDTO.getPregunta(),
+            "",
+            null,
+            null,
+            null
+        );
+
         // Act & Assert
         FlashcardError exception = assertThrows(
             FlashcardError.class,
-            () -> createFlashcardUseCase.execute(validPregunta, "")
+            () -> createFlashcardUseCase.execute(flashcardDTO)
         );
         assertEquals(FlashcardError.EMPTY_ANSWER, exception.getMessage());
         verify(flashcardService, never()).addFlashcard(any(Flashcard.class));
@@ -104,10 +177,20 @@ class CreateFlashcardUseCaseTest {
 
     @Test
     void execute_WithAnswerTooLong_ShouldThrowException() {
+        // Arrange
+        FlashcardDTO flashcardDTO = new FlashcardDTO(
+            null,
+            validFlashcardDTO.getPregunta(),
+            "a".repeat(251),
+            null,
+            null,
+            null
+        );
+
         // Act & Assert
         FlashcardError exception = assertThrows(
             FlashcardError.class,
-            () -> createFlashcardUseCase.execute(validPregunta, "a".repeat(251))
+            () -> createFlashcardUseCase.execute(flashcardDTO)
         );
         assertEquals(FlashcardError.ANSWER_TOO_LONG, exception.getMessage());
         verify(flashcardService, never()).addFlashcard(any(Flashcard.class));
