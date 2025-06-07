@@ -45,19 +45,21 @@ class ModifyFlashcardUseCaseTest {
     }
 
     @Test
-    void execute_WithValidFlashcardDTO_ShouldModifyFlashcard() {
+    void execute_WithValidFlashcardDTO_ShouldModifyFlashcardAndReturnDTO() {
         // Arrange
         when(flashcardService.getFlashcardById(validFlashcardId)).thenReturn(existingFlashcard);
         doNothing().when(flashcardService).updateFlashcard(any(IFlashcard.class));
 
         // Act
-        modifyFlashcardUseCase.execute(validFlashcardDTO);
+        FlashcardDTO result = modifyFlashcardUseCase.execute(validFlashcardDTO);
 
         // Assert
         verify(flashcardService).updateFlashcard(argThat(flashcard -> 
             flashcard.getPregunta().equals(validFlashcardDTO.getPregunta()) &&
             flashcard.getRespuesta().equals(validFlashcardDTO.getRespuesta())
         ));
+        assertEquals(validFlashcardDTO.getPregunta(), result.getPregunta());
+        assertEquals(validFlashcardDTO.getRespuesta(), result.getRespuesta());
     }
 
     @Test

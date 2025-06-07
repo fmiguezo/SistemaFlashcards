@@ -57,7 +57,6 @@ public class FlashcardError extends RuntimeException {
         return new FlashcardError(NULL_FLASHCARD);
     }
 
-    // Métodos estáticos para lanzar errores de existencia
     public static FlashcardError flashcardNotFound() {
         return new FlashcardError(FLASHCARD_NOT_FOUND);
     }

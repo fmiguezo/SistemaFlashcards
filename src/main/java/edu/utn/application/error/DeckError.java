@@ -47,7 +47,6 @@ public class DeckError extends RuntimeException {
         return new DeckError(NULL_DECK);
     }
 
-    // Métodos estáticos para lanzar errores de existencia
     public static DeckError deckNotFound() {
         return new DeckError(DECK_NOT_FOUND);
     }

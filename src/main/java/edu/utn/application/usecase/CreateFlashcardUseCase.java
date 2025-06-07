@@ -1,6 +1,7 @@
 package edu.utn.application.usecase;
 
 import edu.utn.application.dto.FlashcardDTO;
+import edu.utn.application.mappers.FlashcardMapper;
 import edu.utn.domain.model.Flashcard;
 import edu.utn.domain.service.IFlashcardService;
 import edu.utn.application.error.FlashcardError;
@@ -18,14 +19,7 @@ public class CreateFlashcardUseCase {
         Flashcard flashcard = new Flashcard(flashcardDTO.getPregunta(), flashcardDTO.getRespuesta());
         flashcardService.addFlashcard(flashcard);
         
-        return new FlashcardDTO(
-            flashcard.getId(),
-            flashcard.getPregunta(),
-            flashcard.getRespuesta(),
-            flashcard.getCreatedAt(),
-            flashcard.getUpdatedAt(),
-            flashcard.getNextReviewDate()
-        );
+        return FlashcardMapper.toDTO(flashcard);
     }
 
     private void validateInput(FlashcardDTO flashcardDTO) {

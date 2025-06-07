@@ -1,11 +1,10 @@
 package edu.utn.application.usecase;
 
 import edu.utn.application.dto.DeckDTO;
+import edu.utn.application.mappers.DeckMapper;
 import edu.utn.domain.model.Deck;
 import edu.utn.domain.service.IDeckService;
 import edu.utn.application.error.DeckError;
-
-import java.util.ArrayList;
 
 public class CreateDeckUseCase {
     private final IDeckService deckService;
@@ -20,7 +19,7 @@ public class CreateDeckUseCase {
         Deck deck = new Deck(deckDTO.getNombre(), deckDTO.getDescripcion());
         deckService.addDeck(deck);
         
-        return new DeckDTO(deck.getId(), deck.getNombre(), deck.getDescripcion(), new ArrayList<>());
+        return DeckMapper.toDTO(deck);
     }
 
     private void validateInput(DeckDTO deckDTO) {
