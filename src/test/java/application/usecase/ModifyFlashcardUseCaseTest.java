@@ -40,7 +40,9 @@ class ModifyFlashcardUseCaseTest {
             "Nueva Respuesta",
             LocalDateTime.now(),
             null,
-            LocalDateTime.now()
+            LocalDateTime.now(),
+            null,
+            0
         );
     }
 
@@ -82,7 +84,9 @@ class ModifyFlashcardUseCaseTest {
             "Nueva Respuesta",
             LocalDateTime.now(),
             null,
-            LocalDateTime.now()
+            LocalDateTime.now(),
+            null,
+            0
         );
 
         // Act & Assert
@@ -103,7 +107,9 @@ class ModifyFlashcardUseCaseTest {
             null,
             LocalDateTime.now(),
             null,
-            LocalDateTime.now()
+            LocalDateTime.now(),
+            null,
+            0
         );
 
         // Act & Assert
@@ -139,7 +145,9 @@ class ModifyFlashcardUseCaseTest {
             "Nueva Respuesta",
             LocalDateTime.now(),
             null,
-            LocalDateTime.now()
+            LocalDateTime.now(),
+            null,
+            0
         );
 
         // Act & Assert
@@ -161,7 +169,9 @@ class ModifyFlashcardUseCaseTest {
             "Nueva Respuesta",
             LocalDateTime.now(),
             null,
-            LocalDateTime.now()
+            LocalDateTime.now(),
+            null,
+            0
         );
 
         // Act & Assert
@@ -183,7 +193,9 @@ class ModifyFlashcardUseCaseTest {
             "Nueva Respuesta",
             LocalDateTime.now(),
             null,
-            LocalDateTime.now()
+            LocalDateTime.now(),
+            null,
+            0
         );
 
         // Act & Assert
@@ -205,7 +217,9 @@ class ModifyFlashcardUseCaseTest {
             "Nueva Respuesta",
             LocalDateTime.now(),
             null,
-            LocalDateTime.now()
+            LocalDateTime.now(),
+            null,
+            0
         );
 
         // Act & Assert
@@ -227,7 +241,9 @@ class ModifyFlashcardUseCaseTest {
             "",
             LocalDateTime.now(),
             null,
-            LocalDateTime.now()
+            LocalDateTime.now(),
+            null,
+            0
         );
 
         // Act & Assert
@@ -249,7 +265,9 @@ class ModifyFlashcardUseCaseTest {
             "a".repeat(9),
             LocalDateTime.now(),
             null,
-            LocalDateTime.now()
+            LocalDateTime.now(),
+            null,
+            0
         );
 
         // Act & Assert
@@ -271,7 +289,9 @@ class ModifyFlashcardUseCaseTest {
             "a".repeat(501),
             LocalDateTime.now(),
             null,
-            LocalDateTime.now()
+            LocalDateTime.now(),
+            null,
+            0
         );
 
         // Act & Assert
@@ -293,7 +313,9 @@ class ModifyFlashcardUseCaseTest {
             existingFlashcard.getRespuesta(),
             LocalDateTime.now(),
             null,
-            LocalDateTime.now()
+            LocalDateTime.now(),
+            null,
+            0
         );
 
         // Act & Assert

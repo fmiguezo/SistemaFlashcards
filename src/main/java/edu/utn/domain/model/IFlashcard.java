@@ -11,6 +11,10 @@ public interface IFlashcard {
     LocalDateTime getCreatedAt();
     LocalDateTime getUpdatedAt();
     void setUpdatedAt(LocalDateTime updatedAt);
-    void setNextReviewDate(IEstrategiaRepeticion estrategia, int puntuacion);
     LocalDateTime getNextReviewDate();
+    void setNextReviewDate(LocalDateTime nextReviewDate);
+    LocalDateTime getLastReviewDate();
+    void setLastReviewDate(LocalDateTime lastReviewDate);
+    int getScore();
+    void setScore(int score);
 }

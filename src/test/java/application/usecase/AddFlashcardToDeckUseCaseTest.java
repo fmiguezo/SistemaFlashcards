@@ -47,7 +47,9 @@ class AddFlashcardToDeckUseCaseTest {
             "New Answer",
             LocalDateTime.now(),
             null,
-            LocalDateTime.now()
+            LocalDateTime.now(),
+            null,
+            0
         );
         newFlashcard = new Flashcard("New Question", "New Answer");
     }

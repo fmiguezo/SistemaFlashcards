@@ -10,14 +10,18 @@ public class FlashcardDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime nextReviewDate;
+    private LocalDateTime lastReviewDate;
+    private int score;
 
-    public FlashcardDTO(UUID id, String pregunta, String respuesta, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime nextReviewDate) {
+    public FlashcardDTO(UUID id, String pregunta, String respuesta, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime nextReviewDate, LocalDateTime lastReviewDate, int score) {
         this.id = id;
         this.pregunta = pregunta;
         this.respuesta = respuesta;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.nextReviewDate = nextReviewDate;
+        this.lastReviewDate = lastReviewDate;
+        this.score = score;
     }
 
     public UUID getId() {

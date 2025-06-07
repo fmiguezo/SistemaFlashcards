@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface IDeckService {
-    void practiceDeck(IDeck deck);
     void addDeck(IDeck deck);
     IDeck getDeckById(UUID id);
     void updateDeck(IDeck deck);
@@ -21,4 +20,6 @@ public interface IDeckService {
     List<IFlashcard> getFlashcardsByDeckId(UUID deckId);
 
 
+    List<IFlashcard> getFlashcardsToPractice(IDeck deck);
+    void practiceDeck(IDeck deck, IEstrategiaRepeticion estrategia);
 }

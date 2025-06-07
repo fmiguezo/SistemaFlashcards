@@ -2,13 +2,15 @@ package edu.utn.domain.model;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class Flashcard implements IFlashcard{
+public class Flashcard implements IFlashcard {
     private UUID id;
     private String pregunta;
     private String respuesta;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime nextReviewDate;
+    private LocalDateTime lastReviewDate;
+    private int score;
 
     public Flashcard(String pregunta, String respuesta) {
         this.id = UUID.randomUUID();
@@ -16,6 +18,9 @@ public class Flashcard implements IFlashcard{
         this.respuesta = respuesta;
         this.createdAt = LocalDateTime.now();
         this.nextReviewDate = this.createdAt;
+        this.updatedAt = this.createdAt;
+        this.lastReviewDate = null;
+        this.score = 0;
     }
 
     @Override
@@ -57,13 +62,32 @@ public class Flashcard implements IFlashcard{
     }
 
     @Override
-    public void setNextReviewDate(IEstrategiaRepeticion estrategia, int puntuacion) {
-        this.nextReviewDate = estrategia.calcularProximaRepeticion(puntuacion, LocalDateTime.now());
-        this.updatedAt = LocalDateTime.now();
+    public LocalDateTime getNextReviewDate() {
+        return nextReviewDate;
     }
 
     @Override
-    public LocalDateTime getNextReviewDate() {
-        return nextReviewDate;
+    public void setNextReviewDate(LocalDateTime nextReviewDate) {
+        this.nextReviewDate = nextReviewDate;
+    }
+
+    @Override
+    public LocalDateTime getLastReviewDate() {
+        return lastReviewDate;
+    }
+
+    @Override
+    public void setLastReviewDate(LocalDateTime lastReviewDate) {
+        this.lastReviewDate = lastReviewDate;
+    }
+
+    @Override
+    public int getScore() {
+        return score;
+    }
+
+    @Override
+    public void setScore(int score) {
+        this.score = score;
     }
 }

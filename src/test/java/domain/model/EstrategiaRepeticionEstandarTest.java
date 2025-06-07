@@ -22,31 +22,31 @@ class EstrategiaRepeticionEstandarTest {
     @Test
     void testPuntuacion5() {
         LocalDateTime resultado = estrategia.calcularProximaRepeticion(5, ahora);
-        assertEquals(ahora.plusDays(7), resultado);
+        assertEquals(ahora.plusDays(15), resultado);
     }
 
     @Test
     void testPuntuacion4() {
         LocalDateTime resultado = estrategia.calcularProximaRepeticion(4, ahora);
-        assertEquals(ahora.plusDays(3), resultado);
+        assertEquals(ahora.plusDays(7), resultado);
     }
 
     @Test
     void testPuntuacion3() {
         LocalDateTime resultado = estrategia.calcularProximaRepeticion(3, ahora);
-        assertEquals(ahora.plusDays(1), resultado);
+        assertEquals(ahora.plusDays(4), resultado);
     }
 
     @Test
     void testPuntuacion2() {
         LocalDateTime resultado = estrategia.calcularProximaRepeticion(2, ahora);
-        assertEquals(ahora.plusHours(12), resultado);
+        assertEquals(ahora.plusDays(2), resultado);
     }
 
     @Test
     void testPuntuacion1() {
         LocalDateTime resultado = estrategia.calcularProximaRepeticion(1, ahora);
-        assertEquals(ahora.plusHours(6), resultado);
+        assertEquals(ahora.plusDays(1), resultado);
     }
 
     @Test

@@ -20,38 +20,47 @@ public class Deck implements IDeck{
         this.createdAt = LocalDateTime.now();
     }
 
+    @Override
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
+    @Override
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
 
+    @Override
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
+    @Override
     public UUID getId() {
         return id;
     }
 
+    @Override
     public String getNombre() {
         return nombre;
     }
 
+    @Override
     public String getDescripcion() {
         return descripcion;
     }
 
+    @Override
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
+    @Override
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
+    @Override
     public List<IFlashcard> getFlashcards() {
         return flashcards;
     }

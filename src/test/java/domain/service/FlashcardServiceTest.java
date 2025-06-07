@@ -2,6 +2,7 @@ package domain.service;
 
 import edu.utn.domain.model.IFlashcard;
 import edu.utn.domain.service.FlashcardService;
+import edu.utn.infrastructure.ports.in.IUserPracticeInputPort;
 import edu.utn.infrastructure.ports.out.IFlashcardRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,11 +16,13 @@ class FlashcardServiceTest {
 
     private IFlashcardRepository flashcardRepository;
     private FlashcardService flashcardService;
+    private IUserPracticeInputPort userPracticeInputPort;
 
     @BeforeEach
     void setUp() {
         flashcardRepository = mock(IFlashcardRepository.class);
-        flashcardService = new FlashcardService(flashcardRepository);
+        userPracticeInputPort = mock(IUserPracticeInputPort.class);
+        flashcardService = new FlashcardService(flashcardRepository, userPracticeInputPort);
     }
 
     @Test

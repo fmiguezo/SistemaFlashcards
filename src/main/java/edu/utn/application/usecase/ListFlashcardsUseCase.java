@@ -18,11 +18,6 @@ public class ListFlashcardsUseCase {
     }
 
     public List<IFlashcard> execute(UUID deckId) {
-        validateInput(deckId);
-        return deckService.getFlashcardsByDeckId(deckId);
-    }
-
-    private void validateInput(UUID deckId) {
         if (deckId == null) {
             throw DeckError.nullDeckId();
         }
@@ -31,5 +26,7 @@ public class ListFlashcardsUseCase {
         if (deck == null) {
             throw DeckError.deckNotFound();
         }
+
+        return deckService.getFlashcardsByDeckId(deckId);
     }
 }

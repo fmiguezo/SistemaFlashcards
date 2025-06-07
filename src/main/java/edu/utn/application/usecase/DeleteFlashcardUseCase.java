@@ -16,11 +16,6 @@ public class DeleteFlashcardUseCase {
     }
 
     public void execute(UUID flashcardId) {
-        validateInput(flashcardId);
-        flashcardService.deleteFlashcard(flashcardId);
-    }
-
-    private void validateInput(UUID flashcardId) {
         if (flashcardId == null) {
             throw FlashcardError.nullFlashcardId();
         }
@@ -29,5 +24,7 @@ public class DeleteFlashcardUseCase {
         if (flashcard == null) {
             throw FlashcardError.flashcardNotFound();
         }
+
+        flashcardService.deleteFlashcard(flashcardId);
     }
 }

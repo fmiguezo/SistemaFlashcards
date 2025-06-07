@@ -15,11 +15,6 @@ public class DeleteDeckUseCase {
     }
 
     public void execute(UUID deckId) {
-        validateInput(deckId);
-        deckService.deleteDeck(deckId);
-    }
-
-    private void validateInput(UUID deckId) {
         if (deckId == null) {
             throw DeckError.nullDeckId();
         }
@@ -27,5 +22,7 @@ public class DeleteDeckUseCase {
         if (deckService.getDeckById(deckId) == null) {
             throw DeckError.deckNotFound();
         }
+
+        deckService.deleteDeck(deckId);
     }
 }

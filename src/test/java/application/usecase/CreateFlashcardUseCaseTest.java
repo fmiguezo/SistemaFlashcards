@@ -36,7 +36,9 @@ class CreateFlashcardUseCaseTest {
             "La capital de Francia es París",
             null,
             null,
-            null
+            null,
+            null,
+            0
         );
     }
 
@@ -54,7 +56,7 @@ class CreateFlashcardUseCaseTest {
         assertEquals(validFlashcardDTO.getRespuesta(), result.getRespuesta());
         assertNotNull(result.getId());
         assertNotNull(result.getCreatedAt());
-        assertNull(result.getUpdatedAt());
+        assertNotNull(result.getUpdatedAt());
         assertNotNull(result.getNextReviewDate());
         verify(flashcardService, times(1)).addFlashcard(any(Flashcard.class));
     }
@@ -79,7 +81,9 @@ class CreateFlashcardUseCaseTest {
             validFlashcardDTO.getRespuesta(),
             null,
             null,
-            null
+            null,
+            null,
+            0
         );
 
         // Act & Assert
@@ -100,7 +104,9 @@ class CreateFlashcardUseCaseTest {
             validFlashcardDTO.getRespuesta(),
             null,
             null,
-            null
+            null,
+            null,
+            0
         );
 
         // Act & Assert
@@ -121,7 +127,9 @@ class CreateFlashcardUseCaseTest {
             validFlashcardDTO.getRespuesta(),
             null,
             null,
-            null
+            null,
+            null,
+            0
         );
 
         // Act & Assert
@@ -142,7 +150,9 @@ class CreateFlashcardUseCaseTest {
             null,
             null,
             null,
-            null
+            null,
+            null,
+            0
         );
 
         // Act & Assert
@@ -163,7 +173,9 @@ class CreateFlashcardUseCaseTest {
             "",
             null,
             null,
-            null
+            null,
+            null,
+            0
         );
 
         // Act & Assert
@@ -184,7 +196,9 @@ class CreateFlashcardUseCaseTest {
             "a".repeat(251),
             null,
             null,
-            null
+            null,
+            null,
+            0
         );
 
         // Act & Assert

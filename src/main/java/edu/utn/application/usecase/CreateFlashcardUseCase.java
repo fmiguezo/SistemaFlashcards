@@ -4,46 +4,25 @@ import edu.utn.application.dto.FlashcardDTO;
 import edu.utn.application.mappers.FlashcardMapper;
 import edu.utn.domain.model.Flashcard;
 import edu.utn.domain.service.IFlashcardService;
-import edu.utn.application.error.FlashcardError;
+import edu.utn.domain.service.ValidationService;
 import org.springframework.stereotype.Service;
+
 @Service
 public class CreateFlashcardUseCase {
     private final IFlashcardService flashcardService;
+    private final ValidationService validationService;
 
     public CreateFlashcardUseCase(IFlashcardService flashcardService) {
         this.flashcardService = flashcardService;
+        this.validationService = new ValidationService();
     }
 
     public FlashcardDTO execute(FlashcardDTO flashcardDTO) {
-        validateInput(flashcardDTO);
+        validationService.validateFlashcardInput(flashcardDTO);
         
         Flashcard flashcard = new Flashcard(flashcardDTO.getPregunta(), flashcardDTO.getRespuesta());
         flashcardService.addFlashcard(flashcard);
         
         return FlashcardMapper.toDTO(flashcard);
-    }
-
-    public void validateInput(FlashcardDTO flashcardDTO) {
-        if (flashcardDTO == null) {
-            throw FlashcardError.nullFlashcard();
-        }
-
-        String pregunta = flashcardDTO.getPregunta();
-        if (pregunta == null || pregunta.trim().isEmpty()) {
-            throw FlashcardError.emptyQuestion();
-        }
-        
-        if (pregunta.length() > 100) {
-            throw FlashcardError.questionTooLong();
-        }
-        
-        String respuesta = flashcardDTO.getRespuesta();
-        if (respuesta == null || respuesta.trim().isEmpty()) {
-            throw FlashcardError.emptyAnswer();
-        }
-        
-        if (respuesta.length() > 250) {
-            throw FlashcardError.answerTooLong();
-        }
     }
 }
