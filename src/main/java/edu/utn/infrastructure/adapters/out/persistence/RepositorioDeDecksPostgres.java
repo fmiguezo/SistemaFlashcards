@@ -2,6 +2,7 @@ package edu.utn.infrastructure.adapters.out.persistence;
 import edu.utn.application.mappers.DeckMapper;
 import edu.utn.domain.model.Deck;
 import edu.utn.domain.model.IDeck;
+import edu.utn.domain.model.IFlashcard;
 import edu.utn.infrastructure.adapters.out.exception.DeckNoExisteException;
 import edu.utn.infrastructure.ports.out.IDeckRepository;
 import edu.utn.infrastructure.ports.out.JpaDeckRepository;
@@ -42,5 +43,11 @@ public class RepositorioDeDecksPostgres implements IDeckRepository {
     @Override
     public void deleteDeckById(UUID id) {
         jpaDeckRepository.deleteById(id);
+    }
+
+    @Override
+    public List<IFlashcard> getFlashcardsByDeckId(UUID deckId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getFlashcardsByDeckId'");
     }
 }

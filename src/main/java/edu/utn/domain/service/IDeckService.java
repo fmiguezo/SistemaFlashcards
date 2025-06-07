@@ -1,6 +1,7 @@
 package edu.utn.domain.service;
 import edu.utn.domain.model.IDeck;
 import edu.utn.domain.model.IEstrategiaRepeticion;
+import edu.utn.domain.model.IFlashcard;
 import edu.utn.infrastructure.ports.out.IDeckRepository;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public interface IDeckService {
     IEstrategiaRepeticion getEstrategiaRepeticion();
     void setDeckRepository(IDeckRepository deckRepository);
     IDeckRepository getDeckRepository();
+    List<IFlashcard> getFlashcardsByDeckId(UUID deckId);
 
 
 }
