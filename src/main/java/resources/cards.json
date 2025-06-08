@@ -2,43 +2,43 @@
   "cards": [
     {
       "id": "1",
-      "front": "¿Cuál es la capital de Francia?",
-      "back": "París",
+      "pregunta": "¿Cuál es la capital de Francia?",
+      "respuesta": "París",
       "createdAt": "2024-03-20T10:00:00",
       "updatedAt": "2024-03-20T10:00:00",
-      "estrategiaDeRepeticion": "PROXIMO_REPASO",
-      "fechaDeUltimaRevision": "2024-03-20T10:00:00",
-      "deckId": "1"
+      "nextReviewDate": "2024-03-20T10:00:00",
+      "lastReviewDate": null,
+      "score": 0
     },
     {
       "id": "2",
-      "front": "¿Cuál es el símbolo químico del oro?",
-      "back": "Au",
+      "pregunta": "¿Cuál es el símbolo químico del oro?",
+      "respuesta": "Au",
       "createdAt": "2024-03-20T10:05:00",
       "updatedAt": "2024-03-20T10:05:00",
-      "estrategiaDeRepeticion": "DIA_SIGUIENTE",
-      "fechaDeUltimaRevision": "2024-03-20T10:05:00",
-      "deckId": "1"
+      "nextReviewDate": "2024-03-20T10:05:00",
+      "lastReviewDate": null,
+      "score": 0
     },
     {
       "id": "3",
-      "front": "¿Cuántos planetas hay en el sistema solar?",
-      "back": "8",
+      "pregunta": "¿Cuántos planetas hay en el sistema solar?",
+      "respuesta": "8",
       "createdAt": "2024-03-20T10:10:00",
       "updatedAt": "2024-03-20T10:10:00",
-      "estrategiaDeRepeticion": "SEMANAL",
-      "fechaDeUltimaRevision": "2024-03-20T10:10:00",
-      "deckId": "1"
+      "nextReviewDate": "2024-03-20T10:10:00",
+      "lastReviewDate": null,
+      "score": 0
     },
     {
       "id": "4",
-      "front": "¿Cuál es el río más largo del mundo?",
-      "back": "El río Amazonas",
+      "pregunta": "¿Cuál es el río más largo del mundo?",
+      "respuesta": "El río Amazonas",
       "createdAt": "2024-03-20T10:15:00",
       "updatedAt": "2024-03-20T10:15:00",
-      "estrategiaDeRepeticion": "NUNCA_MAS",
-      "fechaDeUltimaRevision": "2024-03-20T10:15:00",
-      "deckId": "2"
+      "nextReviewDate": "2024-03-20T10:15:00",
+      "lastReviewDate": null,
+      "score": 0
     }
   ]
 }
