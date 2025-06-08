@@ -1,3 +1,4 @@
+/*
 package infrastructure.adapters.out.persistence;
 
 import java.io.File;
@@ -197,3 +198,14 @@ class RepositorioDeCardsJsonTest {
         assertTrue(jsonContent.contains("Un lenguaje de programación orientado a objetos"));
     }
 }
+
+HAY QUE AGREGAR EN FLASHCHAR PARA QUE FUNCIONE: 
+Y EL CONSTRUCTOR SIN ARGUMENTOS:
+@JsonCreator
+    public Flashcard(@JsonProperty("pregunta") String pregunta, @JsonProperty("respuesta") String respuesta) {
+        this();
+        this.pregunta = pregunta;
+        this.respuesta = respuesta;
+    }
+
+*/
