@@ -1,9 +1,11 @@
 package edu.utn.infrastructure.ports.in;
-import edu.utn.application.dto.FlashcardDTO;
+import java.util.UUID;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import java.util.UUID;
+
+import edu.utn.application.dto.FlashcardDTO;
 
 public interface IFlashcardController {
 
@@ -16,6 +18,4 @@ public interface IFlashcardController {
     // Eliminar una flashcard
     ResponseEntity<?> deleteFlashcard(@PathVariable UUID cardId);
 
-    // Listar flashcards de un mazo
-    ResponseEntity<?> listFlashcards(@PathVariable UUID deckId);
 }
