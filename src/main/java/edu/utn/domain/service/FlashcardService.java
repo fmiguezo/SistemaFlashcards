@@ -52,12 +52,33 @@ public class FlashcardService implements IFlashcardService {
 
     @Override
     public void practiceFlashcard(IFlashcard flashcard, IEstrategiaRepeticion estrategia) {
-        if (userInputPort.isAnswerCorrect(flashcard)) {
+        // Revisar para que funcione.
+        if (askUserForAnswer(flashcard)) {
             flashcard.setScore(flashcard.getScore() + 1);
         } else {
             flashcard.setScore(Math.max(0, flashcard.getScore() - 1));
         }
         flashcard.setNextReviewDate(calculateNextReviewDate(flashcard.getScore(), estrategia));
         flashcardRepository.updateCard(flashcard);
+    }
+
+    @Override
+    public String showQuestion(IFlashcard flashcard) {
+        return flashcard.getPregunta();
+    }
+
+    @Override
+    public String showAnswer(IFlashcard flashcard) {
+        return flashcard.getRespuesta();
+    }
+
+    @Override
+    public boolean askUserForAnswer(IFlashcard flashcard) {
+        return this.userInputPort.askUserForAnswer(flashcard);
+    }
+
+    @Override
+    public void setUserInputPort(IUserPracticeInputPort userInputPort) {
+        this.userInputPort = userInputPort;
     }
 }
