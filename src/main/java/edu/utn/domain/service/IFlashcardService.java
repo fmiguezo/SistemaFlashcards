@@ -14,9 +14,9 @@ public interface IFlashcardService {
     IFlashcardRepository getFlashcardRepository();
     void setFlashcardRepository(IFlashcardRepository flashcardRepository);
     LocalDateTime calculateNextReviewDate(int score, IEstrategiaRepeticion estrategia);
-    void practiceFlashcard(IFlashcard flashcard, IEstrategiaRepeticion estrategia);
+    void practiceFlashcard(IFlashcard flashcard, IEstrategiaRepeticion estrategia, IUserPracticeInputPort userInputPort);
+    void updateScore(IFlashcard flashcard, boolean answer);
+    void updateScore(IFlashcard flashcard, IEstrategiaRepeticion estrategia, boolean answer);
+    IUserPracticeInputPort getUserInputPort();
     void setUserInputPort(IUserPracticeInputPort userInputPort);
-    String showQuestion(IFlashcard flashcard);
-    String showAnswer(IFlashcard flashcard);
-    boolean askUserForAnswer(IFlashcard flashcard);
 }

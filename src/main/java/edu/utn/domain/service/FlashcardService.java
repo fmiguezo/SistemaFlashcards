@@ -51,9 +51,16 @@ public class FlashcardService implements IFlashcardService {
     }
 
     @Override
-    public void practiceFlashcard(IFlashcard flashcard, IEstrategiaRepeticion estrategia) {
-        // Revisar para que funcione.
-        if (askUserForAnswer(flashcard)) {
+    public void practiceFlashcard(IFlashcard flashcard, IEstrategiaRepeticion estrategia, IUserPracticeInputPort userInputPort) {
+        userInputPort.showQuestion(flashcard);
+        userInputPort.showAnswer(flashcard);
+        boolean answer = userInputPort.askUserForAnswer(flashcard);
+        updateScore(flashcard,estrategia,answer);
+    }
+
+    @Override
+    public void updateScore(IFlashcard flashcard,IEstrategiaRepeticion estrategia,boolean answer) {
+        if (answer) {
             flashcard.setScore(flashcard.getScore() + 1);
         } else {
             flashcard.setScore(Math.max(0, flashcard.getScore() - 1));
@@ -63,22 +70,13 @@ public class FlashcardService implements IFlashcardService {
     }
 
     @Override
-    public String showQuestion(IFlashcard flashcard) {
-        return flashcard.getPregunta();
-    }
-
-    @Override
-    public String showAnswer(IFlashcard flashcard) {
-        return flashcard.getRespuesta();
-    }
-
-    @Override
-    public boolean askUserForAnswer(IFlashcard flashcard) {
-        return this.userInputPort.askUserForAnswer(flashcard);
+    public IUserPracticeInputPort getUserInputPort() {
+        return userInputPort;
     }
 
     @Override
     public void setUserInputPort(IUserPracticeInputPort userInputPort) {
         this.userInputPort = userInputPort;
     }
+
 }

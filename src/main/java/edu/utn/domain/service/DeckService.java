@@ -2,6 +2,7 @@ package edu.utn.domain.service;
 import edu.utn.domain.model.IDeck;
 import edu.utn.domain.model.IEstrategiaRepeticion;
 import edu.utn.domain.model.IFlashcard;
+import edu.utn.infrastructure.ports.in.IUserPracticeInputPort;
 import edu.utn.infrastructure.ports.out.IDeckRepository;
 
 import java.time.LocalDateTime;
@@ -73,10 +74,10 @@ public class DeckService implements IDeckService {
     }
 
     @Override
-    public void practiceDeck(IDeck deck, IEstrategiaRepeticion estrategia) {
+    public void practiceDeck(IDeck deck, IEstrategiaRepeticion estrategia, IUserPracticeInputPort userInputPort) {
         List<IFlashcard> flashcardsToPractice = getFlashcardsToPractice(deck);
         for (IFlashcard flashcard : flashcardsToPractice) {
-            flashcardService.practiceFlashcard(flashcard, estrategia);
+            flashcardService.practiceFlashcard(flashcard, estrategia,userInputPort);
         }
     }
 
