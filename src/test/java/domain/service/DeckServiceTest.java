@@ -1,9 +1,9 @@
 package domain.service;
 
-import edu.utn.domain.model.IDeck;
-import edu.utn.domain.model.IEstrategiaRepeticion;
-import edu.utn.domain.service.DeckService;
-import edu.utn.domain.service.IFlashcardService;
+import edu.utn.domain.model.deck.IDeck;
+import edu.utn.domain.model.estrategia.IEstrategiaRepeticion;
+import edu.utn.domain.service.deck.DeckService;
+import edu.utn.domain.service.flashcard.IFlashcardService;
 import edu.utn.infrastructure.ports.out.IDeckRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,7 +62,7 @@ class DeckServiceTest {
     void testDeleteDeck() {
         UUID id = UUID.randomUUID();
 
-        deckService.deleteDeck(id);
+        deckService.deleteDeckById(id);
 
         verify(deckRepository).deleteDeckById(id);
     }

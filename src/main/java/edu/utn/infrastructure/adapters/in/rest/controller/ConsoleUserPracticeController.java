@@ -1,6 +1,6 @@
 package edu.utn.infrastructure.adapters.in.rest.controller;
 
-import edu.utn.domain.model.IFlashcard;
+import edu.utn.domain.model.flashcard.IFlashcard;
 import edu.utn.infrastructure.ports.in.IUserPracticeInputPort;
 
 import java.util.Scanner;

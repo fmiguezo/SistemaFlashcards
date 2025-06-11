@@ -1,9 +1,7 @@
 package domain.model;
 
-import edu.utn.domain.model.EstrategiaRepeticionEstandar;
-import edu.utn.domain.model.Flashcard;
-import edu.utn.domain.model.IEstrategiaRepeticion;
-import edu.utn.domain.model.IFlashcard;
+import edu.utn.domain.model.flashcard.Flashcard;
+import edu.utn.domain.model.flashcard.IFlashcard;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;

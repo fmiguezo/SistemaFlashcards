@@ -4,14 +4,13 @@ import edu.utn.application.dto.DeckDTO;
 import edu.utn.application.dto.FlashcardDTO;
 import edu.utn.application.error.DeckError;
 import edu.utn.application.error.FlashcardError;
-import edu.utn.domain.model.IDeck;
-import edu.utn.domain.model.IFlashcard;
-import edu.utn.domain.service.ValidationService;
-import edu.utn.domain.service.IFlashcardService;
-import edu.utn.domain.service.IDeckService;
+import edu.utn.domain.model.deck.IDeck;
+import edu.utn.domain.model.flashcard.IFlashcard;
+import edu.utn.domain.service.validation.ValidationService;
+import edu.utn.domain.service.flashcard.IFlashcardService;
+import edu.utn.domain.service.deck.IDeckService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.util.UUID;
 

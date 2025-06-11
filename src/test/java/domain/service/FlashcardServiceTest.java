@@ -1,7 +1,7 @@
 package domain.service;
 
-import edu.utn.domain.model.IFlashcard;
-import edu.utn.domain.service.FlashcardService;
+import edu.utn.domain.model.flashcard.IFlashcard;
+import edu.utn.domain.service.flashcard.FlashcardService;
 import edu.utn.infrastructure.ports.in.IUserPracticeInputPort;
 import edu.utn.infrastructure.ports.out.IFlashcardRepository;
 import org.junit.jupiter.api.BeforeEach;

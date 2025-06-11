@@ -1,6 +1,6 @@
 package edu.utn.infrastructure.ports.in;
 
-import edu.utn.domain.model.IFlashcard;
+import edu.utn.domain.model.flashcard.IFlashcard;
 
 public interface IUserPracticeInputPort {
     boolean askUserForAnswer(IFlashcard flashcard);

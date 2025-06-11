@@ -1,7 +1,6 @@
 package edu.utn.infrastructure.ports.out;
-import edu.utn.domain.model.Deck;
-import edu.utn.domain.model.IDeck;
-import edu.utn.domain.model.IFlashcard;
+import edu.utn.domain.model.deck.IDeck;
+import edu.utn.domain.model.flashcard.IFlashcard;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 

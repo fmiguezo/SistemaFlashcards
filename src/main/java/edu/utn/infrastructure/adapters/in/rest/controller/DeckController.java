@@ -3,10 +3,10 @@ import java.util.List;
 
 import edu.utn.application.dto.DeckDTO;
 import edu.utn.application.dto.FlashcardDTO;
-import edu.utn.application.usecase.CreateDeckUseCase;
-import edu.utn.application.usecase.DeleteDeckUseCase;
-import edu.utn.application.usecase.ModifyDeckUseCase;
-import edu.utn.application.usecase.PracticeDeckUseCase;
+import edu.utn.application.usecase.deck.CreateDeckUseCase;
+import edu.utn.application.usecase.deck.DeleteDeckUseCase;
+import edu.utn.application.usecase.deck.ModifyDeckUseCase;
+import edu.utn.application.usecase.deck.PracticeDeckUseCase;
 import edu.utn.infrastructure.ports.in.IDeckController;
 
 import org.springframework.http.ResponseEntity;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-import edu.utn.application.usecase.AddFlashcardToDeckUseCase;
-import edu.utn.application.usecase.ListFlashcardsUseCase;
+import edu.utn.application.usecase.flashcard.AddFlashcardToDeckUseCase;
+import edu.utn.application.usecase.flashcard.ListFlashcardsUseCase;
 
 @RestController
 @RequestMapping("/api/decks")
