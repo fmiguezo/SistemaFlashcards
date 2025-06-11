@@ -48,8 +48,8 @@ public class FlashcardController implements IFlashcardController {
     @DeleteMapping("/{flashcardId}")
     @Override
     public ResponseEntity<?> deleteFlashcard(@PathVariable UUID flashcardId) {
-        FlashcardDTO result = deleteFlashcardUseCase.execute(flashcardId);
-        return ResponseEntity.ok("Se elimino la flash card: " + result.getPregunta() + " correctamente");
+        String result = deleteFlashcardUseCase.execute(flashcardId);
+        return ResponseEntity.ok(result);
     }
 
     

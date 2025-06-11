@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -72,11 +73,11 @@ public class RepositorioDeDecksJson implements IDeckRepository {
     }
 
     @Override
-    public IDeck getDeckById(UUID id) {
-        return getAllDecks().stream()
+    public Optional<IDeck> getDeckById(UUID id) {
+        return Optional.ofNullable(getAllDecks().stream()
                 .filter(deck -> deck.getId().equals(id))
                 .findFirst()
-                .orElse(null);
+                .orElse(null));
     }
 
     @Override

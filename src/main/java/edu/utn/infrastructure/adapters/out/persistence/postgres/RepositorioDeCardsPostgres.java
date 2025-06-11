@@ -3,6 +3,8 @@ import edu.utn.domain.model.flashcard.IFlashcard;
 import edu.utn.infrastructure.ports.out.IFlashcardRepository;
 import edu.utn.infrastructure.ports.out.JpaDeckRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -19,9 +21,8 @@ public class RepositorioDeCardsPostgres implements IFlashcardRepository {
     }
 
     @Override
-    public IFlashcard getCardById(UUID id) {
-        return jpaDeckRepository.findCardById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Card not found with id: " + id));
+    public Optional<IFlashcard> getCardById(UUID id) {
+        return jpaDeckRepository.findCardById(id);
     }
 
     @Override

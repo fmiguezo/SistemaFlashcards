@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -60,11 +61,11 @@ public class RepositorioDeCardsJson implements IFlashcardRepository {
     }
 
     @Override
-    public IFlashcard getCardById(UUID id) {
-        return getAllCards().stream()
+    public Optional<IFlashcard> getCardById(UUID id) {
+        return Optional.ofNullable(getAllCards().stream()
                 .filter(card -> card.getId().equals(id))
                 .findFirst()
-                .orElse(null);
+                .orElse(null));
     }
 
     @Override
