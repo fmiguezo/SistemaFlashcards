@@ -44,7 +44,7 @@ class DeckServiceTest {
     void testGetDeckById() {
         UUID id = UUID.randomUUID();
         IDeck deck = mock(IDeck.class);
-        when(deckRepository.getDeckById(id)).thenReturn(deck);
+        when(deckRepository.getDeckById(id)).thenReturn(Optional.of(deck));
 
         IDeck result = deckService.getDeckById(id);
 

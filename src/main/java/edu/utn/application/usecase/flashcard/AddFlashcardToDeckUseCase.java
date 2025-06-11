@@ -1,5 +1,6 @@
 package edu.utn.application.usecase.flashcard;
 
+import edu.utn.application.dto.DeckDTO;
 import edu.utn.application.dto.FlashcardDTO;
 import edu.utn.application.error.DeckError;
 import edu.utn.application.mappers.FlashcardMapper;
@@ -33,7 +34,7 @@ public class AddFlashcardToDeckUseCase {
             throw DeckError.nullFlashcard();
         }
 
-        IDeck deck = deckService.getDeckById(deckId);
+        DeckDTO deck = deckService.getDeckById(deckId);
         if (deck == null) {
             throw DeckError.deckNotFound();
         }

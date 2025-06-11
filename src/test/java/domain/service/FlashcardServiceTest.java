@@ -7,6 +7,7 @@ import edu.utn.infrastructure.ports.out.IFlashcardRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.mockito.Mockito.*;
@@ -38,7 +39,7 @@ class FlashcardServiceTest {
     void testGetFlashcardById() {
         UUID id = UUID.randomUUID();
         IFlashcard flashcard = mock(IFlashcard.class);
-        when(flashcardRepository.getCardById(id)).thenReturn(flashcard);
+        when(flashcardRepository.getCardById(id)).thenReturn(Optional.of(flashcard));
 
         IFlashcard result = flashcardService.getFlashcardById(id);
 

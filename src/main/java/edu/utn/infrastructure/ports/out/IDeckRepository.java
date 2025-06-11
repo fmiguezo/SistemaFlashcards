@@ -1,4 +1,5 @@
 package edu.utn.infrastructure.ports.out;
+import edu.utn.application.dto.DeckDTO;
 import edu.utn.domain.model.deck.IDeck;
 import edu.utn.domain.model.flashcard.IFlashcard;
 
@@ -9,8 +10,8 @@ import java.util.UUID;
 public interface IDeckRepository {
     List<IDeck> getAllDecks();
     Optional<IDeck> getDeckById(UUID id);
-    void createDeck(IDeck deck);
-    void updateDeck(IDeck deck);
+    void createDeck(DeckDTO deck);
+    void updateDeck(DeckDTO deck);
     void deleteDeckById(UUID id);
     List<IFlashcard> getFlashcardsByDeckId(UUID id);
 }
