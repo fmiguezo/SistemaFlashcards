@@ -7,6 +7,7 @@ import edu.utn.infrastructure.ports.out.IDeckRepository;
 import edu.utn.infrastructure.ports.out.JpaDeckRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -24,9 +25,8 @@ public class RepositorioDeDecksPostgres implements IDeckRepository {
     }
 
     @Override
-    public IDeck getDeckById(UUID id) {
-        return jpaDeckRepository.findDeckById(id)
-                .orElseThrow(() -> new DeckNoExisteException("Deck not found with id: " + id));
+    public Optional<IDeck> getDeckById(UUID id) {
+        return jpaDeckRepository.findDeckById(id);
     }
 
     @Override

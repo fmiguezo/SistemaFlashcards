@@ -53,13 +53,15 @@ public class DeckController implements IDeckController {
     @DeleteMapping("/{deckId}")
     @Override
     public ResponseEntity<?> deleteDeck(@PathVariable UUID deckId) {
-        DeckDTO result = deleteDeckUseCase.execute(deckId);
-        return ResponseEntity.ok("Se elimino el deck: " + result.getNombre() + " correctamente");
+        String result = deleteDeckUseCase.execute(deckId);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{deckId}/practice")
     @Override
     public ResponseEntity<?> practiceDeck(@PathVariable UUID deckId) {
+
+        // esto hay que actualizarlo porque esta mal, no debe crear un DTO, y los parametros estan incorrectos
         DeckDTO result = practiceDeckUseCase.practiceDeck(deckId);
         return ResponseEntity.ok("Se inicio la practica del deck: " + result.getNombre() + " correctamente");
     }
