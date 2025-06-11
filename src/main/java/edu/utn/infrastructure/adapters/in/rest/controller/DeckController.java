@@ -3,12 +3,13 @@ import java.util.List;
 
 import edu.utn.application.dto.DeckDTO;
 import edu.utn.application.dto.FlashcardDTO;
-import edu.utn.application.usecase.deck.CreateDeckUseCase;
-import edu.utn.application.usecase.deck.DeleteDeckUseCase;
-import edu.utn.application.usecase.deck.ModifyDeckUseCase;
-import edu.utn.application.usecase.deck.PracticeDeckUseCase;
+import edu.utn.application.usecase.deck.*;
+import edu.utn.domain.model.deck.IDeck;
+import edu.utn.domain.model.estrategia.EstrategiaRepeticionEstandar;
+import edu.utn.domain.model.estrategia.IEstrategiaRepeticion;
 import edu.utn.infrastructure.ports.in.IDeckController;
 
+import edu.utn.infrastructure.ports.in.IUserPracticeInputPort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,14 +27,16 @@ public class DeckController implements IDeckController {
     private final PracticeDeckUseCase practiceDeckUseCase;
     private final ListFlashcardsUseCase listFlashcardsUseCase;
     private final AddFlashcardToDeckUseCase addFlashcardToDeckUseCase;
+    private final GetDeckUseCase getDeckUseCase;
 
-    public DeckController(CreateDeckUseCase createDeckUseCase, DeleteDeckUseCase deleteDeckUseCase, ModifyDeckUseCase modifyDeckUseCase, PracticeDeckUseCase practiceDeckUseCase, ListFlashcardsUseCase listFlashcardsUseCase, AddFlashcardToDeckUseCase addFlashcardToDeckUseCase) {
+    public DeckController(CreateDeckUseCase createDeckUseCase, DeleteDeckUseCase deleteDeckUseCase, ModifyDeckUseCase modifyDeckUseCase, PracticeDeckUseCase practiceDeckUseCase, ListFlashcardsUseCase listFlashcardsUseCase, AddFlashcardToDeckUseCase addFlashcardToDeckUseCase, GetDeckUseCase getDeckUseCase) {
         this.createDeckUseCase = createDeckUseCase;
         this.deleteDeckUseCase = deleteDeckUseCase;
         this.modifyDeckUseCase = modifyDeckUseCase;
         this.practiceDeckUseCase = practiceDeckUseCase;
         this.listFlashcardsUseCase = listFlashcardsUseCase;
         this.addFlashcardToDeckUseCase = addFlashcardToDeckUseCase;
+        this.getDeckUseCase = getDeckUseCase;
     }
 
     @PostMapping
@@ -60,10 +63,11 @@ public class DeckController implements IDeckController {
     @GetMapping("/{deckId}/practice")
     @Override
     public ResponseEntity<?> practiceDeck(@PathVariable UUID deckId) {
-
-        // esto hay que actualizarlo porque esta mal, no debe crear un DTO, y los parametros estan incorrectos
-        DeckDTO result = practiceDeckUseCase.practiceDeck(deckId);
-        return ResponseEntity.ok("Se inicio la practica del deck: " + result.getNombre() + " correctamente");
+        IDeck deck = getDeckUseCase.execute(deckId);
+        IEstrategiaRepeticion estrategia = new EstrategiaRepeticionEstandar();
+        IUserPracticeInputPort userInputPort = new WebUserPracticeController();
+        practiceDeckUseCase.execute(deck,estrategia,userInputPort);
+        return ResponseEntity.ok("Se inicio la practica del deck: correctamente");
     }
 
     @GetMapping("/deck/{deckId}")
