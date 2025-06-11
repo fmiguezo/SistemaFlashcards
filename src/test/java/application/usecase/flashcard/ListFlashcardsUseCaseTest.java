@@ -46,14 +46,11 @@ class ListFlashcardsUseCaseTest {
 
     @Test
     void execute_WithValidDeck_ShouldReturnFlashcards() {
-        // Arrange
         when(deckService.getDeckById(validDeckId)).thenReturn(deck);
         when(deckService.getFlashcardsByDeckId(validDeckId)).thenReturn(expectedFlashcards);
 
-        // Act
         List<FlashcardDTO> result = listFlashcardsUseCase.execute(validDeckId);
 
-        // Assert
         assertNotNull(result);
         assertEquals(expectedFlashcards.size(), result.size());
         verify(deckService, times(1)).getFlashcardsByDeckId(validDeckId);
@@ -61,10 +58,8 @@ class ListFlashcardsUseCaseTest {
 
     @Test
     void execute_WithNullDeckId_ShouldThrowException() {
-        // Arrange
         UUID nullDeckId = null;
 
-        // Act & Assert
         DeckError exception = assertThrows(
             DeckError.class,
             () -> listFlashcardsUseCase.execute(nullDeckId)
@@ -75,10 +70,8 @@ class ListFlashcardsUseCaseTest {
 
     @Test
     void execute_WithNonExistentDeck_ShouldThrowException() {
-        // Arrange
         when(deckService.getDeckById(validDeckId)).thenReturn(null);
 
-        // Act & Assert
         DeckError exception = assertThrows(
             DeckError.class,
             () -> listFlashcardsUseCase.execute(validDeckId)

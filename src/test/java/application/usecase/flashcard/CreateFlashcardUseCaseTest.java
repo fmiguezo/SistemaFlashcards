@@ -41,13 +41,10 @@ class CreateFlashcardUseCaseTest {
 
     @Test
     void execute_WithValidFlashcardDTO_ShouldCreateFlashcard() {
-        // Arrange
         doNothing().when(flashcardService).addFlashcard(any(Flashcard.class));
 
-        // Act
         FlashcardDTO result = createFlashcardUseCase.execute(validFlashcardDTO);
 
-        // Assert
         assertNotNull(result);
         assertEquals(validFlashcardDTO.getPregunta(), result.getPregunta());
         assertEquals(validFlashcardDTO.getRespuesta(), result.getRespuesta());
@@ -60,7 +57,6 @@ class CreateFlashcardUseCaseTest {
 
     @Test
     void execute_WithNullFlashcardDTO_ShouldThrowException() {
-        // Act & Assert
         FlashcardError exception = assertThrows(
             FlashcardError.class,
             () -> createFlashcardUseCase.execute(null)
@@ -71,7 +67,6 @@ class CreateFlashcardUseCaseTest {
 
     @Test
     void execute_WithNullQuestion_ShouldThrowException() {
-        // Arrange
         FlashcardDTO flashcardDTO = new FlashcardDTO(
             null,
             null,
@@ -83,7 +78,6 @@ class CreateFlashcardUseCaseTest {
             0
         );
 
-        // Act & Assert
         FlashcardError exception = assertThrows(
             FlashcardError.class,
             () -> createFlashcardUseCase.execute(flashcardDTO)
@@ -94,7 +88,6 @@ class CreateFlashcardUseCaseTest {
 
     @Test
     void execute_WithEmptyQuestion_ShouldThrowException() {
-        // Arrange
         FlashcardDTO flashcardDTO = new FlashcardDTO(
             null,
             "",
@@ -106,7 +99,6 @@ class CreateFlashcardUseCaseTest {
             0
         );
 
-        // Act & Assert
         FlashcardError exception = assertThrows(
             FlashcardError.class,
             () -> createFlashcardUseCase.execute(flashcardDTO)
@@ -117,7 +109,6 @@ class CreateFlashcardUseCaseTest {
 
     @Test
     void execute_WithQuestionTooLong_ShouldThrowException() {
-        // Arrange
         FlashcardDTO flashcardDTO = new FlashcardDTO(
             null,
             "a".repeat(101),
@@ -129,7 +120,6 @@ class CreateFlashcardUseCaseTest {
             0
         );
 
-        // Act & Assert
         FlashcardError exception = assertThrows(
             FlashcardError.class,
             () -> createFlashcardUseCase.execute(flashcardDTO)
@@ -140,7 +130,6 @@ class CreateFlashcardUseCaseTest {
 
     @Test
     void execute_WithNullAnswer_ShouldThrowException() {
-        // Arrange
         FlashcardDTO flashcardDTO = new FlashcardDTO(
             null,
             validFlashcardDTO.getPregunta(),
@@ -152,7 +141,6 @@ class CreateFlashcardUseCaseTest {
             0
         );
 
-        // Act & Assert
         FlashcardError exception = assertThrows(
             FlashcardError.class,
             () -> createFlashcardUseCase.execute(flashcardDTO)
@@ -163,7 +151,6 @@ class CreateFlashcardUseCaseTest {
 
     @Test
     void execute_WithEmptyAnswer_ShouldThrowException() {
-        // Arrange
         FlashcardDTO flashcardDTO = new FlashcardDTO(
             null,
             validFlashcardDTO.getPregunta(),
@@ -175,7 +162,6 @@ class CreateFlashcardUseCaseTest {
             0
         );
 
-        // Act & Assert
         FlashcardError exception = assertThrows(
             FlashcardError.class,
             () -> createFlashcardUseCase.execute(flashcardDTO)
@@ -186,7 +172,6 @@ class CreateFlashcardUseCaseTest {
 
     @Test
     void execute_WithAnswerTooLong_ShouldThrowException() {
-        // Arrange
         FlashcardDTO flashcardDTO = new FlashcardDTO(
             null,
             validFlashcardDTO.getPregunta(),
@@ -198,7 +183,6 @@ class CreateFlashcardUseCaseTest {
             0
         );
 
-        // Act & Assert
         FlashcardError exception = assertThrows(
             FlashcardError.class,
             () -> createFlashcardUseCase.execute(flashcardDTO)

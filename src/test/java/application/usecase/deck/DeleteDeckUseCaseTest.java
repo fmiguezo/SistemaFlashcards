@@ -21,9 +21,6 @@ class DeleteDeckUseCaseTest {
     @Mock
     private IDeckService deckService;
 
-    @Mock
-    private IDeck deck;
-
     private DeleteDeckUseCase deleteDeckUseCase;
     private UUID validDeckId;
 
@@ -33,40 +30,33 @@ class DeleteDeckUseCaseTest {
         validDeckId = UUID.randomUUID();
     }
 
-    //Verifica que cuando el deck existe, se elimina correctamente.
     @Test
-    void execute_WithValidDeckId_ShouldDeleteDeck() {
-        // Arrange
-        when(deckService.getDeckById(validDeckId)).thenReturn(deck);
+    void execute_WithValidDeckId_ShouldDeleteDeckAndReturnSuccessMessage() {
         doNothing().when(deckService).deleteDeckById(validDeckId);
 
-        // Act & Assert
-        assertDoesNotThrow(() -> deleteDeckUseCase.execute(validDeckId));
+        String result = deleteDeckUseCase.execute(validDeckId);
+
+        assertEquals("Deck borrado con éxito", result);
         verify(deckService, times(1)).deleteDeckById(validDeckId);
     }
 
     @Test
     void execute_WithNullDeckId_ShouldThrowException() {
-        // Act & Assert
         DeckError exception = assertThrows(
-            DeckError.class,
-            () -> deleteDeckUseCase.execute(null)
+                DeckError.class,
+                () -> deleteDeckUseCase.execute(null)
         );
         assertEquals(DeckError.NULL_DECK_ID, exception.getMessage());
         verify(deckService, never()).deleteDeckById(any(UUID.class));
     }
 
     @Test
-    void execute_WithNonExistentDeck_ShouldThrowException() {
-        // Arrange
-        when(deckService.getDeckById(validDeckId)).thenReturn(null);
+    void execute_WhenDeleteThrowsException_ShouldReturnErrorMessage() {
+        doThrow(new RuntimeException("Error inesperado")).when(deckService).deleteDeckById(validDeckId);
 
-        // Act & Assert
-        DeckError exception = assertThrows(
-            DeckError.class,
-            () -> deleteDeckUseCase.execute(validDeckId)
-        );
-        assertEquals(DeckError.DECK_NOT_FOUND, exception.getMessage());
-        verify(deckService, never()).deleteDeckById(any(UUID.class));
+        String result = deleteDeckUseCase.execute(validDeckId);
+
+        assertEquals("Error al borrar deck: Error inesperado", result);
+        verify(deckService, times(1)).deleteDeckById(validDeckId);
     }
-} 
+}

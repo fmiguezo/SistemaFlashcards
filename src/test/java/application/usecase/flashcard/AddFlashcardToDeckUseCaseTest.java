@@ -56,15 +56,12 @@ class AddFlashcardToDeckUseCaseTest {
 
     @Test
     void execute_WithNewFlashcard_ShouldCreateAndAddToDeck() {
-        // Arrange
         when(deckService.getDeckById(validDeckId)).thenReturn(existingDeck);
         doNothing().when(flashcardService).addFlashcard(any(IFlashcard.class));
         doNothing().when(deckService).updateDeck(any(IDeck.class));
 
-        // Act
         addFlashcardToDeckUseCase.execute(validDeckId, newFlashcardDTO);
 
-        // Assert
         assertTrue(existingDeck.getFlashcards().stream()
             .anyMatch(f -> f.getPregunta().equals("New Question") && f.getRespuesta().equals("New Answer")));
         verify(flashcardService).addFlashcard(any(IFlashcard.class));
@@ -73,11 +70,9 @@ class AddFlashcardToDeckUseCaseTest {
 
     @Test
     void execute_WithExistingFlashcardInDeck_ShouldThrowException() {
-        // Arrange
         existingDeck.addFlashcard(newFlashcard);
         when(deckService.getDeckById(validDeckId)).thenReturn(existingDeck);
 
-        // Act & Assert
         DeckError exception = assertThrows(
             DeckError.class,
             () -> addFlashcardToDeckUseCase.execute(validDeckId, newFlashcardDTO)
@@ -88,10 +83,8 @@ class AddFlashcardToDeckUseCaseTest {
 
     @Test
     void execute_WithNonExistentDeck_ShouldThrowException() {
-        // Arrange
         when(deckService.getDeckById(validDeckId)).thenReturn(null);
 
-        // Act & Assert
         DeckError exception = assertThrows(
             DeckError.class,
             () -> addFlashcardToDeckUseCase.execute(validDeckId, newFlashcardDTO)
@@ -102,7 +95,6 @@ class AddFlashcardToDeckUseCaseTest {
 
     @Test
     void execute_WithNullDeckId_ShouldThrowException() {
-        // Act & Assert
         DeckError exception = assertThrows(
             DeckError.class,
             () -> addFlashcardToDeckUseCase.execute(null, newFlashcardDTO)
@@ -113,7 +105,6 @@ class AddFlashcardToDeckUseCaseTest {
 
     @Test
     void execute_WithNullFlashcardDTO_ShouldThrowException() {
-        // Act & Assert
         DeckError exception = assertThrows(
             DeckError.class,
             () -> addFlashcardToDeckUseCase.execute(validDeckId, null)

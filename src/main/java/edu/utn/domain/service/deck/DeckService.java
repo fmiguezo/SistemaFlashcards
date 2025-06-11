@@ -61,6 +61,7 @@ public class DeckService implements IDeckService {
 
     @Override
     public void deleteDeckById(UUID id) {
+        getDeckById(id);
         deckRepository.deleteDeckById(id);
     }
 

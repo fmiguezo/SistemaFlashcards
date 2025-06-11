@@ -34,6 +34,7 @@ public class FlashcardService implements IFlashcardService {
 
     @Override
     public void deleteFlashcard(UUID id) {
+        getFlashcardById(id);
         flashcardRepository.deleteCard(id);
     }
 

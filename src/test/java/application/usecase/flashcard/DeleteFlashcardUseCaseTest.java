@@ -21,9 +21,6 @@ class DeleteFlashcardUseCaseTest {
     @Mock
     private IFlashcardService flashcardService;
 
-    @Mock
-    private IFlashcard flashcard;
-
     private DeleteFlashcardUseCase deleteFlashcardUseCase;
     private UUID validFlashcardId;
 
@@ -34,38 +31,32 @@ class DeleteFlashcardUseCaseTest {
     }
 
     @Test
-    void execute_WithValidFlashcardId_ShouldDeleteFlashcard() {
-        // Arrange
-        when(flashcardService.getFlashcardById(validFlashcardId)).thenReturn(flashcard);
+    void execute_WithValidFlashcardId_ShouldDeleteFlashcardAndReturnSuccessMessage() {
         doNothing().when(flashcardService).deleteFlashcard(validFlashcardId);
 
-        // Act & Assert
-        assertDoesNotThrow(() -> deleteFlashcardUseCase.execute(validFlashcardId));
+        String result = deleteFlashcardUseCase.execute(validFlashcardId);
+
+        assertEquals("Flashcard borrada con éxito", result);
         verify(flashcardService, times(1)).deleteFlashcard(validFlashcardId);
     }
 
     @Test
     void execute_WithNullFlashcardId_ShouldThrowException() {
-        // Act & Assert
         FlashcardError exception = assertThrows(
-            FlashcardError.class,
-            () -> deleteFlashcardUseCase.execute(null)
+                FlashcardError.class,
+                () -> deleteFlashcardUseCase.execute(null)
         );
         assertEquals(FlashcardError.NULL_FLASHCARD_ID, exception.getMessage());
         verify(flashcardService, never()).deleteFlashcard(any(UUID.class));
     }
 
     @Test
-    void execute_WithNonExistentFlashcard_ShouldThrowException() {
-        // Arrange
-        when(flashcardService.getFlashcardById(validFlashcardId)).thenReturn(null);
+    void execute_WhenDeleteThrowsException_ShouldReturnErrorMessage() {
+        doThrow(new RuntimeException("Error inesperado")).when(flashcardService).deleteFlashcard(validFlashcardId);
 
-        // Act & Assert
-        FlashcardError exception = assertThrows(
-            FlashcardError.class,
-            () -> deleteFlashcardUseCase.execute(validFlashcardId)
-        );
-        assertEquals(FlashcardError.FLASHCARD_NOT_FOUND, exception.getMessage());
-        verify(flashcardService, never()).deleteFlashcard(any(UUID.class));
+        String result = deleteFlashcardUseCase.execute(validFlashcardId);
+
+        assertEquals("Error al borrar flashcard: Error inesperado", result);
+        verify(flashcardService, times(1)).deleteFlashcard(validFlashcardId);
     }
-} 
+}
