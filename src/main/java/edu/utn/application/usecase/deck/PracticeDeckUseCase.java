@@ -1,5 +1,6 @@
 package edu.utn.application.usecase.deck;
 
+import edu.utn.application.dto.DeckDTO;
 import edu.utn.domain.model.deck.IDeck;
 import edu.utn.domain.model.estrategia.IEstrategiaRepeticion;
 import edu.utn.domain.service.deck.IDeckService;
@@ -12,7 +13,7 @@ public class PracticeDeckUseCase {
         this.deckService = deckService;
     }
 
-    public void execute(IDeck deck, IEstrategiaRepeticion estrategia, IUserPracticeInputPort userInputPort) {
+    public void execute(DeckDTO deck, IEstrategiaRepeticion estrategia, IUserPracticeInputPort userInputPort) {
         if (deck == null) throw new IllegalArgumentException("deck no puede ser null");
         if (estrategia == null) throw new IllegalArgumentException("estrategia no puede ser null");
         if (userInputPort == null) throw new IllegalArgumentException("userInputPort no puede ser null");

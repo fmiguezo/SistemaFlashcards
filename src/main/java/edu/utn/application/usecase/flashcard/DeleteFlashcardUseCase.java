@@ -1,4 +1,4 @@
-package edu.utn.application.usecase.deck;
+package edu.utn.application.usecase.flashcard;
 
 import edu.utn.application.error.FlashcardError;
 import edu.utn.domain.service.flashcard.IFlashcardService;

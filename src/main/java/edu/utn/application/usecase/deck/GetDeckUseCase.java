@@ -1,5 +1,8 @@
 package edu.utn.application.usecase.deck;
+
+import edu.utn.application.dto.DeckDTO;
 import edu.utn.application.error.DeckError;
+import edu.utn.application.mappers.DeckMapper;
 import edu.utn.domain.model.deck.IDeck;
 import edu.utn.domain.service.deck.IDeckService;
 
@@ -12,10 +15,11 @@ public class GetDeckUseCase {
         this.deckService = deckService;
     }
 
-    public IDeck execute(UUID deckId) {
-        try{
-            return this.deckService.getDeckById(deckId);
-        }catch (DeckError e) {
+    public DeckDTO execute(UUID deckId) {
+        try {
+            IDeck deck = this.deckService.getDeckById(deckId);
+            return DeckMapper.toDTO(deck); // Mapeo del modelo a DTO
+        } catch (DeckError e) {
             System.out.println("Error: " + e.getMessage());
         }
         return null;

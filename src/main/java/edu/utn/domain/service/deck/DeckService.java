@@ -1,4 +1,5 @@
 package edu.utn.domain.service.deck;
+import edu.utn.application.dto.DeckDTO;
 import edu.utn.application.error.DeckError;
 import edu.utn.domain.model.deck.IDeck;
 import edu.utn.domain.model.estrategia.IEstrategiaRepeticion;
@@ -44,7 +45,7 @@ public class DeckService implements IDeckService {
     }
 
     @Override
-    public void addDeck(IDeck deck) {
+    public void addDeck(DeckDTO deck) {
         deckRepository.createDeck(deck);
     }
 
@@ -55,7 +56,7 @@ public class DeckService implements IDeckService {
     }
 
     @Override
-    public void updateDeck(IDeck deck) {
+    public void updateDeck(DeckDTO deck) {
         deckRepository.updateDeck(deck);
     }
 
@@ -71,7 +72,7 @@ public class DeckService implements IDeckService {
     }
 
     @Override
-    public List<IFlashcard> getFlashcardsToPractice(IDeck deck) {
+    public List<IFlashcard> getFlashcardsToPractice(DeckDTO deck) {
         List<IFlashcard> flashcards = deck.getFlashcards();
         return flashcards.stream()
                 .filter(flashcard -> flashcard.getNextReviewDate().isBefore(LocalDateTime.now()))
@@ -83,7 +84,7 @@ public class DeckService implements IDeckService {
 
 
     @Override
-    public void practiceDeck(IDeck deck, IEstrategiaRepeticion estrategia, IUserPracticeInputPort userInputPort) {
+    public void practiceDeck(DeckDTO deck, IEstrategiaRepeticion estrategia, IUserPracticeInputPort userInputPort) {
         List<IFlashcard> flashcardsToPractice = getFlashcardsToPractice(deck);
         for (IFlashcard flashcard : flashcardsToPractice) {
             flashcardService.practiceFlashcard(flashcard, estrategia,userInputPort);

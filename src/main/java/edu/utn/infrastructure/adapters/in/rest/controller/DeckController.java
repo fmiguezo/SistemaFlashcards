@@ -1,4 +1,5 @@
 package edu.utn.infrastructure.adapters.in.rest.controller;
+
 import java.util.List;
 
 import edu.utn.application.dto.DeckDTO;
@@ -28,8 +29,9 @@ public class DeckController implements IDeckController {
     private final ListFlashcardsUseCase listFlashcardsUseCase;
     private final AddFlashcardToDeckUseCase addFlashcardToDeckUseCase;
     private final GetDeckUseCase getDeckUseCase;
+    private final GetAllDecksUseCase getAllDecksUseCase;
 
-    public DeckController(CreateDeckUseCase createDeckUseCase, DeleteDeckUseCase deleteDeckUseCase, ModifyDeckUseCase modifyDeckUseCase, PracticeDeckUseCase practiceDeckUseCase, ListFlashcardsUseCase listFlashcardsUseCase, AddFlashcardToDeckUseCase addFlashcardToDeckUseCase, GetDeckUseCase getDeckUseCase) {
+    public DeckController(CreateDeckUseCase createDeckUseCase, DeleteDeckUseCase deleteDeckUseCase, ModifyDeckUseCase modifyDeckUseCase, PracticeDeckUseCase practiceDeckUseCase, ListFlashcardsUseCase listFlashcardsUseCase, AddFlashcardToDeckUseCase addFlashcardToDeckUseCase, GetDeckUseCase getDeckUseCase, GetAllDecksUseCase getAllDecksUseCase) {
         this.createDeckUseCase = createDeckUseCase;
         this.deleteDeckUseCase = deleteDeckUseCase;
         this.modifyDeckUseCase = modifyDeckUseCase;
@@ -37,6 +39,13 @@ public class DeckController implements IDeckController {
         this.listFlashcardsUseCase = listFlashcardsUseCase;
         this.addFlashcardToDeckUseCase = addFlashcardToDeckUseCase;
         this.getDeckUseCase = getDeckUseCase;
+        this.getAllDecksUseCase = getAllDecksUseCase;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<DeckDTO>> getAllDecks() {
+        List<DeckDTO> decks = getAllDecksUseCase.execute();
+        return ResponseEntity.ok(decks);
     }
 
     @PostMapping
@@ -60,19 +69,28 @@ public class DeckController implements IDeckController {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping("/{deckId}")
+    public ResponseEntity<DeckDTO> getDeckById(@PathVariable UUID deckId) {
+        DeckDTO deck = getDeckUseCase.execute(deckId); // Usar el caso de uso
+        if (deck == null) {
+            return ResponseEntity.notFound().build(); // Retorna 404 si no se encuentra el deck
+        }
+        return ResponseEntity.ok(deck); // Retorna el DTO del deck
+    }
+
     @GetMapping("/{deckId}/practice")
     @Override
     public ResponseEntity<?> practiceDeck(@PathVariable UUID deckId) {
-        IDeck deck = getDeckUseCase.execute(deckId);
+        DeckDTO deck = getDeckUseCase.execute(deckId);
         IEstrategiaRepeticion estrategia = new EstrategiaRepeticionEstandar();
         IUserPracticeInputPort userInputPort = new WebUserPracticeController();
         practiceDeckUseCase.execute(deck,estrategia,userInputPort);
         return ResponseEntity.ok("Se inicio la practica del deck: correctamente");
     }
 
-    @GetMapping("/deck/{deckId}")
+    @GetMapping("/{deckId}/flashcards")
     @Override
-    public ResponseEntity<?> listFlashcards(@PathVariable UUID deckId) {
+    public ResponseEntity<List<FlashcardDTO>> listFlashcards(@PathVariable UUID deckId) {
         List<FlashcardDTO> result = listFlashcardsUseCase.execute(deckId);
         return ResponseEntity.ok(result);
     }
@@ -83,5 +101,4 @@ public class DeckController implements IDeckController {
         FlashcardDTO result = addFlashcardToDeckUseCase.execute(deckId, flashcardDto);
         return ResponseEntity.ok("Se agrego la flashcard: " + result.getPregunta() + " al deck: " + deckId + " correctamente");
     }
-
 }
