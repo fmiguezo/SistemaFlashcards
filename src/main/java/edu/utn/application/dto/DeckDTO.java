@@ -1,7 +1,6 @@
 package edu.utn.application.dto;
 
-import edu.utn.domain.model.Flashcard;
-import edu.utn.domain.model.IFlashcard;
+import edu.utn.domain.model.flashcard.IFlashcard;
 
 import java.util.List;
 import java.util.UUID;

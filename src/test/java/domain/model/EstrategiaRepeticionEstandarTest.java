@@ -1,6 +1,6 @@
 package domain.model;
 
-import edu.utn.domain.model.EstrategiaRepeticionEstandar;
+import edu.utn.domain.model.estrategia.EstrategiaRepeticionEstandar;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

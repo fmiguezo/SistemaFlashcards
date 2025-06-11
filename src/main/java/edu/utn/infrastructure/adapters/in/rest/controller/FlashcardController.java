@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.utn.application.dto.FlashcardDTO;
-import edu.utn.application.usecase.CreateFlashcardUseCase;
-import edu.utn.application.usecase.DeleteFlashcardUseCase;
-import edu.utn.application.usecase.ModifyFlashcardUseCase;
+import edu.utn.application.usecase.flashcard.CreateFlashcardUseCase;
+import edu.utn.application.usecase.deck.DeleteFlashcardUseCase;
+import edu.utn.application.usecase.flashcard.ModifyFlashcardUseCase;
 import edu.utn.infrastructure.ports.in.IFlashcardController;
 
 @RestController
@@ -48,8 +48,8 @@ public class FlashcardController implements IFlashcardController {
     @DeleteMapping("/{flashcardId}")
     @Override
     public ResponseEntity<?> deleteFlashcard(@PathVariable UUID flashcardId) {
-        FlashcardDTO result = deleteFlashcardUseCase.execute(flashcardId);
-        return ResponseEntity.ok("Se elimino la flash card: " + result.getPregunta() + " correctamente");
+        String result = deleteFlashcardUseCase.execute(flashcardId);
+        return ResponseEntity.ok(result);
     }
 
     

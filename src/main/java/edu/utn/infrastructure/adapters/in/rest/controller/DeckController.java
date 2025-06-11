@@ -3,10 +3,10 @@ import java.util.List;
 
 import edu.utn.application.dto.DeckDTO;
 import edu.utn.application.dto.FlashcardDTO;
-import edu.utn.application.usecase.CreateDeckUseCase;
-import edu.utn.application.usecase.DeleteDeckUseCase;
-import edu.utn.application.usecase.ModifyDeckUseCase;
-import edu.utn.application.usecase.PracticeDeckUseCase;
+import edu.utn.application.usecase.deck.CreateDeckUseCase;
+import edu.utn.application.usecase.deck.DeleteDeckUseCase;
+import edu.utn.application.usecase.deck.ModifyDeckUseCase;
+import edu.utn.application.usecase.deck.PracticeDeckUseCase;
 import edu.utn.infrastructure.ports.in.IDeckController;
 
 import org.springframework.http.ResponseEntity;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-import edu.utn.application.usecase.AddFlashcardToDeckUseCase;
-import edu.utn.application.usecase.ListFlashcardsUseCase;
+import edu.utn.application.usecase.flashcard.AddFlashcardToDeckUseCase;
+import edu.utn.application.usecase.flashcard.ListFlashcardsUseCase;
 
 @RestController
 @RequestMapping("/api/decks")
@@ -53,13 +53,15 @@ public class DeckController implements IDeckController {
     @DeleteMapping("/{deckId}")
     @Override
     public ResponseEntity<?> deleteDeck(@PathVariable UUID deckId) {
-        DeckDTO result = deleteDeckUseCase.execute(deckId);
-        return ResponseEntity.ok("Se elimino el deck: " + result.getNombre() + " correctamente");
+        String result = deleteDeckUseCase.execute(deckId);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{deckId}/practice")
     @Override
     public ResponseEntity<?> practiceDeck(@PathVariable UUID deckId) {
+
+        // esto hay que actualizarlo porque esta mal, no debe crear un DTO, y los parametros estan incorrectos
         DeckDTO result = practiceDeckUseCase.practiceDeck(deckId);
         return ResponseEntity.ok("Se inicio la practica del deck: " + result.getNombre() + " correctamente");
     }

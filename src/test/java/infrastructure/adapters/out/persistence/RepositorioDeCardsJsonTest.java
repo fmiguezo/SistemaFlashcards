@@ -17,9 +17,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import edu.utn.domain.model.Flashcard;
-import edu.utn.domain.model.IFlashcard;
-import edu.utn.infrastructure.adapters.out.persistence.RepositorioDeCardsJson;
+import edu.utn.domain.model.flashcard.Flashcard;
+import edu.utn.domain.model.flashcard.IFlashcard;
+import edu.utn.infrastructure.adapters.out.persistence.json.RepositorioDeCardsJson;
 
 class RepositorioDeCardsJsonTest {
 

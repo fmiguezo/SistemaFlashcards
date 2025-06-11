@@ -1,13 +1,12 @@
 package domain.model;
 
-import edu.utn.domain.model.Deck;
-import edu.utn.domain.model.Flashcard;
-import edu.utn.domain.model.IDeck;
-import edu.utn.domain.model.IFlashcard;
+import edu.utn.domain.model.deck.Deck;
+import edu.utn.domain.model.flashcard.Flashcard;
+import edu.utn.domain.model.deck.IDeck;
+import edu.utn.domain.model.flashcard.IFlashcard;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 

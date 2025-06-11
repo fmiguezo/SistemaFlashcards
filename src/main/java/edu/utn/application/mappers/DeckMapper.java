@@ -1,7 +1,7 @@
 package edu.utn.application.mappers;
 
 import edu.utn.application.dto.DeckDTO;
-import edu.utn.domain.model.IDeck;
+import edu.utn.domain.model.deck.IDeck;
 
 public class DeckMapper {
     public static DeckDTO toDTO(IDeck deck) {
