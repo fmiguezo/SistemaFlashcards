@@ -1,8 +1,7 @@
 package application.usecase.flashcard;
 
 import edu.utn.application.error.FlashcardError;
-import edu.utn.application.usecase.deck.DeleteFlashcardUseCase;
-import edu.utn.domain.model.flashcard.IFlashcard;
+import edu.utn.application.usecase.flashcard.DeleteFlashcardUseCase;
 import edu.utn.domain.service.flashcard.IFlashcardService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
