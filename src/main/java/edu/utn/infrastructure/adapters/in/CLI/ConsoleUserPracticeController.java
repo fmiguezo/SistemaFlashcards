@@ -1,4 +1,4 @@
-package edu.utn.infrastructure.adapters.in.rest.controller;
+package edu.utn.infrastructure.adapters.in.CLI;
 
 import edu.utn.domain.model.flashcard.IFlashcard;
 import edu.utn.infrastructure.ports.in.IUserPracticeInputPort;

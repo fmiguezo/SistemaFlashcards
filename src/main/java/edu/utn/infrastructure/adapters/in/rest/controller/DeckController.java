@@ -62,8 +62,8 @@ public class DeckController implements IDeckController {
     public ResponseEntity<?> practiceDeck(@PathVariable UUID deckId) {
 
         // esto hay que actualizarlo porque esta mal, no debe crear un DTO, y los parametros estan incorrectos
-        DeckDTO result = practiceDeckUseCase.practiceDeck(deckId);
-        return ResponseEntity.ok("Se inicio la practica del deck: " + result.getNombre() + " correctamente");
+        practiceDeckUseCase.execute(deckId, estragia, userPortInput);
+        return ResponseEntity.ok("Se inicio la practica del deck correctamente");
     }
 
     @GetMapping("/deck/{deckId}")
