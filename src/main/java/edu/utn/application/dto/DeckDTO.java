@@ -1,5 +1,6 @@
 package edu.utn.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.utn.domain.model.flashcard.IFlashcard;
 
 import java.util.List;
@@ -17,27 +18,27 @@ public class DeckDTO {
         this.descripcion = descripcion;
         this.flashcards = flashcards;
     }
-
+    @JsonProperty("id")
     public UUID getId() {
         return id;
     }
-
+    @JsonProperty("name")
     public String getNombre() {
         return nombre;
     }
-
+    @JsonProperty("name")
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
+    @JsonProperty("description")
     public String getDescripcion() {
         return descripcion;
     }
-
+    @JsonProperty("description")
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-
+    @JsonProperty("flashcards")
     public List<FlashcardDTO> getFlashcards() {
         return flashcards;
     }
@@ -47,7 +48,7 @@ public class DeckDTO {
             flashcards.add(newFlashcard);
         }
     }
-
+    @JsonProperty("id")
     public void setId(UUID uuid) {
         this.id = uuid;
     }

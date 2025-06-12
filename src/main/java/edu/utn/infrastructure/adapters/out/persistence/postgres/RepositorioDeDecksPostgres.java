@@ -2,9 +2,8 @@ package edu.utn.infrastructure.adapters.out.persistence.postgres;
 import edu.utn.application.mappers.DeckMapper;
 import edu.utn.domain.model.deck.IDeck;
 import edu.utn.domain.model.flashcard.IFlashcard;
-import edu.utn.infrastructure.adapters.out.exception.DeckNoExisteException;
 import edu.utn.infrastructure.ports.out.IDeckRepository;
-import edu.utn.infrastructure.ports.out.JpaDeckRepository;
+import edu.utn.infrastructure.ports.out.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
@@ -13,35 +12,35 @@ import java.util.UUID;
 @Repository
 public class RepositorioDeDecksPostgres implements IDeckRepository {
 
-    private final JpaDeckRepository jpaDeckRepository;
+    private final JpaRepository jpaRepository;
 
-    public RepositorioDeDecksPostgres(JpaDeckRepository jpaDeckRepository, DeckMapper mapper) {
-        this.jpaDeckRepository = jpaDeckRepository;
+    public RepositorioDeDecksPostgres(JpaRepository jpaRepository, DeckMapper mapper) {
+        this.jpaRepository = jpaRepository;
     }
 
     @Override
     public List<IDeck> getAllDecks() {
-        return jpaDeckRepository.findAll();
+        return jpaRepository.findAll();
     }
 
     @Override
     public Optional<IDeck> getDeckById(UUID id) {
-        return jpaDeckRepository.findDeckById(id);
+        return jpaRepository.findDeckById(id);
     }
 
     @Override
     public void createDeck(IDeck deck) {
-        jpaDeckRepository.saveDeck(deck);
+        jpaRepository.saveDeck(deck);
     }
 
     @Override
     public void updateDeck(IDeck deck) {
-        jpaDeckRepository.updateDeck(deck);
+        jpaRepository.updateDeck(deck);
     }
 
     @Override
     public void deleteDeckById(UUID id) {
-        jpaDeckRepository.deleteDeckById(id);
+        jpaRepository.deleteDeckById(id);
     }
 
     @Override
