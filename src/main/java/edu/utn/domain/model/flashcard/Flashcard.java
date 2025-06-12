@@ -1,8 +1,15 @@
 package edu.utn.domain.model.flashcard;
+import edu.utn.domain.model.deck.Deck;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Entity
+@Table(name = "flashcard")
 public class Flashcard implements IFlashcard {
+
+    @Id
+    @GeneratedValue
     private UUID id;
     private String pregunta;
     private String respuesta;
@@ -11,6 +18,9 @@ public class Flashcard implements IFlashcard {
     private LocalDateTime nextReviewDate;
     private LocalDateTime lastReviewDate;
     private int score;
+
+    // Constructor vacío requerido por JPA
+    protected Flashcard() {}
 
     public Flashcard(String pregunta, String respuesta) {
         this.id = UUID.randomUUID();
