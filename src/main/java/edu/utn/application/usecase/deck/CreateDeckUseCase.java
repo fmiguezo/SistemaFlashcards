@@ -1,11 +1,11 @@
 package edu.utn.application.usecase.deck;
 
 import edu.utn.application.dto.DeckDTO;
-import edu.utn.application.mappers.DeckMapper;
-import edu.utn.domain.model.deck.Deck;
 import edu.utn.domain.service.deck.IDeckService;
 import edu.utn.domain.service.validation.ValidationService;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class CreateDeckUseCase {
@@ -19,10 +19,10 @@ public class CreateDeckUseCase {
 
     public DeckDTO execute(DeckDTO deckDTO) {
         validationService.validateDeckInput(deckDTO);
-        
-        Deck deck = new Deck(deckDTO.getNombre(), deckDTO.getDescripcion());
-        deckService.addDeck(deck);
-        
-        return DeckMapper.toDTO(deck);
+        if (deckDTO.getId() == null) {
+            deckDTO.setId(UUID.randomUUID());
+        }
+        deckService.addDeck(deckDTO);
+        return deckDTO;
     }
 }

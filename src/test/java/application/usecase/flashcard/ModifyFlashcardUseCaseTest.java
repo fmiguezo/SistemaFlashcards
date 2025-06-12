@@ -26,15 +26,13 @@ class ModifyFlashcardUseCaseTest {
 
     private ModifyFlashcardUseCase modifyFlashcardUseCase;
     private UUID validFlashcardId;
-    private IFlashcard existingFlashcard;
-    private FlashcardDTO validFlashcardDTO;
+    private FlashcardDTO existingFlashcard;
 
     @BeforeEach
     void setUp() {
         modifyFlashcardUseCase = new ModifyFlashcardUseCase(flashcardService);
         validFlashcardId = UUID.randomUUID();
-        existingFlashcard = new Flashcard("Pregunta Original", "Respuesta Original");
-        validFlashcardDTO = new FlashcardDTO(
+        existingFlashcard = new FlashcardDTO(
             validFlashcardId,
             "Nueva Pregunta",
             "Nueva Respuesta",
@@ -49,16 +47,29 @@ class ModifyFlashcardUseCaseTest {
     @Test
     void execute_WithValidFlashcardDTO_ShouldModifyFlashcardAndReturnDTO() {
         when(flashcardService.getFlashcardById(validFlashcardId)).thenReturn(existingFlashcard);
-        doNothing().when(flashcardService).updateFlashcard(any(IFlashcard.class));
+        doNothing().when(flashcardService).updateFlashcard(any(FlashcardDTO.class));
 
-        FlashcardDTO result = modifyFlashcardUseCase.execute(validFlashcardDTO);
+        FlashcardDTO modifiedFlashcard = new FlashcardDTO(
+                validFlashcardId,
+                "Pregunta modificada",
+                null,
+                existingFlashcard.getCreatedAt(),
+                existingFlashcard.getNextReviewDate(),
+                existingFlashcard.getUpdatedAt(),
+                null,
+                0
+        );
 
-        verify(flashcardService).updateFlashcard(argThat(flashcard -> 
-            flashcard.getPregunta().equals(validFlashcardDTO.getPregunta()) &&
-            flashcard.getRespuesta().equals(validFlashcardDTO.getRespuesta())
+        System.out.println("existingFlashcard pregunta: '" + existingFlashcard.getPregunta() + "'");
+        System.out.println("DTO pregunta: '" + modifiedFlashcard.getPregunta() + "'");
+        FlashcardDTO result = modifyFlashcardUseCase.execute(modifiedFlashcard);
+
+        verify(flashcardService).updateFlashcard(argThat(flashcard ->
+                flashcard.getPregunta().equals("Pregunta modificada") &&
+                        flashcard.getRespuesta().equals(existingFlashcard.getRespuesta())
         ));
-        assertEquals(validFlashcardDTO.getPregunta(), result.getPregunta());
-        assertEquals(validFlashcardDTO.getRespuesta(), result.getRespuesta());
+        assertEquals("Pregunta modificada", result.getPregunta());
+        assertEquals(existingFlashcard.getRespuesta(), result.getRespuesta());
     }
 
     @Test
@@ -68,7 +79,7 @@ class ModifyFlashcardUseCaseTest {
             () -> modifyFlashcardUseCase.execute(null)
         );
         assertEquals(FlashcardError.NULL_FLASHCARD, exception.getMessage());
-        verify(flashcardService, never()).updateFlashcard(any(IFlashcard.class));
+        verify(flashcardService, never()).updateFlashcard(any(FlashcardDTO.class));
     }
 
     @Test
@@ -89,7 +100,7 @@ class ModifyFlashcardUseCaseTest {
             () -> modifyFlashcardUseCase.execute(flashcardDTO)
         );
         assertEquals(FlashcardError.NULL_FLASHCARD_ID, exception.getMessage());
-        verify(flashcardService, never()).updateFlashcard(any(IFlashcard.class));
+        verify(flashcardService, never()).updateFlashcard(any(FlashcardDTO.class));
     }
 
     @Test
@@ -110,7 +121,7 @@ class ModifyFlashcardUseCaseTest {
             () -> modifyFlashcardUseCase.execute(flashcardDTO)
         );
         assertEquals(FlashcardError.NO_FIELDS_TO_MODIFY, exception.getMessage());
-        verify(flashcardService, never()).updateFlashcard(any(IFlashcard.class));
+        verify(flashcardService, never()).updateFlashcard(any(FlashcardDTO.class));
     }
 
     @Test
@@ -119,10 +130,10 @@ class ModifyFlashcardUseCaseTest {
 
         FlashcardError exception = assertThrows(
             FlashcardError.class,
-            () -> modifyFlashcardUseCase.execute(validFlashcardDTO)
+            () -> modifyFlashcardUseCase.execute(existingFlashcard)
         );
         assertEquals(FlashcardError.FLASHCARD_NOT_FOUND, exception.getMessage());
-        verify(flashcardService, never()).updateFlashcard(any(IFlashcard.class));
+        verify(flashcardService, never()).updateFlashcard(any(FlashcardDTO.class));
     }
 
     @Test
@@ -144,7 +155,7 @@ class ModifyFlashcardUseCaseTest {
             () -> modifyFlashcardUseCase.execute(flashcardDTO)
         );
         assertEquals(FlashcardError.EMPTY_QUESTION, exception.getMessage());
-        verify(flashcardService, never()).updateFlashcard(any(IFlashcard.class));
+        verify(flashcardService, never()).updateFlashcard(any(FlashcardDTO.class));
     }
 
     @Test
@@ -166,7 +177,7 @@ class ModifyFlashcardUseCaseTest {
             () -> modifyFlashcardUseCase.execute(flashcardDTO)
         );
         assertEquals(FlashcardError.QUESTION_TOO_SHORT, exception.getMessage());
-        verify(flashcardService, never()).updateFlashcard(any(IFlashcard.class));
+        verify(flashcardService, never()).updateFlashcard(any(FlashcardDTO.class));
     }
 
     @Test
@@ -188,7 +199,7 @@ class ModifyFlashcardUseCaseTest {
             () -> modifyFlashcardUseCase.execute(flashcardDTO)
         );
         assertEquals(FlashcardError.QUESTION_TOO_LONG, exception.getMessage());
-        verify(flashcardService, never()).updateFlashcard(any(IFlashcard.class));
+        verify(flashcardService, never()).updateFlashcard(any(FlashcardDTO.class));
     }
 
     @Test
@@ -210,12 +221,14 @@ class ModifyFlashcardUseCaseTest {
             () -> modifyFlashcardUseCase.execute(flashcardDTO)
         );
         assertEquals(FlashcardError.SAME_QUESTION, exception.getMessage());
-        verify(flashcardService, never()).updateFlashcard(any(IFlashcard.class));
+        verify(flashcardService, never()).updateFlashcard(any(FlashcardDTO.class));
     }
 
     @Test
     void execute_WithEmptyAnswer_ShouldThrowException() {
         when(flashcardService.getFlashcardById(validFlashcardId)).thenReturn(existingFlashcard);
+        existingFlashcard.setPregunta("Pregunta anterior");
+        existingFlashcard.setRespuesta("Respuesta anterior");
         FlashcardDTO flashcardDTO = new FlashcardDTO(
             validFlashcardId,
             "Nueva Pregunta",
@@ -232,11 +245,14 @@ class ModifyFlashcardUseCaseTest {
             () -> modifyFlashcardUseCase.execute(flashcardDTO)
         );
         assertEquals(FlashcardError.EMPTY_ANSWER, exception.getMessage());
-        verify(flashcardService, never()).updateFlashcard(any(IFlashcard.class));
+        verify(flashcardService, never()).updateFlashcard(any(FlashcardDTO.class));
     }
 
     @Test
     void execute_WithAnswerTooShort_ShouldThrowException() {
+        when(flashcardService.getFlashcardById(validFlashcardId)).thenReturn(existingFlashcard);
+        existingFlashcard.setPregunta("Pregunta antigua");
+        existingFlashcard.setRespuesta("Respuesta antigua");
         when(flashcardService.getFlashcardById(validFlashcardId)).thenReturn(existingFlashcard);
         FlashcardDTO flashcardDTO = new FlashcardDTO(
             validFlashcardId,
@@ -254,12 +270,14 @@ class ModifyFlashcardUseCaseTest {
             () -> modifyFlashcardUseCase.execute(flashcardDTO)
         );
         assertEquals(FlashcardError.ANSWER_TOO_SHORT, exception.getMessage());
-        verify(flashcardService, never()).updateFlashcard(any(IFlashcard.class));
+        verify(flashcardService, never()).updateFlashcard(any(FlashcardDTO.class));
     }
 
     @Test
     void execute_WithAnswerTooLong_ShouldThrowException() {
         when(flashcardService.getFlashcardById(validFlashcardId)).thenReturn(existingFlashcard);
+        existingFlashcard.setPregunta("Pregunta anterior");
+        existingFlashcard.setRespuesta("Respuesta anterior");
         FlashcardDTO flashcardDTO = new FlashcardDTO(
             validFlashcardId,
             "Nueva Pregunta",
@@ -276,12 +294,14 @@ class ModifyFlashcardUseCaseTest {
             () -> modifyFlashcardUseCase.execute(flashcardDTO)
         );
         assertEquals(FlashcardError.ANSWER_TOO_LONG, exception.getMessage());
-        verify(flashcardService, never()).updateFlashcard(any(IFlashcard.class));
+        verify(flashcardService, never()).updateFlashcard(any(FlashcardDTO.class));
     }
 
     @Test
     void execute_WithSameAnswer_ShouldThrowException() {
         when(flashcardService.getFlashcardById(validFlashcardId)).thenReturn(existingFlashcard);
+        existingFlashcard.setPregunta("Pregunta anterior");
+        existingFlashcard.setRespuesta("Respuesta actual");
         FlashcardDTO flashcardDTO = new FlashcardDTO(
             validFlashcardId,
             "Nueva Pregunta",
@@ -298,6 +318,6 @@ class ModifyFlashcardUseCaseTest {
             () -> modifyFlashcardUseCase.execute(flashcardDTO)
         );
         assertEquals(FlashcardError.SAME_ANSWER, exception.getMessage());
-        verify(flashcardService, never()).updateFlashcard(any(IFlashcard.class));
+        verify(flashcardService, never()).updateFlashcard(any(FlashcardDTO.class));
     }
 } 

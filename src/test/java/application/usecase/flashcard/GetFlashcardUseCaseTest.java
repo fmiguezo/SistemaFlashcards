@@ -1,13 +1,15 @@
 package application.usecase.flashcard;
+import edu.utn.application.dto.FlashcardDTO;
 import edu.utn.application.error.FlashcardError;
 import edu.utn.application.usecase.flashcard.GetFlashcardUseCase;
-import edu.utn.domain.model.flashcard.IFlashcard;
 import edu.utn.domain.service.flashcard.IFlashcardService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.LocalDateTime;
 import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -27,31 +29,34 @@ class GetFlashcardUseCaseTest {
 
     @Test
     void execute_WithValidId_ShouldReturnFlashcard() {
-        // Arrange
         UUID flashcardId = UUID.randomUUID();
-        IFlashcard mockFlashcard = mock(IFlashcard.class);
-        when(flashcardService.getFlashcardById(flashcardId)).thenReturn(mockFlashcard);
+        FlashcardDTO mockFlashcardDTO = new FlashcardDTO(
+                flashcardId,
+                "¿Cuál es la capital de Francia?",
+                "París",
+                LocalDateTime.now(),
+                LocalDateTime.now(),
+                LocalDateTime.now(),
+                LocalDateTime.now(),
+                0
+        );
 
-        // Act
-        IFlashcard result = getFlashcardUseCase.execute(flashcardId);
+        when(flashcardService.getFlashcardById(flashcardId)).thenReturn(mockFlashcardDTO);
 
-        // Assert
+        FlashcardDTO result = getFlashcardUseCase.execute(flashcardId);
+
         assertNotNull(result);
-        assertEquals(mockFlashcard, result);
+        assertEquals(mockFlashcardDTO, result);
         verify(flashcardService, times(1)).getFlashcardById(flashcardId);
     }
 
     @Test
     void execute_WhenFlashcardNotFound_ShouldReturnNullAndPrintMessage() {
-        // Arrange
         UUID flashcardId = UUID.randomUUID();
-        FlashcardError notFoundError = FlashcardError.flashcardNotFound();
-        when(flashcardService.getFlashcardById(flashcardId)).thenThrow(notFoundError);
+        when(flashcardService.getFlashcardById(flashcardId)).thenThrow(FlashcardError.flashcardNotFound());
 
-        // Act
-        IFlashcard result = getFlashcardUseCase.execute(flashcardId);
+        FlashcardDTO result = getFlashcardUseCase.execute(flashcardId);
 
-        // Assert
         assertNull(result);
         verify(flashcardService, times(1)).getFlashcardById(flashcardId);
     }

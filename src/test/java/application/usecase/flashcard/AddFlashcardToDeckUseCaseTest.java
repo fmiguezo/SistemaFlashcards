@@ -1,5 +1,6 @@
 package application.usecase.flashcard;
 
+import edu.utn.application.dto.DeckDTO;
 import edu.utn.application.dto.FlashcardDTO;
 import edu.utn.application.error.DeckError;
 import edu.utn.application.usecase.flashcard.AddFlashcardToDeckUseCase;
@@ -16,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,48 +31,48 @@ class AddFlashcardToDeckUseCaseTest {
 
     @Mock
     private IFlashcardService flashcardService;
-
     private AddFlashcardToDeckUseCase addFlashcardToDeckUseCase;
     private UUID validDeckId;
-    private IDeck existingDeck;
+    private DeckDTO existingDeck;
     private FlashcardDTO newFlashcardDTO;
-    private IFlashcard newFlashcard;
 
     @BeforeEach
     void setUp() {
         addFlashcardToDeckUseCase = new AddFlashcardToDeckUseCase(deckService, flashcardService);
         validDeckId = UUID.randomUUID();
-        existingDeck = new Deck("Test Deck", "Test Description");
+
+        existingDeck = new DeckDTO(validDeckId, "Test Deck", "Test Description", new ArrayList<>());
+
         newFlashcardDTO = new FlashcardDTO(
-            null,
-            "New Question",
-            "New Answer",
-            LocalDateTime.now(),
-            null,
-            LocalDateTime.now(),
-            null,
-            0
+                null,
+                "New Question",
+                "New Answer",
+                LocalDateTime.now(),
+                null,
+                LocalDateTime.now(),
+                null,
+                0
         );
-        newFlashcard = new Flashcard("New Question", "New Answer");
     }
 
     @Test
     void execute_WithNewFlashcard_ShouldCreateAndAddToDeck() {
         when(deckService.getDeckById(validDeckId)).thenReturn(existingDeck);
-        doNothing().when(flashcardService).addFlashcard(any(IFlashcard.class));
-        doNothing().when(deckService).updateDeck(any(IDeck.class));
+        doNothing().when(flashcardService).addFlashcard(any(FlashcardDTO.class));
+        doNothing().when(deckService).updateDeck(any(DeckDTO.class));
 
-        addFlashcardToDeckUseCase.execute(validDeckId, newFlashcardDTO);
+        FlashcardDTO result = addFlashcardToDeckUseCase.execute(validDeckId, newFlashcardDTO);
 
-        assertTrue(existingDeck.getFlashcards().stream()
-            .anyMatch(f -> f.getPregunta().equals("New Question") && f.getRespuesta().equals("New Answer")));
-        verify(flashcardService).addFlashcard(any(IFlashcard.class));
+        assertEquals(newFlashcardDTO.getPregunta(), result.getPregunta());
+        assertEquals(newFlashcardDTO.getRespuesta(), result.getRespuesta());
+
+        verify(flashcardService).addFlashcard(newFlashcardDTO);
         verify(deckService).updateDeck(existingDeck);
     }
 
     @Test
     void execute_WithExistingFlashcardInDeck_ShouldThrowException() {
-        existingDeck.addFlashcard(newFlashcard);
+        existingDeck.addFlashcard(newFlashcardDTO);
         when(deckService.getDeckById(validDeckId)).thenReturn(existingDeck);
 
         DeckError exception = assertThrows(
@@ -78,7 +80,7 @@ class AddFlashcardToDeckUseCaseTest {
             () -> addFlashcardToDeckUseCase.execute(validDeckId, newFlashcardDTO)
         );
         assertEquals(DeckError.FLASHCARD_ALREADY_EXISTS, exception.getMessage());
-        verify(deckService, never()).updateDeck(any(IDeck.class));
+        verify(deckService, never()).updateDeck(any(DeckDTO.class));
     }
 
     @Test
@@ -90,7 +92,7 @@ class AddFlashcardToDeckUseCaseTest {
             () -> addFlashcardToDeckUseCase.execute(validDeckId, newFlashcardDTO)
         );
         assertEquals(DeckError.DECK_NOT_FOUND, exception.getMessage());
-        verify(deckService, never()).updateDeck(any(IDeck.class));
+        verify(deckService, never()).updateDeck(any(DeckDTO.class));
     }
 
     @Test
@@ -100,7 +102,7 @@ class AddFlashcardToDeckUseCaseTest {
             () -> addFlashcardToDeckUseCase.execute(null, newFlashcardDTO)
         );
         assertEquals(DeckError.NULL_DECK_ID, exception.getMessage());
-        verify(deckService, never()).updateDeck(any(IDeck.class));
+        verify(deckService, never()).updateDeck(any(DeckDTO.class));
     }
 
     @Test
@@ -110,6 +112,6 @@ class AddFlashcardToDeckUseCaseTest {
             () -> addFlashcardToDeckUseCase.execute(validDeckId, null)
         );
         assertEquals(DeckError.NULL_FLASHCARD, exception.getMessage());
-        verify(deckService, never()).updateDeck(any(IDeck.class));
+        verify(deckService, never()).updateDeck(any(DeckDTO.class));
     }
-} 
+}

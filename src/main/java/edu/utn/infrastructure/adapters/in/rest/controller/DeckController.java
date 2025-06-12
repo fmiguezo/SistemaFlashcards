@@ -29,9 +29,9 @@ public class DeckController implements IDeckController {
     private final ListFlashcardsUseCase listFlashcardsUseCase;
     private final AddFlashcardToDeckUseCase addFlashcardToDeckUseCase;
     private final GetDeckUseCase getDeckUseCase;
-    private final GetAllDecksUseCase getAllDecksUseCase;
+    private final ListDecksUseCase getAllDecksUseCase;
 
-    public DeckController(CreateDeckUseCase createDeckUseCase, DeleteDeckUseCase deleteDeckUseCase, ModifyDeckUseCase modifyDeckUseCase, PracticeDeckUseCase practiceDeckUseCase, ListFlashcardsUseCase listFlashcardsUseCase, AddFlashcardToDeckUseCase addFlashcardToDeckUseCase, GetDeckUseCase getDeckUseCase, GetAllDecksUseCase getAllDecksUseCase) {
+    public DeckController(CreateDeckUseCase createDeckUseCase, DeleteDeckUseCase deleteDeckUseCase, ModifyDeckUseCase modifyDeckUseCase, PracticeDeckUseCase practiceDeckUseCase, ListFlashcardsUseCase listFlashcardsUseCase, AddFlashcardToDeckUseCase addFlashcardToDeckUseCase, GetDeckUseCase getDeckUseCase, ListDecksUseCase getAllDecksUseCase) {
         this.createDeckUseCase = createDeckUseCase;
         this.deleteDeckUseCase = deleteDeckUseCase;
         this.modifyDeckUseCase = modifyDeckUseCase;

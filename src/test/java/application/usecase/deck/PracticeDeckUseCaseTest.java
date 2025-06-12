@@ -1,5 +1,6 @@
 package application.usecase.deck;
 
+import edu.utn.application.dto.DeckDTO;
 import edu.utn.application.usecase.deck.PracticeDeckUseCase;
 import edu.utn.domain.model.deck.IDeck;
 import edu.utn.domain.model.estrategia.IEstrategiaRepeticion;
@@ -10,6 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -18,8 +22,7 @@ class PracticeDeckUseCaseTest {
     @Mock
     private IDeckService deckService;
 
-    @Mock
-    private IDeck deck;
+    private PracticeDeckUseCase useCase;
 
     @Mock
     private IEstrategiaRepeticion estrategia;
@@ -27,12 +30,18 @@ class PracticeDeckUseCaseTest {
     @Mock
     private IUserPracticeInputPort userInputPort;
 
-    private PracticeDeckUseCase useCase;
+    private DeckDTO deck;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         useCase = new PracticeDeckUseCase(deckService);
+        deck = new DeckDTO(
+                UUID.randomUUID(),
+                "Test Deck",
+                "Test Description",
+                new ArrayList<>()
+        );
     }
 
     @Test

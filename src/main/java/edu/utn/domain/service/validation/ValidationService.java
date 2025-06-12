@@ -42,7 +42,7 @@ public class ValidationService {
         }
     }
 
-    public IFlashcard validateFlashcardModification(FlashcardDTO flashcardDTO, IFlashcardService flashcardService) {
+    public FlashcardDTO validateFlashcardModification(FlashcardDTO flashcardDTO, IFlashcardService flashcardService) {
         if (flashcardDTO == null) {
             throw FlashcardError.nullFlashcard();
         }
@@ -55,7 +55,7 @@ public class ValidationService {
             throw FlashcardError.noFieldsToModify();
         }
 
-        IFlashcard existingFlashcard = flashcardService.getFlashcardById(flashcardDTO.getId());
+        FlashcardDTO existingFlashcard = flashcardService.getFlashcardById(flashcardDTO.getId());
         if (existingFlashcard == null) {
             throw FlashcardError.flashcardNotFound();
         }
@@ -113,7 +113,7 @@ public class ValidationService {
         }
     }
 
-    public IDeck validateDeckModification(DeckDTO deckDTO, IDeckService deckService) {
+    public DeckDTO validateDeckModification(DeckDTO deckDTO, IDeckService deckService) {
         if (deckDTO == null) {
             throw DeckError.nullDeck();
         }
@@ -126,7 +126,7 @@ public class ValidationService {
             throw DeckError.noFieldsToModify();
         }
 
-        IDeck existingDeck = deckService.getDeckById(deckDTO.getId());
+        DeckDTO existingDeck = deckService.getDeckById(deckDTO.getId());
         if (existingDeck == null) {
             throw DeckError.deckNotFound();
         }

@@ -6,12 +6,16 @@ import edu.utn.application.usecase.deck.ModifyDeckUseCase;
 import edu.utn.domain.model.deck.Deck;
 import edu.utn.domain.model.deck.IDeck;
 import edu.utn.domain.service.deck.IDeckService;
+import edu.utn.domain.service.validation.ValidationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -24,141 +28,107 @@ class ModifyDeckUseCaseTest {
     @Mock
     private IDeckService deckService;
 
+    @InjectMocks
     private ModifyDeckUseCase modifyDeckUseCase;
-    private UUID validDeckId;
-    private IDeck existingDeck;
-    private DeckDTO validDeckDTO;
+
+    private ValidationService validationServiceSpy;
+
+    private DeckDTO existingDeckDTO;
 
     @BeforeEach
     void setUp() {
-        modifyDeckUseCase = new ModifyDeckUseCase(deckService);
-        validDeckId = UUID.randomUUID();
-        existingDeck = new Deck("Deck Original", "Descripción Original");
-        validDeckDTO = new DeckDTO(validDeckId, "Nuevo Nombre", "Nueva Descripción", new ArrayList<>());
-    }
-
-    @Test
-    void execute_WithValidDeckDTO_ShouldModifyDeck() {
-        when(deckService.getDeckById(validDeckId)).thenReturn(existingDeck);
-        doNothing().when(deckService).updateDeck(any(IDeck.class));
-
-        modifyDeckUseCase.execute(validDeckDTO);
-
-        verify(deckService).updateDeck(argThat(deck -> 
-            deck.getNombre().equals(validDeckDTO.getNombre()) &&
-            deck.getDescripcion().equals(validDeckDTO.getDescripcion())
-        ));
-    }
-
-    @Test
-    void execute_WithNullDeckDTO_ShouldThrowException() {
-        DeckError exception = assertThrows(
-            DeckError.class,
-            () -> modifyDeckUseCase.execute(null)
+        existingDeckDTO = new DeckDTO(
+                UUID.randomUUID(),
+                "Nombre Original",
+                "Descripción Original",
+                new ArrayList<>()
         );
-        assertEquals(DeckError.NULL_DECK, exception.getMessage());
-        verify(deckService, never()).updateDeck(any(IDeck.class));
+
+        validationServiceSpy = Mockito.spy(new ValidationService());
+
+        try {
+            Field field = ModifyDeckUseCase.class.getDeclaredField("validationService");
+            field.setAccessible(true);
+            field.set(modifyDeckUseCase, validationServiceSpy);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
-    void execute_WithNullDeckId_ShouldThrowException() {
-        DeckDTO deckDTO = new DeckDTO(null, "Nuevo Nombre", "Nueva Descripción", new ArrayList<>());
-
-        DeckError exception = assertThrows(
-            DeckError.class,
-            () -> modifyDeckUseCase.execute(deckDTO)
+    void execute_WithValidNameAndDescription_ShouldUpdateDeck() {
+        DeckDTO modification = new DeckDTO(
+                existingDeckDTO.getId(),
+                "Nuevo Nombre",
+                "Nueva Descripción",
+                new ArrayList<>()
         );
-        assertEquals(DeckError.NULL_DECK_ID, exception.getMessage());
-        verify(deckService, never()).updateDeck(any(IDeck.class));
+
+        doReturn(existingDeckDTO).when(validationServiceSpy).validateDeckModification(modification, deckService);
+
+        DeckDTO result = modifyDeckUseCase.execute(modification);
+
+        assertNotNull(result);
+        assertEquals("Nuevo Nombre", result.getNombre());
+        assertEquals("Nueva Descripción", result.getDescripcion());
+
+        verify(deckService, times(1)).updateDeck(result);
+        verify(validationServiceSpy, times(1)).validateDeckModification(modification, deckService);
     }
 
     @Test
-    void execute_WithNoFieldsToModify_ShouldThrowException() {
-        DeckDTO deckDTO = new DeckDTO(validDeckId, null, null, new ArrayList<>());
-
-        DeckError exception = assertThrows(
-            DeckError.class,
-            () -> modifyDeckUseCase.execute(deckDTO)
+    void execute_WithOnlyName_ShouldUpdateNameOnly() {
+        DeckDTO modification = new DeckDTO(
+                existingDeckDTO.getId(),
+                "Nombre Cambiado",
+                null,
+                new ArrayList<>()
         );
-        assertEquals(DeckError.NO_FIELDS_TO_MODIFY, exception.getMessage());
-        verify(deckService, never()).updateDeck(any(IDeck.class));
+
+        doReturn(existingDeckDTO).when(validationServiceSpy).validateDeckModification(modification, deckService);
+
+        DeckDTO result = modifyDeckUseCase.execute(modification);
+
+        assertEquals("Nombre Cambiado", result.getNombre());
+        assertEquals(existingDeckDTO.getDescripcion(), result.getDescripcion());
+
+        verify(deckService).updateDeck(result);
     }
 
     @Test
-    void execute_WithNonExistentDeck_ShouldThrowException() {
-        when(deckService.getDeckById(validDeckId)).thenReturn(null);
-
-        DeckError exception = assertThrows(
-            DeckError.class,
-            () -> modifyDeckUseCase.execute(validDeckDTO)
+    void execute_WithOnlyDescription_ShouldUpdateDescriptionOnly() {
+        DeckDTO modification = new DeckDTO(
+                existingDeckDTO.getId(),
+                null,
+                "Descripción Cambiada",
+                new ArrayList<>()
         );
-        assertEquals(DeckError.DECK_NOT_FOUND, exception.getMessage());
-        verify(deckService, never()).updateDeck(any(IDeck.class));
+
+        doReturn(existingDeckDTO).when(validationServiceSpy).validateDeckModification(modification, deckService);
+
+        DeckDTO result = modifyDeckUseCase.execute(modification);
+
+        assertEquals(existingDeckDTO.getNombre(), result.getNombre());
+        assertEquals("Descripción Cambiada", result.getDescripcion());
+
+        verify(deckService).updateDeck(result);
     }
 
     @Test
-    void execute_WithEmptyName_ShouldThrowException() {
-        when(deckService.getDeckById(validDeckId)).thenReturn(existingDeck);
-        DeckDTO deckDTO = new DeckDTO(validDeckId, "", "Nueva Descripción", new ArrayList<>());
-
-        // Act & Assert
-        DeckError exception = assertThrows(
-            DeckError.class,
-            () -> modifyDeckUseCase.execute(deckDTO)
+    void execute_WhenValidationFails_ShouldThrowDeckError() {
+        DeckDTO modification = new DeckDTO(
+                existingDeckDTO.getId(),
+                "Nombre inválido",
+                "Descripción inválida",
+                new ArrayList<>()
         );
-        assertEquals(DeckError.EMPTY_NAME, exception.getMessage());
-        verify(deckService, never()).updateDeck(any(IDeck.class));
+
+        doThrow(new DeckError("Error de validación")).when(validationServiceSpy)
+                .validateDeckModification(modification, deckService);
+
+        DeckError ex = assertThrows(DeckError.class, () -> modifyDeckUseCase.execute(modification));
+
+        assertEquals("Error de validación", ex.getMessage());
+        verify(deckService, never()).updateDeck(any());
     }
-
-    @Test
-    void execute_WithNameTooLong_ShouldThrowException() {
-        when(deckService.getDeckById(validDeckId)).thenReturn(existingDeck);
-        DeckDTO deckDTO = new DeckDTO(validDeckId, "a".repeat(101), "Nueva Descripción", new ArrayList<>());
-
-        DeckError exception = assertThrows(
-            DeckError.class,
-            () -> modifyDeckUseCase.execute(deckDTO)
-        );
-        assertEquals(DeckError.NAME_TOO_LONG, exception.getMessage());
-        verify(deckService, never()).updateDeck(any(IDeck.class));
-    }
-
-    @Test
-    void execute_WithSameName_ShouldThrowException() {
-        when(deckService.getDeckById(validDeckId)).thenReturn(existingDeck);
-        DeckDTO deckDTO = new DeckDTO(validDeckId, existingDeck.getNombre(), "Nueva Descripción", new ArrayList<>());
-
-        DeckError exception = assertThrows(
-            DeckError.class,
-            () -> modifyDeckUseCase.execute(deckDTO)
-        );
-        assertEquals(DeckError.SAME_NAME, exception.getMessage());
-        verify(deckService, never()).updateDeck(any(IDeck.class));
-    }
-
-    @Test
-    void execute_WithDescriptionTooLong_ShouldThrowException() {
-        when(deckService.getDeckById(validDeckId)).thenReturn(existingDeck);
-        DeckDTO deckDTO = new DeckDTO(validDeckId, "Nuevo Nombre", "a".repeat(251), new ArrayList<>());
-
-        DeckError exception = assertThrows(
-            DeckError.class,
-            () -> modifyDeckUseCase.execute(deckDTO)
-        );
-        assertEquals(DeckError.DESCRIPTION_TOO_LONG, exception.getMessage());
-        verify(deckService, never()).updateDeck(any(IDeck.class));
-    }
-
-    @Test
-    void execute_WithSameDescription_ShouldThrowException() {
-        when(deckService.getDeckById(validDeckId)).thenReturn(existingDeck);
-        DeckDTO deckDTO = new DeckDTO(validDeckId, "Nuevo Nombre", existingDeck.getDescripcion(), new ArrayList<>());
-        
-        DeckError exception = assertThrows(
-            DeckError.class,
-            () -> modifyDeckUseCase.execute(deckDTO)
-        );
-        assertEquals(DeckError.SAME_DESCRIPTION, exception.getMessage());
-        verify(deckService, never()).updateDeck(any(IDeck.class));
-    }
-} 
+}

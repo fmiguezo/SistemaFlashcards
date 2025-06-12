@@ -20,7 +20,7 @@ public class DeckError extends RuntimeException {
     public static final String FLASHCARD_NOT_FOUND = "No se encontró la flashcard";
     public static final String FLASHCARD_ALREADY_EXISTS = "La flashcard ya existe en el deck";
 
-    private DeckError(String message) {
+    public DeckError(String message) {
         super(message);
     }
 

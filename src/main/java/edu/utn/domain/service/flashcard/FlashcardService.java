@@ -1,5 +1,7 @@
 package edu.utn.domain.service.flashcard;
+import edu.utn.application.dto.FlashcardDTO;
 import edu.utn.application.error.FlashcardError;
+import edu.utn.application.mappers.FlashcardMapper;
 import edu.utn.domain.model.estrategia.IEstrategiaRepeticion;
 import edu.utn.domain.model.flashcard.IFlashcard;
 import edu.utn.infrastructure.ports.in.IUserPracticeInputPort;
@@ -14,21 +16,25 @@ public class FlashcardService implements IFlashcardService {
 
     public FlashcardService(IFlashcardRepository flashcardRepository, IUserPracticeInputPort userInput) {
         this.flashcardRepository = flashcardRepository;
+        this.userInputPort = userInput;
     }
 
     @Override
-    public void addFlashcard(IFlashcard flashcard) {
+    public void addFlashcard(FlashcardDTO flashcardDTO) {
+        IFlashcard flashcard = FlashcardMapper.toDomain(flashcardDTO);
         flashcardRepository.createCard(flashcard);
     }
 
     @Override
-    public IFlashcard getFlashcardById(UUID id) {
-        return flashcardRepository.getCardById(id)
+    public FlashcardDTO getFlashcardById(UUID id) {
+        IFlashcard flashcard = flashcardRepository.getCardById(id)
                 .orElseThrow(FlashcardError::flashcardNotFound);
+        return FlashcardMapper.toDTO(flashcard);
     }
 
     @Override
-    public void updateFlashcard(IFlashcard flashcard) {
+    public void updateFlashcard(FlashcardDTO flashcardDTO) {
+        IFlashcard flashcard = FlashcardMapper.toDomain(flashcardDTO);
         flashcardRepository.updateCard(flashcard);
     }
 
@@ -54,15 +60,17 @@ public class FlashcardService implements IFlashcardService {
     }
 
     @Override
-    public void practiceFlashcard(IFlashcard flashcard, IEstrategiaRepeticion estrategia, IUserPracticeInputPort userInputPort) {
+    public void practiceFlashcard(FlashcardDTO flashcardDTO, IEstrategiaRepeticion estrategia, IUserPracticeInputPort userInputPort) {
+        IFlashcard flashcard = FlashcardMapper.toDomain(flashcardDTO);
+
         userInputPort.showQuestion(flashcard);
         userInputPort.showAnswer(flashcard);
         boolean answer = userInputPort.askUserForAnswer(flashcard);
-        updateScore(flashcard,estrategia,answer);
+        updateScore(flashcard, estrategia, answer);
     }
 
     @Override
-    public void updateScore(IFlashcard flashcard,IEstrategiaRepeticion estrategia,boolean answer) {
+    public void updateScore(IFlashcard flashcard, IEstrategiaRepeticion estrategia, boolean answer) {
         if (answer) {
             flashcard.setScore(flashcard.getScore() + 1);
         } else {

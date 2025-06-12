@@ -10,8 +10,8 @@ import java.util.UUID;
 public interface IDeckRepository {
     List<IDeck> getAllDecks();
     Optional<IDeck> getDeckById(UUID id);
-    void createDeck(DeckDTO deck);
-    void updateDeck(DeckDTO deck);
+    void createDeck(IDeck deck);
+    void updateDeck(IDeck deck);
     void deleteDeckById(UUID id);
     List<IFlashcard> getFlashcardsByDeckId(UUID id);
 }

@@ -3,10 +3,6 @@ package edu.utn.application.usecase.flashcard;
 import edu.utn.application.dto.DeckDTO;
 import edu.utn.application.dto.FlashcardDTO;
 import edu.utn.application.error.DeckError;
-import edu.utn.application.mappers.FlashcardMapper;
-import edu.utn.domain.model.flashcard.Flashcard;
-import edu.utn.domain.model.deck.IDeck;
-import edu.utn.domain.model.flashcard.IFlashcard;
 import edu.utn.domain.service.deck.IDeckService;
 import edu.utn.domain.service.flashcard.IFlashcardService;
 import edu.utn.domain.service.validation.ValidationService;
@@ -47,10 +43,8 @@ public class AddFlashcardToDeckUseCase {
 
         validationService.validateFlashcardInput(flashcardDTO);
 
-        IFlashcard newFlashcard = new Flashcard(flashcardDTO.getPregunta(), flashcardDTO.getRespuesta());
-        flashcardService.addFlashcard(newFlashcard);
-        deck.addFlashcard(newFlashcard);
+        flashcardService.addFlashcard(flashcardDTO);
         deckService.updateDeck(deck);
-        return FlashcardMapper.toDTO(newFlashcard);
+        return flashcardDTO;
     }
 }
