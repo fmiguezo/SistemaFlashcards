@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Deck & Flashcards Manager</title>
+    <link href="style.css" rel="stylesheet"> <!-- Enlace al archivo CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Decks</h2>
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#deckModal">Add Deck</button>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody id="deckTableBody"></tbody>
+    </table>
+</div>
+
+<!-- Deck Modal -->
+<div class="modal fade" id="deckModal" tabindex="-1" aria-labelledby="deckModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="deckForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deckModalLabel">Add Deck</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="deckId" />
+                    <div class="mb-3">
+                        <label for="deckName" class="form-label">Deck Name</label>
+                        <input type="text" class="form-control" id="deckName" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Save</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Flashcards Modal -->
+<div class="modal fade" id="flashcardModal" tabindex="-1" aria-labelledby="flashcardModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Flashcards in Deck: <span id="flashcardDeckName"></span></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <button class="btn btn-sm btn-success mb-2" onclick="openFlashcardForm()">Add Flashcard</button>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Question</th>
+                        <th>Answer</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody id="flashcardTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Flashcard Form Modal -->
+<div class="modal fade" id="flashcardFormModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="flashcardForm">
+                <div class="modal-header">
+                    <h5 class="modal-title">Flashcard</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="flashcardIndex" />
+                    <div class="mb-3">
+                        <label for="question" class="form-label">Question</label>
+                        <input type="text" class="form-control" id="question" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="answer" class="form-label">Answer</label>
+                        <input type="text" class="form-control" id="answer" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Save</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="app.js"></script> <!-- Enlace al archivo JS -->
+</body>
+</html>

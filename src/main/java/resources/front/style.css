@@ -1,0 +1,20 @@
+/* styles.css */
+
+/* Puedes personalizar los estilos de tu aplicación aquí */
+body {
+    font-family: Arial, sans-serif;
+}
+
+h2 {
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+button {
+    margin-right: 10px;
+}
+
+.table th, .table td {
+    text-align: center;
+}
