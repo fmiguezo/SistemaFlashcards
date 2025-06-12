@@ -1,4 +1,6 @@
 package application.usecase.deck;
+import edu.utn.application.dto.DeckDTO;
+import edu.utn.application.error.DeckError;
 import edu.utn.application.usecase.deck.GetDeckUseCase;
 import edu.utn.domain.model.deck.IDeck;
 import edu.utn.domain.service.deck.IDeckService;
@@ -7,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.ArrayList;
 import java.util.UUID;
 
 import static edu.utn.application.error.DeckError.deckNotFound;
@@ -27,32 +31,28 @@ class GetDeckUseCaseTest {
     }
 
     @Test
-    void execute_WithValidId_ShouldReturnDeck() {
-        // Arrange
+    void execute_WithValidId_ShouldReturnDeckDTO() {
         UUID deckId = UUID.randomUUID();
-        IDeck mockDeck = mock(IDeck.class);
-        when(deckService.getDeckById(deckId)).thenReturn(mockDeck);
+        DeckDTO mockDeckDTO = new DeckDTO(deckId, "Deck Name", "Description", new ArrayList<>());
+        when(deckService.getDeckById(deckId)).thenReturn(mockDeckDTO);
 
-        // Act
-        IDeck result = getDeckUseCase.execute(deckId);
+        DeckDTO result = getDeckUseCase.execute(deckId);
 
-        // Assert
         assertNotNull(result);
-        assertEquals(mockDeck, result);
+        assertEquals(mockDeckDTO, result);
         verify(deckService, times(1)).getDeckById(deckId);
     }
 
     @Test
     void execute_WhenDeckServiceThrowsDeckError_ShouldReturnNullAndPrintMessage() {
-        // Arrange
         UUID deckId = UUID.randomUUID();
-        when(deckService.getDeckById(deckId)).thenThrow( deckNotFound());
+        DeckError deckError = DeckError.deckNotFound();
+        when(deckService.getDeckById(deckId)).thenThrow(deckError);
 
-        // Act
-        IDeck result = getDeckUseCase.execute(deckId);
-
-        // Assert
+        DeckDTO result = getDeckUseCase.execute(deckId);
         assertNull(result);
         verify(deckService, times(1)).getDeckById(deckId);
+
     }
 }
+

@@ -1,17 +1,13 @@
 package edu.utn.application.usecase.flashcard;
 
+import edu.utn.application.dto.DeckDTO;
 import edu.utn.application.dto.FlashcardDTO;
 import edu.utn.application.error.DeckError;
-import edu.utn.application.mappers.FlashcardMapper;
-import edu.utn.domain.model.deck.IDeck;
-import edu.utn.domain.model.flashcard.IFlashcard;
 import edu.utn.domain.service.deck.IDeckService;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 import org.springframework.stereotype.Service;
+
 @Service
 public class ListFlashcardsUseCase {
     private final IDeckService deckService;
@@ -25,16 +21,12 @@ public class ListFlashcardsUseCase {
             throw DeckError.nullDeckId();
         }
 
-        IDeck deck = deckService.getDeckById(deckId);
+        DeckDTO deck = deckService.getDeckById(deckId);
         if (deck == null) {
             throw DeckError.deckNotFound();
         }
         
-        List<IFlashcard> flashcards = deckService.getFlashcardsByDeckId(deckId);
-        List<FlashcardDTO> flashcardsDTO = new ArrayList<>();
-        for (IFlashcard flashcard : flashcards) {
-            flashcardsDTO.add(FlashcardMapper.toDTO(flashcard));
-        }
-        return flashcardsDTO;
+        List<FlashcardDTO> flashcards = deckService.getFlashcardsByDeckId(deckId);
+        return flashcards;
     }
 }

@@ -9,9 +9,9 @@ public class DeckDTO {
     private UUID id;
     private String nombre;
     private String descripcion;
-    private List<IFlashcard> flashcards;
+    private List<FlashcardDTO> flashcards;
 
-    public DeckDTO(UUID id, String nombre, String descripcion, List<IFlashcard> flashcards) {
+    public DeckDTO(UUID id, String nombre, String descripcion, List<FlashcardDTO> flashcards) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -38,7 +38,17 @@ public class DeckDTO {
         this.descripcion = descripcion;
     }
 
-    public List<IFlashcard> getFlashcards() {
+    public List<FlashcardDTO> getFlashcards() {
         return flashcards;
+    }
+
+    public void addFlashcard(FlashcardDTO newFlashcard) {
+        if (newFlashcard != null && !flashcards.contains(newFlashcard)) {
+            flashcards.add(newFlashcard);
+        }
+    }
+
+    public void setId(UUID uuid) {
+        this.id = uuid;
     }
 }

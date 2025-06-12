@@ -1,14 +1,18 @@
 package domain.service;
 
+import edu.utn.application.dto.DeckDTO;
+import edu.utn.application.dto.FlashcardDTO;
+import edu.utn.application.mappers.DeckMapper;
 import edu.utn.domain.model.deck.IDeck;
 import edu.utn.domain.model.estrategia.IEstrategiaRepeticion;
-import edu.utn.domain.model.flashcard.IFlashcard;
 import edu.utn.domain.service.deck.DeckService;
 import edu.utn.domain.service.flashcard.IFlashcardService;
 import edu.utn.infrastructure.ports.in.IUserPracticeInputPort;
 import edu.utn.infrastructure.ports.out.IDeckRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -33,11 +37,17 @@ class DeckServiceTest {
 
     @Test
     void testAddDeck() {
-        IDeck deck = mock(IDeck.class);
+        DeckDTO deckDTO = mock(DeckDTO.class);
+        IDeck domainDeck = mock(IDeck.class);
 
-        deckService.addDeck(deck);
+        try (MockedStatic<DeckMapper> mockedMapper = Mockito.mockStatic(DeckMapper.class)) {
+            mockedMapper.when(() -> DeckMapper.toDomain(deckDTO)).thenReturn(domainDeck);
 
-        verify(deckRepository).createDeck(deck);
+            deckService.addDeck(deckDTO);
+
+            mockedMapper.verify(() -> DeckMapper.toDomain(deckDTO));
+            verify(deckRepository).createDeck(domainDeck);
+        }
     }
 
     @Test
@@ -46,19 +56,25 @@ class DeckServiceTest {
         IDeck deck = mock(IDeck.class);
         when(deckRepository.getDeckById(id)).thenReturn(Optional.of(deck));
 
-        IDeck result = deckService.getDeckById(id);
-
-        assertEquals(deck, result);
-        verify(deckRepository).getDeckById(id);
+        DeckDTO dto = mock(DeckDTO.class);
+        try (MockedStatic<DeckMapper> mocked = mockStatic(DeckMapper.class)) {
+            mocked.when(() -> DeckMapper.toDTO(deck)).thenReturn(dto);
+            DeckDTO result = deckService.getDeckById(id);
+            assertEquals(dto, result);
+            verify(deckRepository).getDeckById(id);
+        }
     }
 
     @Test
     void testUpdateDeck() {
-        IDeck deck = mock(IDeck.class);
+        DeckDTO deckDTO = mock(DeckDTO.class);
+        IDeck domainDeck = mock(IDeck.class);
 
-        deckService.updateDeck(deck);
-
-        verify(deckRepository).updateDeck(deck);
+        try (MockedStatic<DeckMapper> mocked = mockStatic(DeckMapper.class)) {
+            mocked.when(() -> DeckMapper.toDomain(deckDTO)).thenReturn(domainDeck);
+            deckService.updateDeck(deckDTO);
+            verify(deckRepository).updateDeck(domainDeck);
+        }
     }
 
     @Test
@@ -79,18 +95,25 @@ class DeckServiceTest {
         when(deckRepository.getDeckById(id)).thenReturn(Optional.empty());
 
         Exception exception = assertThrows(RuntimeException.class, () -> deckService.deleteDeckById(id));
-        assertEquals("Deck no encontrado", exception.getMessage());
+        assertEquals("No se encontró el deck a modificar", exception.getMessage());
     }
 
     @Test
     void testGetAllDecks() {
-        List<IDeck> expectedDecks = Arrays.asList(mock(IDeck.class), mock(IDeck.class));
-        when(deckRepository.getAllDecks()).thenReturn(expectedDecks);
+        IDeck deck1 = mock(IDeck.class);
+        IDeck deck2 = mock(IDeck.class);
+        when(deckRepository.getAllDecks()).thenReturn(List.of(deck1, deck2));
 
-        List<IDeck> result = deckService.getAllDecks();
+        DeckDTO dto1 = mock(DeckDTO.class);
+        DeckDTO dto2 = mock(DeckDTO.class);
 
-        assertEquals(expectedDecks, result);
-        verify(deckRepository).getAllDecks();
+        try (MockedStatic<DeckMapper> mocked = mockStatic(DeckMapper.class)) {
+            mocked.when(() -> DeckMapper.toDTO(deck1)).thenReturn(dto1);
+            mocked.when(() -> DeckMapper.toDTO(deck2)).thenReturn(dto2);
+            List<DeckDTO> result = deckService.getAllDecks();
+            assertEquals(List.of(dto1, dto2), result);
+            verify(deckRepository).getAllDecks();
+        }
     }
 
     @Test
@@ -107,11 +130,11 @@ class DeckServiceTest {
 
     @Test
     void testPracticeDeck() {
-        IDeck deck = mock(IDeck.class);
+        DeckDTO deck = mock(DeckDTO.class);
         IUserPracticeInputPort userInputPort = mock(IUserPracticeInputPort.class);
 
-        IFlashcard card1 = mock(IFlashcard.class);
-        IFlashcard card2 = mock(IFlashcard.class);
+        FlashcardDTO card1 = mock(FlashcardDTO.class);
+        FlashcardDTO card2 = mock(FlashcardDTO.class);
 
         when(deck.getFlashcards()).thenReturn(List.of(card1, card2));
         when(card1.getNextReviewDate()).thenReturn(LocalDateTime.now().minusDays(1));

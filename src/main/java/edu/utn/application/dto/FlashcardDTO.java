@@ -67,4 +67,24 @@ public class FlashcardDTO {
     public void setNextReviewDate(LocalDateTime nextReviewDate) {
         this.nextReviewDate = nextReviewDate;
     }
+
+    public LocalDateTime getLastReviewDate() {
+        return lastReviewDate;
+    }
+
+    public void setLastReviewDate(LocalDateTime lastReviewDate) {
+        this.lastReviewDate = lastReviewDate;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public void setId(UUID uuid) {
+        this.id = uuid;
+    }
 }

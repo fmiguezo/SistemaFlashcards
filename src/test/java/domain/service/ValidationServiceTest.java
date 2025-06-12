@@ -39,7 +39,6 @@ class ValidationServiceTest {
         );
     }
 
-    // Flashcard input
     @Test
     void validateFlashcardInput_valid() {
         assertDoesNotThrow(() -> validationService.validateFlashcardInput(validFlashcardDTO));
@@ -81,7 +80,6 @@ class ValidationServiceTest {
         assertEquals(FlashcardError.ANSWER_TOO_LONG, ex.getMessage());
     }
 
-    // Deck input
     @Test
     void validateDeckInput_valid() {
         assertDoesNotThrow(() -> validationService.validateDeckInput(validDeckDTO));
@@ -120,12 +118,12 @@ class ValidationServiceTest {
     @Test
     void validateFlashcardModification_valid() {
         IFlashcardService mockService = mock(IFlashcardService.class);
-        IFlashcard mockFlashcard = mock(IFlashcard.class);
+        FlashcardDTO mockFlashcard = mock(FlashcardDTO.class);
         when(mockService.getFlashcardById(validFlashcardDTO.getId())).thenReturn(mockFlashcard);
         when(mockFlashcard.getPregunta()).thenReturn("Pregunta anterior");
         when(mockFlashcard.getRespuesta()).thenReturn("Respuesta anterior");
 
-        IFlashcard result = validationService.validateFlashcardModification(validFlashcardDTO, mockService);
+        FlashcardDTO result = validationService.validateFlashcardModification(validFlashcardDTO, mockService);
         assertEquals(mockFlashcard, result);
     }
 
@@ -163,7 +161,7 @@ class ValidationServiceTest {
     @Test
     void validateFlashcardModification_sameQuestion() {
         IFlashcardService mockService = mock(IFlashcardService.class);
-        IFlashcard mockFlashcard = mock(IFlashcard.class);
+        FlashcardDTO mockFlashcard = mock(FlashcardDTO.class);
         when(mockService.getFlashcardById(validFlashcardDTO.getId())).thenReturn(mockFlashcard);
         when(mockFlashcard.getPregunta()).thenReturn(validFlashcardDTO.getPregunta());
         when(mockFlashcard.getRespuesta()).thenReturn("Respuesta anterior");
@@ -175,7 +173,7 @@ class ValidationServiceTest {
     @Test
     void validateFlashcardModification_sameAnswer() {
         IFlashcardService mockService = mock(IFlashcardService.class);
-        IFlashcard mockFlashcard = mock(IFlashcard.class);
+        FlashcardDTO mockFlashcard = mock(FlashcardDTO.class);
         when(mockService.getFlashcardById(validFlashcardDTO.getId())).thenReturn(mockFlashcard);
         when(mockFlashcard.getPregunta()).thenReturn("Pregunta anterior");
         when(mockFlashcard.getRespuesta()).thenReturn(validFlashcardDTO.getRespuesta());
@@ -188,12 +186,12 @@ class ValidationServiceTest {
     @Test
     void validateDeckModification_valid() {
         IDeckService mockService = mock(IDeckService.class);
-        IDeck mockDeck = mock(IDeck.class);
+        DeckDTO mockDeck = mock(DeckDTO.class);
         when(mockService.getDeckById(validDeckDTO.getId())).thenReturn(mockDeck);
         when(mockDeck.getNombre()).thenReturn("Nombre anterior");
         when(mockDeck.getDescripcion()).thenReturn("Descripción anterior");
 
-        IDeck result = validationService.validateDeckModification(validDeckDTO, mockService);
+        DeckDTO result = validationService.validateDeckModification(validDeckDTO, mockService);
         assertEquals(mockDeck, result);
     }
 
@@ -231,7 +229,7 @@ class ValidationServiceTest {
     @Test
     void validateDeckModification_sameName() {
         IDeckService mockService = mock(IDeckService.class);
-        IDeck mockDeck = mock(IDeck.class);
+        DeckDTO mockDeck = mock(DeckDTO.class);
         when(mockService.getDeckById(validDeckDTO.getId())).thenReturn(mockDeck);
         when(mockDeck.getNombre()).thenReturn(validDeckDTO.getNombre());
         when(mockDeck.getDescripcion()).thenReturn("Descripción anterior");
@@ -243,7 +241,7 @@ class ValidationServiceTest {
     @Test
     void validateDeckModification_sameDescription() {
         IDeckService mockService = mock(IDeckService.class);
-        IDeck mockDeck = mock(IDeck.class);
+        DeckDTO mockDeck = mock(DeckDTO.class);
         when(mockService.getDeckById(validDeckDTO.getId())).thenReturn(mockDeck);
         when(mockDeck.getNombre()).thenReturn("Nombre anterior");
         when(mockDeck.getDescripcion()).thenReturn(validDeckDTO.getDescripcion());

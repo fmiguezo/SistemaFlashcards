@@ -1,8 +1,6 @@
 package edu.utn.application.usecase.deck;
 
 import edu.utn.application.dto.DeckDTO;
-import edu.utn.application.mappers.DeckMapper;
-import edu.utn.domain.model.deck.IDeck;
 import edu.utn.domain.service.deck.IDeckService;
 import edu.utn.domain.service.validation.ValidationService;
 
@@ -19,7 +17,7 @@ public class ModifyDeckUseCase {
     }
 
     public DeckDTO execute(DeckDTO deckDTO) {
-        IDeck deck = validationService.validateDeckModification(deckDTO, deckService);
+        DeckDTO deck = validationService.validateDeckModification(deckDTO, deckService);
         
         if (deckDTO.getNombre() != null) {
             deck.setNombre(deckDTO.getNombre());
@@ -30,6 +28,6 @@ public class ModifyDeckUseCase {
         }
         
         deckService.updateDeck(deck);
-        return DeckMapper.toDTO(deck);
+        return deck;
     }
 }

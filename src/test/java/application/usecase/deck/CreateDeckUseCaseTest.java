@@ -34,7 +34,7 @@ class CreateDeckUseCaseTest {
 
     @Test
     void execute_WithValidDeckDTO_ShouldCreateDeck() {
-        doNothing().when(deckService).addDeck(any(Deck.class));
+        doNothing().when(deckService).addDeck(any(DeckDTO.class));
 
         DeckDTO result = createDeckUseCase.execute(validDeckDTO);
 
@@ -43,12 +43,12 @@ class CreateDeckUseCaseTest {
         assertEquals(validDeckDTO.getDescripcion(), result.getDescripcion());
         assertNotNull(result.getId());
         assertTrue(result.getFlashcards().isEmpty());
-        verify(deckService, times(1)).addDeck(any(Deck.class));
+        verify(deckService, times(1)).addDeck(any(DeckDTO.class));
     }
 
     @Test
     void execute_WithValidDeckDTOAndNullDescription_ShouldCreateDeck() {
-        doNothing().when(deckService).addDeck(any(Deck.class));
+        doNothing().when(deckService).addDeck(any(DeckDTO.class));
         DeckDTO deckDTO = new DeckDTO(null, "Deck de prueba", null, new ArrayList<>());
 
         DeckDTO result = createDeckUseCase.execute(deckDTO);
@@ -58,7 +58,7 @@ class CreateDeckUseCaseTest {
         assertNull(result.getDescripcion());
         assertNotNull(result.getId());
         assertTrue(result.getFlashcards().isEmpty());
-        verify(deckService, times(1)).addDeck(any(Deck.class));
+        verify(deckService, times(1)).addDeck(any(DeckDTO.class));
     }
 
     @Test
@@ -68,7 +68,7 @@ class CreateDeckUseCaseTest {
             () -> createDeckUseCase.execute(null)
         );
         assertEquals(DeckError.NULL_DECK, exception.getMessage());
-        verify(deckService, never()).addDeck(any(Deck.class));
+        verify(deckService, never()).addDeck(any(DeckDTO.class));
     }
 
     @Test
@@ -80,7 +80,7 @@ class CreateDeckUseCaseTest {
             () -> createDeckUseCase.execute(deckDTO)
         );
         assertEquals(DeckError.EMPTY_NAME, exception.getMessage());
-        verify(deckService, never()).addDeck(any(Deck.class));
+        verify(deckService, never()).addDeck(any(DeckDTO.class));
     }
 
     @Test
@@ -92,7 +92,7 @@ class CreateDeckUseCaseTest {
             () -> createDeckUseCase.execute(deckDTO)
         );
         assertEquals(DeckError.EMPTY_NAME, exception.getMessage());
-        verify(deckService, never()).addDeck(any(Deck.class));
+        verify(deckService, never()).addDeck(any(DeckDTO.class));
     }
 
     @Test
@@ -104,7 +104,7 @@ class CreateDeckUseCaseTest {
             () -> createDeckUseCase.execute(deckDTO)
         );
         assertEquals(DeckError.NAME_TOO_LONG, exception.getMessage());
-        verify(deckService, never()).addDeck(any(Deck.class));
+        verify(deckService, never()).addDeck(any(DeckDTO.class));
     }
 
     @Test
@@ -116,6 +116,6 @@ class CreateDeckUseCaseTest {
             () -> createDeckUseCase.execute(deckDTO)
         );
         assertEquals(DeckError.DESCRIPTION_TOO_LONG, exception.getMessage());
-        verify(deckService, never()).addDeck(any(Deck.class));
+        verify(deckService, never()).addDeck(any(DeckDTO.class));
     }
 } 

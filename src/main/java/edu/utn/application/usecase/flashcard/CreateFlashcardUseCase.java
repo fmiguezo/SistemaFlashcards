@@ -1,11 +1,12 @@
 package edu.utn.application.usecase.flashcard;
 
 import edu.utn.application.dto.FlashcardDTO;
-import edu.utn.application.mappers.FlashcardMapper;
-import edu.utn.domain.model.flashcard.Flashcard;
 import edu.utn.domain.service.flashcard.IFlashcardService;
 import edu.utn.domain.service.validation.ValidationService;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 public class CreateFlashcardUseCase {
@@ -19,10 +20,19 @@ public class CreateFlashcardUseCase {
 
     public FlashcardDTO execute(FlashcardDTO flashcardDTO) {
         validationService.validateFlashcardInput(flashcardDTO);
-        
-        Flashcard flashcard = new Flashcard(flashcardDTO.getPregunta(), flashcardDTO.getRespuesta());
-        flashcardService.addFlashcard(flashcard);
-        
-        return FlashcardMapper.toDTO(flashcard);
+        if (flashcardDTO.getId() == null) {
+            flashcardDTO.setId(UUID.randomUUID());
+        }
+        if (flashcardDTO.getCreatedAt() == null) {
+            flashcardDTO.setCreatedAt(LocalDateTime.now());
+        }
+        if (flashcardDTO.getUpdatedAt() == null) {
+            flashcardDTO.setUpdatedAt(LocalDateTime.now());
+        }
+        if (flashcardDTO.getNextReviewDate() == null) {
+            flashcardDTO.setNextReviewDate(LocalDateTime.now());
+        }
+        flashcardService.addFlashcard(flashcardDTO);
+        return flashcardDTO;
     }
 }

@@ -41,7 +41,7 @@ class CreateFlashcardUseCaseTest {
 
     @Test
     void execute_WithValidFlashcardDTO_ShouldCreateFlashcard() {
-        doNothing().when(flashcardService).addFlashcard(any(Flashcard.class));
+        doNothing().when(flashcardService).addFlashcard(any(FlashcardDTO.class));
 
         FlashcardDTO result = createFlashcardUseCase.execute(validFlashcardDTO);
 
@@ -52,7 +52,7 @@ class CreateFlashcardUseCaseTest {
         assertNotNull(result.getCreatedAt());
         assertNotNull(result.getUpdatedAt());
         assertNotNull(result.getNextReviewDate());
-        verify(flashcardService, times(1)).addFlashcard(any(Flashcard.class));
+        verify(flashcardService, times(1)).addFlashcard(any(FlashcardDTO.class));
     }
 
     @Test
@@ -62,7 +62,7 @@ class CreateFlashcardUseCaseTest {
             () -> createFlashcardUseCase.execute(null)
         );
         assertEquals(FlashcardError.NULL_FLASHCARD, exception.getMessage());
-        verify(flashcardService, never()).addFlashcard(any(Flashcard.class));
+        verify(flashcardService, never()).addFlashcard(any(FlashcardDTO.class));
     }
 
     @Test
@@ -83,7 +83,7 @@ class CreateFlashcardUseCaseTest {
             () -> createFlashcardUseCase.execute(flashcardDTO)
         );
         assertEquals(FlashcardError.EMPTY_QUESTION, exception.getMessage());
-        verify(flashcardService, never()).addFlashcard(any(Flashcard.class));
+        verify(flashcardService, never()).addFlashcard(any(FlashcardDTO.class));
     }
 
     @Test
@@ -104,7 +104,7 @@ class CreateFlashcardUseCaseTest {
             () -> createFlashcardUseCase.execute(flashcardDTO)
         );
         assertEquals(FlashcardError.EMPTY_QUESTION, exception.getMessage());
-        verify(flashcardService, never()).addFlashcard(any(Flashcard.class));
+        verify(flashcardService, never()).addFlashcard(any(FlashcardDTO.class));
     }
 
     @Test
@@ -125,7 +125,7 @@ class CreateFlashcardUseCaseTest {
             () -> createFlashcardUseCase.execute(flashcardDTO)
         );
         assertEquals(FlashcardError.QUESTION_TOO_LONG, exception.getMessage());
-        verify(flashcardService, never()).addFlashcard(any(Flashcard.class));
+        verify(flashcardService, never()).addFlashcard(any(FlashcardDTO.class));
     }
 
     @Test
@@ -146,7 +146,7 @@ class CreateFlashcardUseCaseTest {
             () -> createFlashcardUseCase.execute(flashcardDTO)
         );
         assertEquals(FlashcardError.EMPTY_ANSWER, exception.getMessage());
-        verify(flashcardService, never()).addFlashcard(any(Flashcard.class));
+        verify(flashcardService, never()).addFlashcard(any(FlashcardDTO.class));
     }
 
     @Test
@@ -167,7 +167,7 @@ class CreateFlashcardUseCaseTest {
             () -> createFlashcardUseCase.execute(flashcardDTO)
         );
         assertEquals(FlashcardError.EMPTY_ANSWER, exception.getMessage());
-        verify(flashcardService, never()).addFlashcard(any(Flashcard.class));
+        verify(flashcardService, never()).addFlashcard(any(FlashcardDTO.class));
     }
 
     @Test
@@ -188,6 +188,6 @@ class CreateFlashcardUseCaseTest {
             () -> createFlashcardUseCase.execute(flashcardDTO)
         );
         assertEquals(FlashcardError.ANSWER_TOO_LONG, exception.getMessage());
-        verify(flashcardService, never()).addFlashcard(any(Flashcard.class));
+        verify(flashcardService, never()).addFlashcard(any(FlashcardDTO.class));
     }
 } 

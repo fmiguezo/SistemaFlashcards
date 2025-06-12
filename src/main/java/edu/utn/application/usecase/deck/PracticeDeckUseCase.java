@@ -1,7 +1,6 @@
 package edu.utn.application.usecase.deck;
 
 import edu.utn.application.dto.DeckDTO;
-import edu.utn.domain.model.deck.IDeck;
 import edu.utn.domain.model.estrategia.IEstrategiaRepeticion;
 import edu.utn.domain.service.deck.IDeckService;
 import edu.utn.infrastructure.ports.in.IUserPracticeInputPort;
