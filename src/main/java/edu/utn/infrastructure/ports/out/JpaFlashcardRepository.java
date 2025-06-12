@@ -8,7 +8,4 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface JpaFlashcardRepository extends JpaRepository<FlashcardEntity, UUID> {
-    void updateFlashcard(IFlashcard flashcard);
-    Optional<IFlashcard> findCardById(UUID nombre);
-    IFlashcard saveFlashcard(IFlashcard flashcardRepository);
 }

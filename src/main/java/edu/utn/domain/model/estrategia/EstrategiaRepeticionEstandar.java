@@ -1,7 +1,10 @@
 package edu.utn.domain.model.estrategia;
 
+import org.springframework.stereotype.Component;
+
 import java.time.LocalDateTime;
 
+@Component
 public class EstrategiaRepeticionEstandar implements IEstrategiaRepeticion {
     @Override
     public LocalDateTime calcularProximaRepeticion(int puntuacion, LocalDateTime ahora) {

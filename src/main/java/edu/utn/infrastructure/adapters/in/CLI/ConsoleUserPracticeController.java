@@ -2,9 +2,11 @@ package edu.utn.infrastructure.adapters.in.CLI;
 
 import edu.utn.domain.model.flashcard.IFlashcard;
 import edu.utn.infrastructure.ports.in.IUserPracticeInputPort;
+import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
+@Component
 public class ConsoleUserPracticeController implements IUserPracticeInputPort {
     private final Scanner scanner = new Scanner(System.in);
 
