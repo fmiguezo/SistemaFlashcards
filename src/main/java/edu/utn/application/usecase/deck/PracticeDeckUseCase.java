@@ -4,7 +4,9 @@ import edu.utn.application.dto.DeckDTO;
 import edu.utn.domain.model.estrategia.IEstrategiaRepeticion;
 import edu.utn.domain.service.deck.IDeckService;
 import edu.utn.infrastructure.ports.in.IUserPracticeInputPort;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PracticeDeckUseCase {
     private final IDeckService deckService;
 
