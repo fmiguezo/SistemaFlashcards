@@ -1,5 +1,4 @@
 package edu.utn.infrastructure.ports.out;
-import edu.utn.application.dto.DeckDTO;
 import edu.utn.domain.model.deck.IDeck;
 import edu.utn.domain.model.flashcard.IFlashcard;
 

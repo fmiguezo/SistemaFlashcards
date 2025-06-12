@@ -4,7 +4,6 @@ import edu.utn.application.dto.DeckDTO;
 import edu.utn.application.dto.FlashcardDTO;
 import edu.utn.domain.model.deck.Deck;
 import edu.utn.domain.model.deck.IDeck;
-import edu.utn.domain.model.flashcard.IFlashcard;
 
 import java.util.List;
 import java.util.stream.Collectors;

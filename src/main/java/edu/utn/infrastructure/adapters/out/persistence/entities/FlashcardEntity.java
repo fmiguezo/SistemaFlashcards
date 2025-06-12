@@ -1,10 +1,16 @@
-package edu.utn.domain.model.flashcard;
-import org.springframework.stereotype.Service;
+package edu.utn.infrastructure.adapters.out.persistence.entities;
 
+import edu.utn.domain.model.flashcard.IFlashcard;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class Flashcard implements IFlashcard {
+@Entity
+@Table(name = "flashcard")
+public class FlashcardEntity {
+
+    @Id
+    @GeneratedValue
     private UUID id;
     private String pregunta;
     private String respuesta;
@@ -14,7 +20,9 @@ public class Flashcard implements IFlashcard {
     private LocalDateTime lastReviewDate;
     private int score;
 
-    public Flashcard(String pregunta, String respuesta) {
+    protected FlashcardEntity() {}
+
+    public FlashcardEntity(String pregunta, String respuesta) {
         this.id = UUID.randomUUID();
         this.pregunta = pregunta;
         this.respuesta = respuesta;
@@ -25,70 +33,66 @@ public class Flashcard implements IFlashcard {
         this.score = 0;
     }
 
-    @Override
     public UUID getId() {
         return id;
     }
 
-    @Override
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
     public String getPregunta() {
         return pregunta;
     }
 
-    @Override
     public void setPregunta(String pregunta) {
         this.pregunta = pregunta;
     }
 
-    @Override
     public String getRespuesta() {
         return respuesta;
     }
 
-    @Override
     public void setRespuesta(String respuesta) {
         this.respuesta = respuesta;
     }
 
-    @Override
-    public LocalDateTime getCreatedAt() { return createdAt; }
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 
-    @Override
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    @Override
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    @Override
     public LocalDateTime getNextReviewDate() {
         return nextReviewDate;
     }
 
-    @Override
     public void setNextReviewDate(LocalDateTime nextReviewDate) {
         this.nextReviewDate = nextReviewDate;
     }
 
-    @Override
     public LocalDateTime getLastReviewDate() {
         return lastReviewDate;
     }
 
-    @Override
     public void setLastReviewDate(LocalDateTime lastReviewDate) {
         this.lastReviewDate = lastReviewDate;
     }
 
-    @Override
     public int getScore() {
         return score;
     }
 
-    @Override
     public void setScore(int score) {
         this.score = score;
     }

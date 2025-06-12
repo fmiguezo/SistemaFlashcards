@@ -1,9 +1,7 @@
 package edu.utn.domain.service.deck;
 import edu.utn.application.dto.DeckDTO;
 import edu.utn.application.dto.FlashcardDTO;
-import edu.utn.domain.model.deck.IDeck;
 import edu.utn.domain.model.estrategia.IEstrategiaRepeticion;
-import edu.utn.domain.model.flashcard.IFlashcard;
 import edu.utn.infrastructure.ports.in.IUserPracticeInputPort;
 import edu.utn.infrastructure.ports.out.IDeckRepository;
 
