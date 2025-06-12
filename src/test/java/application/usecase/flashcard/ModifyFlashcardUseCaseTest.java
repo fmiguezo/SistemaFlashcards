@@ -4,7 +4,6 @@ import edu.utn.application.dto.FlashcardDTO;
 import edu.utn.application.error.FlashcardError;
 import edu.utn.application.usecase.flashcard.ModifyFlashcardUseCase;
 import edu.utn.domain.model.flashcard.Flashcard;
-import edu.utn.domain.model.flashcard.IFlashcard;
 import edu.utn.domain.service.flashcard.IFlashcardService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -9,12 +9,14 @@ import edu.utn.domain.model.estrategia.IEstrategiaRepeticion;
 import edu.utn.domain.service.flashcard.IFlashcardService;
 import edu.utn.infrastructure.ports.in.IUserPracticeInputPort;
 import edu.utn.infrastructure.ports.out.IDeckRepository;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class DeckService implements IDeckService {
     private IDeckRepository deckRepository;
     private IEstrategiaRepeticion estrategiaRepeticion;

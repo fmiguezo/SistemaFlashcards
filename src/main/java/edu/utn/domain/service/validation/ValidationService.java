@@ -4,8 +4,6 @@ import edu.utn.application.error.DeckError;
 import edu.utn.application.error.FlashcardError;
 import edu.utn.application.dto.DeckDTO;
 import edu.utn.application.dto.FlashcardDTO;
-import edu.utn.domain.model.deck.IDeck;
-import edu.utn.domain.model.flashcard.IFlashcard;
 import edu.utn.domain.service.deck.IDeckService;
 import edu.utn.domain.service.flashcard.IFlashcardService;
 

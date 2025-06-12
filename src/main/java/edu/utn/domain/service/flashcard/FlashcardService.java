@@ -6,10 +6,12 @@ import edu.utn.domain.model.estrategia.IEstrategiaRepeticion;
 import edu.utn.domain.model.flashcard.IFlashcard;
 import edu.utn.infrastructure.ports.in.IUserPracticeInputPort;
 import edu.utn.infrastructure.ports.out.IFlashcardRepository;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Service
 public class FlashcardService implements IFlashcardService {
     private IFlashcardRepository flashcardRepository;
     private IUserPracticeInputPort userInputPort;

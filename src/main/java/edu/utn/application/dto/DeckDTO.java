@@ -1,7 +1,6 @@
 package edu.utn.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import edu.utn.domain.model.flashcard.IFlashcard;
 
 import java.util.List;
 import java.util.UUID;
