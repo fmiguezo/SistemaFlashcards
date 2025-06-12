@@ -7,6 +7,7 @@ import edu.utn.application.usecase.flashcard.AddFlashcardToDeckUseCase;
 import edu.utn.application.usecase.flashcard.ListFlashcardsUseCase;
 import edu.utn.domain.model.deck.IDeck;
 import edu.utn.domain.model.estrategia.EstrategiaRepeticionEstandar;
+import edu.utn.infrastructure.ports.in.IDeckController;
 import edu.utn.infrastructure.ports.in.IUserPracticeInputPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,8 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/decks")
-public class DeckController {
+@CrossOrigin(origins = "http://localhost:63342")
+public class DeckController implements IDeckController{
 
     private final CreateDeckUseCase createDeckUseCase;
     private final ListDecksUseCase listDecksUseCase;

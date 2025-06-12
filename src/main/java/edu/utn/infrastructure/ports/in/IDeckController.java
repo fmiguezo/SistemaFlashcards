@@ -1,5 +1,6 @@
 package edu.utn.infrastructure.ports.in;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
@@ -11,21 +12,34 @@ import edu.utn.application.dto.FlashcardDTO;
 
 
 public interface IDeckController {
-    // Lo uso para crear un deck
-    ResponseEntity<?> createDeck(@RequestBody DeckDTO deckDto);
 
-    // Lo uso para modificar un deck
-    ResponseEntity<?> modifyDeck(@RequestBody DeckDTO deckDto);
+    // 1) Listar todos los decks
+    ResponseEntity<List<DeckDTO>> listDecks();
 
-    // Lo uso para eliminar un deck
-    ResponseEntity<?> deleteDeck(@PathVariable UUID deckId);
+    // 2) Obtener un deck por ID
+    ResponseEntity<DeckDTO> getDeckById(@PathVariable UUID deckId);
 
-    // Lo uso para utilizar el practiceDeck
-    ResponseEntity<?> practiceDeck(@PathVariable UUID deckId);
+    // 3) Crear un deck
+    ResponseEntity<DeckDTO> createDeck(@RequestBody DeckDTO deckDto);
 
-    // Listar flashcards de un mazo
-    ResponseEntity<?> listFlashcards(@PathVariable UUID deckId);
+    // 4) Modificar un deck
+    ResponseEntity<DeckDTO> modifyDeck(
+            @PathVariable UUID deckId,
+            @RequestBody DeckDTO deckDto
+    );
 
-    // Agregar una flashcard a un deck
-    ResponseEntity<?> addFlashcardToDeck(@PathVariable UUID deckId, @RequestBody FlashcardDTO flashcardDto);
+    // 5) Borrar un deck
+    ResponseEntity<Void> deleteDeck(@PathVariable UUID deckId);
+
+    // 6) Listar flashcards de un deck
+    ResponseEntity<List<FlashcardDTO>> listFlashcards(@PathVariable UUID deckId);
+
+    // 7) Agregar una flashcard a un deck
+    ResponseEntity<FlashcardDTO> addFlashcardToDeck(
+            @PathVariable UUID deckId,
+            @RequestBody FlashcardDTO flashcardDto
+    );
+
+    // 8) Iniciar práctica de un deck
+    ResponseEntity<Void> practiceDeck(@PathVariable UUID deckId);
 }
