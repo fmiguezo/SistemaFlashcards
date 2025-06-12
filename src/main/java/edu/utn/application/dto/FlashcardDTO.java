@@ -1,5 +1,7 @@
 package edu.utn.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -23,27 +25,29 @@ public class FlashcardDTO {
         this.lastReviewDate = lastReviewDate;
         this.score = score;
     }
-
+    @JsonProperty("id")
     public UUID getId() {
         return id;
     }
-    
+    @JsonProperty("question")
     public String getPregunta() {
         return pregunta;
     }
-
+    @JsonProperty("question")
     public void setPregunta(String pregunta) {
         this.pregunta = pregunta;
     }
-
+    @JsonProperty("answer")
     public String getRespuesta() {
         return respuesta;
     }
-
+    @JsonProperty("answer")
     public void setRespuesta(String respuesta) {
         this.respuesta = respuesta;
     }
 
+    // El resto de los campos los podemos dejar sin anotaciones JsonProperty
+    // Dado que no necesitamos renombrar en el J SON
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }

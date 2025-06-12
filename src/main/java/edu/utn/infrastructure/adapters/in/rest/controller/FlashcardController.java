@@ -1,56 +1,61 @@
 package edu.utn.infrastructure.adapters.in.rest.controller;
 
-import java.util.UUID;
-
-import edu.utn.application.usecase.flashcard.GetFlashcardUseCase;
+import edu.utn.application.dto.FlashcardDTO;
 import edu.utn.application.usecase.flashcard.CreateFlashcardUseCase;
 import edu.utn.application.usecase.flashcard.ModifyFlashcardUseCase;
 import edu.utn.application.usecase.flashcard.DeleteFlashcardUseCase;
+import edu.utn.application.usecase.flashcard.GetFlashcardUseCase;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import edu.utn.application.dto.FlashcardDTO;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/flashcards")
 public class FlashcardController {
 
+    private final GetFlashcardUseCase getFlashcardUseCase;
     private final CreateFlashcardUseCase createFlashcardUseCase;
     private final ModifyFlashcardUseCase modifyFlashcardUseCase;
     private final DeleteFlashcardUseCase deleteFlashcardUseCase;
-    private final GetFlashcardUseCase getFlashcardUseCase;
 
-    public FlashcardController(CreateFlashcardUseCase createFlashcardUseCase, ModifyFlashcardUseCase modifyFlashcardUseCase, DeleteFlashcardUseCase deleteFlashcardUseCase, GetFlashcardUseCase getFlashcardUseCase) {
+    public FlashcardController(
+            GetFlashcardUseCase getFlashcardUseCase,
+            CreateFlashcardUseCase createFlashcardUseCase,
+            ModifyFlashcardUseCase modifyFlashcardUseCase,
+            DeleteFlashcardUseCase deleteFlashcardUseCase
+    ) {
+        this.getFlashcardUseCase = getFlashcardUseCase;
         this.createFlashcardUseCase = createFlashcardUseCase;
         this.modifyFlashcardUseCase = modifyFlashcardUseCase;
         this.deleteFlashcardUseCase = deleteFlashcardUseCase;
-        this.getFlashcardUseCase = getFlashcardUseCase;
     }
 
+    // 1) Obtener flashcard por ID
     @GetMapping("/{flashcardId}")
     public ResponseEntity<FlashcardDTO> getFlashcardById(@PathVariable UUID flashcardId) {
-        FlashcardDTO flashcard = getFlashcardUseCase.execute(flashcardId); // Usar el caso de uso
-        if (flashcard == null) {
-            return ResponseEntity.notFound().build(); // Retorna 404 si no se encuentra la flashcard
-        }
-        return ResponseEntity.ok(flashcard); // Retorna el DTO de la flashcard
+        FlashcardDTO dto = getFlashcardUseCase.execute(flashcardId);
+        return dto != null
+                ? ResponseEntity.ok(dto)
+                : ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/deck/{deckId}")
-    public ResponseEntity<?> createFlashcard(@PathVariable UUID deckId, @RequestBody FlashcardDTO flashcardDto) {
-        FlashcardDTO result = createFlashcardUseCase.execute(flashcardDto);
-        return ResponseEntity.ok("Se creo la flashcard: " + result.getPregunta() + " correctamente");
-    }
-
+    // 3) Modificar flashcard
     @PutMapping("/{flashcardId}")
-    public ResponseEntity<?> modifyFlashcard(@PathVariable UUID flashcardId, @RequestBody FlashcardDTO flashcardDto) {
-        FlashcardDTO result = modifyFlashcardUseCase.execute(flashcardDto);
-        return ResponseEntity.ok("Se modifico la flashcard: " + result.getPregunta() + " correctamente");
+    public ResponseEntity<FlashcardDTO> modifyFlashcard(
+            @PathVariable UUID flashcardId,
+            @RequestBody FlashcardDTO flashcardDto
+    ) {
+        flashcardDto.setId(flashcardId);
+        FlashcardDTO updated = modifyFlashcardUseCase.execute(flashcardDto);
+        return ResponseEntity.ok(updated);
     }
 
+    // 4) Borrar flashcard
     @DeleteMapping("/{flashcardId}")
-    public ResponseEntity<?> deleteFlashcard(@PathVariable UUID flashcardId) {
-        String result = deleteFlashcardUseCase.execute(flashcardId);
-        return ResponseEntity.ok(result);
+    public ResponseEntity<Void> deleteFlashcard(@PathVariable UUID flashcardId) {
+        deleteFlashcardUseCase.execute(flashcardId);
+        return ResponseEntity.noContent().build();
     }
 }

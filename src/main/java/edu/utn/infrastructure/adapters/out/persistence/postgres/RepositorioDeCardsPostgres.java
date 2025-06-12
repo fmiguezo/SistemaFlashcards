@@ -1,7 +1,7 @@
 package edu.utn.infrastructure.adapters.out.persistence.postgres;
 import edu.utn.domain.model.flashcard.IFlashcard;
 import edu.utn.infrastructure.ports.out.IFlashcardRepository;
-import edu.utn.infrastructure.ports.out.JpaDeckRepository;
+import edu.utn.infrastructure.ports.out.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -9,29 +9,29 @@ import java.util.UUID;
 
 @Repository
 public class RepositorioDeCardsPostgres implements IFlashcardRepository {
-    private final JpaDeckRepository jpaDeckRepository;
+    private final JpaRepository jpaRepository;
 
-    public RepositorioDeCardsPostgres(JpaDeckRepository jpaDeckRepository) {
-        this.jpaDeckRepository = jpaDeckRepository;
+    public RepositorioDeCardsPostgres(JpaRepository jpaRepository) {
+        this.jpaRepository = jpaRepository;
     }
 
     @Override
     public IFlashcard createCard(IFlashcard card) {
-        return jpaDeckRepository.saveFlashcard(card);
+        return jpaRepository.saveFlashcard(card);
     }
 
     @Override
     public Optional<IFlashcard> getCardById(UUID id) {
-        return jpaDeckRepository.findCardById(id);
+        return jpaRepository.findCardById(id);
     }
 
     @Override
     public void updateCard(IFlashcard card) {
-        jpaDeckRepository.updateFlashcard(card);
+        jpaRepository.updateFlashcard(card);
     }
 
     @Override
     public void deleteCard(UUID id) {
-        jpaDeckRepository.deleteCardById(id);
+        jpaRepository.deleteCardById(id);
     }
 }
