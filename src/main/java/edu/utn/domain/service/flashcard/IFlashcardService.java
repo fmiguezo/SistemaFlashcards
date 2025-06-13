@@ -6,6 +6,7 @@ import edu.utn.domain.model.flashcard.IFlashcard;
 import edu.utn.infrastructure.ports.out.IFlashcardRepository;
 import edu.utn.infrastructure.ports.in.IUserPracticeInputPort;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 public interface IFlashcardService {
@@ -20,4 +21,5 @@ public interface IFlashcardService {
     void updateScore(IFlashcard flashcard, IEstrategiaRepeticion estrategia, boolean answer);
     IUserPracticeInputPort getUserInputPort();
     void setUserInputPort(IUserPracticeInputPort userInputPort);
+    List<IFlashcard> getFlashcardsByDeckId(UUID deckId);
 }

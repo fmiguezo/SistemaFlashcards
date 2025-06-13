@@ -5,6 +5,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import edu.utn.domain.model.flashcard.Flashcard;
 import edu.utn.domain.model.flashcard.IFlashcard;
 import edu.utn.infrastructure.ports.out.IFlashcardRepository;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import java.io.File;
@@ -98,5 +99,11 @@ public class RepositorioDeCardsJson implements IFlashcardRepository {
         } else {
             throw new IllegalArgumentException("No se encontró una flashcard con el ID: " + id);
         }
+    }
+
+    @Override
+    public List<IFlashcard> getFlashcardsByDeckId(UUID deckId) {
+        // Hay que revisar
+        return List.of();
     }
 }

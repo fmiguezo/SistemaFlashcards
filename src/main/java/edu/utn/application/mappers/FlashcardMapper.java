@@ -2,33 +2,51 @@ package edu.utn.application.mappers;
 
 import edu.utn.application.dto.DeckDTO;
 import edu.utn.application.dto.FlashcardDTO;
-import edu.utn.domain.model.deck.Deck;
+import edu.utn.application.usecase.deck.GetDeckUseCase;
 import edu.utn.domain.model.deck.IDeck;
+import edu.utn.domain.model.estrategia.IEstrategiaRepeticion;
 import edu.utn.domain.model.flashcard.Flashcard;
 import edu.utn.domain.model.flashcard.IFlashcard;
+import edu.utn.domain.service.deck.DeckService;
+import edu.utn.domain.service.deck.IDeckService;
+import edu.utn.domain.service.flashcard.FlashcardService;
+import edu.utn.domain.service.flashcard.IFlashcardService;
+import edu.utn.infrastructure.ports.out.IDeckRepository;
+import edu.utn.infrastructure.ports.out.IFlashcardRepository;
 
-import java.lang.reflect.Field;
+import java.util.UUID;
+
 
 public class FlashcardMapper {
-    public static FlashcardDTO toDTO(IFlashcard flashcard, IDeck deck) {
-        DeckDTO deckDTO = DeckMapper.toDTO(deck);
+    public static FlashcardDTO toDTO(IFlashcard flashcard) {
+        if (flashcard == null) return null;
+
+        UUID deckId = flashcard.getDeck() != null ? flashcard.getDeck().getId() : null;
+
         FlashcardDTO dto = new FlashcardDTO(
                 flashcard.getPregunta(),
                 flashcard.getRespuesta(),
-                deckDTO
+                deckId
         );
+
         dto.setId(flashcard.getId());
         dto.setCreatedAt(flashcard.getCreatedAt());
         dto.setUpdatedAt(flashcard.getUpdatedAt());
         dto.setNextReviewDate(flashcard.getNextReviewDate());
         dto.setLastReviewDate(flashcard.getLastReviewDate());
         dto.setScore(flashcard.getScore());
+
         return dto;
     }
 
-    public static IFlashcard toDomain(FlashcardDTO dto, DeckDTO deck) {
-        IDeck deckDomain = DeckMapper.toDomain(deck);
-        IFlashcard flashcard = new Flashcard(dto.getPregunta(), dto.getRespuesta(), deckDomain);
+    public static IFlashcard toDomain(FlashcardDTO dto, IDeck deck) {
+        Flashcard flashcard = new Flashcard(dto.getPregunta(), dto.getRespuesta(), deck);
+        flashcard.setId(dto.getId());
+        flashcard.setCreatedAt(dto.getCreatedAt());
+        flashcard.setUpdatedAt(dto.getUpdatedAt());
+        flashcard.setNextReviewDate(dto.getNextReviewDate());
+        flashcard.setLastReviewDate(dto.getLastReviewDate());
+        flashcard.setScore(dto.getScore());
         return flashcard;
     }
 }

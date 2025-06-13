@@ -1,14 +1,16 @@
 package edu.utn.domain.service.deck;
+
 import edu.utn.application.dto.DeckDTO;
 import edu.utn.application.dto.FlashcardDTO;
-import edu.utn.application.error.DeckError;
 import edu.utn.application.mappers.DeckMapper;
 import edu.utn.application.mappers.FlashcardMapper;
 import edu.utn.domain.model.deck.IDeck;
 import edu.utn.domain.model.estrategia.IEstrategiaRepeticion;
+import edu.utn.domain.model.flashcard.IFlashcard;
 import edu.utn.domain.service.flashcard.IFlashcardService;
 import edu.utn.infrastructure.ports.in.IUserPracticeInputPort;
 import edu.utn.infrastructure.ports.out.IDeckRepository;
+import edu.utn.infrastructure.ports.out.IFlashcardRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -16,17 +18,20 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class DeckService implements IDeckService {
     private IDeckRepository deckRepository;
     private IEstrategiaRepeticion estrategiaRepeticion;
     private IFlashcardService flashcardService;
+    private IFlashcardRepository flashcardRepository;
 
-    public DeckService(IDeckRepository deckRepository, IEstrategiaRepeticion estrategiaRepeticion, IFlashcardService flashcardService) {
+    public DeckService(IDeckRepository deckRepository, IEstrategiaRepeticion estrategiaRepeticion, IFlashcardService flashcardService, IFlashcardRepository flashcardRepository) {
         this.deckRepository = deckRepository;
         this.estrategiaRepeticion = estrategiaRepeticion;
         this.flashcardService = flashcardService;
+        this.flashcardRepository = flashcardRepository;
     }
 
     @Override
@@ -57,10 +62,11 @@ public class DeckService implements IDeckService {
 
     @Override
     @Transactional
-    public DeckDTO getDeckById(UUID id) {
-        IDeck deck = deckRepository.getDeckById(id)
-                .orElseThrow(DeckError::deckNotFound);
-        return DeckMapper.toDTO(deck);
+    public List<FlashcardDTO> getFlashcardsByDeckId(UUID deckId) {
+        return flashcardRepository.getFlashcardsByDeckId(deckId)
+                .stream()
+                .map(FlashcardMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -71,7 +77,6 @@ public class DeckService implements IDeckService {
 
     @Override
     public void deleteDeckById(UUID id) {
-        getDeckById(id);
         deckRepository.deleteDeckById(id);
     }
 
@@ -96,6 +101,13 @@ public class DeckService implements IDeckService {
                 .toList();
     }
 
+    @Override
+    public DeckDTO getDeckById(UUID deckId) {
+        IDeck deck = deckRepository.getDeckById(deckId)
+                .orElseThrow(() -> new RuntimeException("Deck no encontrado con id: " + deckId));
+        return DeckMapper.toDTO(deck);
+    }
+
 
     @Override
     @Transactional
@@ -104,15 +116,5 @@ public class DeckService implements IDeckService {
         for (FlashcardDTO flashcard : flashcardsToPractice) {
             flashcardService.practiceFlashcard(flashcard, estrategia, userInputPort);
         }
-    }
-
-    @Override
-    @Transactional
-    public List<FlashcardDTO> getFlashcardsByDeckId(UUID id) {
-        IDeck deck = deckRepository.getDeckById(id)
-                .orElseThrow(() -> new RuntimeException("Deck no encontrado"));
-        return deck.getFlashcards().stream()
-                .map(flashcard -> FlashcardMapper.toDTO(flashcard, deck))
-                .toList();
     }
 }

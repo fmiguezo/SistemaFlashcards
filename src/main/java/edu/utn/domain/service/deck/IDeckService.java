@@ -10,7 +10,6 @@ import java.util.UUID;
 
 public interface IDeckService {
     void addDeck(DeckDTO deckDTO);
-    DeckDTO getDeckById(UUID id);
     void updateDeck(DeckDTO deck);
     void deleteDeckById(UUID id);
     List<DeckDTO> getAllDecks();
@@ -21,4 +20,5 @@ public interface IDeckService {
     void practiceDeck(DeckDTO deck, IEstrategiaRepeticion estrategia, IUserPracticeInputPort userInputPort);
     List<FlashcardDTO> getFlashcardsByDeckId(UUID deckId);
     List<FlashcardDTO> getFlashcardsToPractice(DeckDTO deck);
+    DeckDTO getDeckById(UUID deckId);
 }

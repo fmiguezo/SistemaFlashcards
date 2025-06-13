@@ -1,5 +1,6 @@
 package edu.utn.infrastructure.adapters.out.persistence.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import edu.utn.domain.model.deck.IDeck;
 import edu.utn.domain.model.flashcard.IFlashcard;
 import jakarta.persistence.*;
@@ -21,8 +22,9 @@ public class FlashcardEntity {
     private LocalDateTime lastReviewDate;
     private int score;
 ;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "deck_id", nullable = false)
+    @JsonBackReference
     private DeckEntity deck;
 
     protected FlashcardEntity() {}

@@ -7,6 +7,7 @@ import edu.utn.domain.model.flashcard.IFlashcard;
 import edu.utn.infrastructure.adapters.out.persistence.entities.DeckEntity;
 import edu.utn.infrastructure.adapters.out.persistence.entities.FlashcardEntity;
 import jakarta.transaction.Transactional;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 
@@ -18,7 +19,7 @@ public class DeckPersistenceMapper {
 
     private final FlashcardPersistenceMapper flashcardPersistenceMapper;
 
-    public DeckPersistenceMapper(FlashcardPersistenceMapper flashcardPersistenceMapper) {
+    public DeckPersistenceMapper(@Lazy FlashcardPersistenceMapper flashcardPersistenceMapper) {
         this.flashcardPersistenceMapper = flashcardPersistenceMapper;
     }
 
@@ -33,7 +34,7 @@ public class DeckPersistenceMapper {
 
         List<IFlashcard> flashcards = entity.getFlashcards()
                 .stream()
-                .map(flashcardPersistenceMapper::toDomain)
+                .map(flashcard -> flashcardPersistenceMapper.toDomainSinDeck(flashcard, deck))
                 .collect(Collectors.toList());
 
         flashcards.forEach(deck::addFlashcard);
