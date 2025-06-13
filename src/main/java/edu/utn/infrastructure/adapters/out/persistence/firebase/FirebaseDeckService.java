@@ -122,39 +122,51 @@ public class FirebaseDeckService implements IDeckRepository {
         decksRef.child(id.toString()).removeValueAsync();
     }
 
-    @Override
     public List<IFlashcard> getFlashcardsByDeckId(UUID deckId) {
         List<IFlashcard> out = new ArrayList<>();
-
         final Object lock = new Object();
 
+        // 1) Leemos primero el nodo decks/{deckId} completo
         decksRef.child(deckId.toString())
-                .child("flashcards")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            for (DataSnapshot child : snapshot.getChildren()) {
-                                FlashcardDTO flashcardDTO = mapper.convertValue(child.getValue(), FlashcardDTO.class);
-                                IFlashcard flashcard = FlashcardMapper.toDomain(flashcardDTO);
-                                out.add(flashcard);
-                            }
-                        }
-                        synchronized (lock) {
-                            lock.notify();
-                        }
-                    }
+                    public void onDataChange(DataSnapshot deckSnapshot) {
+                        DeckDTO deckDTO = mapper.convertValue(deckSnapshot.getValue(), DeckDTO.class);
 
+                        // 2) Ahora leemos las flashcards hijas
+                        deckSnapshot.getRef().child("flashcards")
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot flashSnapshot) {
+                                        if (flashSnapshot.exists()) {
+                                            for (DataSnapshot child : flashSnapshot.getChildren()) {
+                                                FlashcardDTO dto = mapper.convertValue(child.getValue(), FlashcardDTO.class);
+                                                IFlashcard f = FlashcardMapper.toDomain(dto, deckDTO);
+                                                out.add(f);
+                                            }
+                                        }
+                                        synchronized(lock) {
+                                            lock.notify();
+                                        }
+                                    }
+                                    @Override
+                                    public void onCancelled(DatabaseError error) {
+                                        synchronized(lock) {
+                                            lock.notify();
+                                        }
+                                    }
+                                });
+                    }
                     @Override
                     public void onCancelled(DatabaseError error) {
-                        System.err.println("Error leyendo flashcards: " + error.getMessage());
-                        synchronized (lock) {
+                        synchronized(lock) {
                             lock.notify();
                         }
                     }
                 });
 
-        synchronized (lock) {
+        // 3) Esperamos a que termine todo
+        synchronized(lock) {
             try {
                 lock.wait();
             } catch (InterruptedException e) {
@@ -164,5 +176,7 @@ public class FirebaseDeckService implements IDeckRepository {
 
         return out;
     }
+
+
 }
 

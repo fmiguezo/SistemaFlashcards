@@ -15,9 +15,7 @@ class FlashcardTest {
 
     @BeforeEach
     void setup() {
-        testDeck = new Deck();
-        testDeck.setNombre("Deck de prueba");
-        testDeck.setDescripcion("Descripción del deck de prueba");
+        testDeck = new Deck("Deck de prueba","Descripción del deck de prueba");
     }
 
 

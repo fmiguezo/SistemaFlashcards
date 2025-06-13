@@ -35,11 +35,19 @@ class AddFlashcardToDeckUseCaseTest {
 
     @BeforeEach
     void setUp() {
+        // mocks o instancias de deckService y flashcardService
         addFlashcardToDeckUseCase = new AddFlashcardToDeckUseCase(deckService, flashcardService);
-        validDeckId = UUID.randomUUID();
-        existingDeck = new DeckDTO("Test Deck", "Test Description");
+
+        validDeckId   = UUID.randomUUID();
+        existingDeck  = new DeckDTO("Test Deck", "Test Description");
         existingDeck.setId(validDeckId);
-        newFlashcardDTO = new FlashcardDTO("New Question","New Answer");
+
+        // <-- Aquí le pasamos el deck al constructor del DTO
+        newFlashcardDTO = new FlashcardDTO(
+                "New Question",
+                "New Answer",
+                existingDeck
+        );
     }
 
     @Test
