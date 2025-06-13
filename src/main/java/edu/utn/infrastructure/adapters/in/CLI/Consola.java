@@ -49,7 +49,7 @@ public class Consola implements CommandLineRunner {
         this.consola = new ConsoleInput();
         this.estrategiaRepeticion = new EstrategiaRepeticionEstandar();
         this.flashcardService = new FlashcardService(this.flashcardRepository, this.consola, this.deckRepository);
-        this.deckService = new DeckService(this.deckRepository, this.estrategiaRepeticion, this.flashcardService);
+        this.deckService = new DeckService(this.deckRepository, this.estrategiaRepeticion, this.flashcardService, this.flashcardRepository);
         this.createDeckUseCase = new CreateDeckUseCase(this.deckService);
         this.listDecksUseCase = new ListDecksUseCase(this.deckService);
         this.modifyDeckUseCase = new ModifyDeckUseCase(this.deckService);
@@ -180,12 +180,14 @@ public class Consola implements CommandLineRunner {
         if (flashcards.isEmpty()) {
             System.out.println("Este deck no tiene flashcards.");
         } else {
+            System.out.println("Flashcards en el deck:");
             for (int i = 0; i < flashcards.size(); i++) {
                 FlashcardDTO f = flashcards.get(i);
                 System.out.printf("%d. %s%n", i + 1, f.getPregunta());
             }
         }
 
+        System.out.println("\n--- GESTIÓN DE FLASHCARDS ---");
         System.out.println("1. Agregar flashcard");
         System.out.println("2. Editar flashcard");
         System.out.println("3. Eliminar flashcard");
@@ -228,6 +230,7 @@ public class Consola implements CommandLineRunner {
             return;
         }
         FlashcardDTO f = flashcards.get(idx);
+        System.out.println(f.getId());
         System.out.print("Nueva pregunta: ");
         String nuevaPregunta = scanner.nextLine();
         System.out.print("Nueva respuesta: ");
@@ -244,7 +247,7 @@ public class Consola implements CommandLineRunner {
             return;
         }
         deleteFlashcardUseCase.execute(flashcards.get(idx).getId());
-        System.out.println("Flashcard eliminada.");
+        System.out.println(flashcards.get(idx).getId());
     }
 
     private void practicarDeck(Scanner scanner, DeckDTO deck) {

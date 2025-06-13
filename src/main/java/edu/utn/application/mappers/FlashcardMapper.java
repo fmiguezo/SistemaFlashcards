@@ -40,6 +40,13 @@ public class FlashcardMapper {
     }
 
     public static IFlashcard toDomain(FlashcardDTO dto, IDeck deck) {
-        return new Flashcard(dto.getPregunta(), dto.getRespuesta(), deck);
+        Flashcard flashcard = new Flashcard(dto.getPregunta(), dto.getRespuesta(), deck);
+        flashcard.setId(dto.getId());
+        flashcard.setCreatedAt(dto.getCreatedAt());
+        flashcard.setUpdatedAt(dto.getUpdatedAt());
+        flashcard.setNextReviewDate(dto.getNextReviewDate());
+        flashcard.setLastReviewDate(dto.getLastReviewDate());
+        flashcard.setScore(dto.getScore());
+        return flashcard;
     }
 }

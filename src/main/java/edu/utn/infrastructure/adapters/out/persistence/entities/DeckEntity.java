@@ -21,7 +21,7 @@ public class DeckEntity {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "deck", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "deck", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<FlashcardEntity> flashcards = new ArrayList<>();
 
@@ -75,7 +75,7 @@ public class DeckEntity {
     }
 
     @Transactional
-    @OneToMany(mappedBy = "deck", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "deck", fetch = FetchType.EAGER, orphanRemoval = true)
     public List<FlashcardEntity> getFlashcards() {
         return flashcards;
     }

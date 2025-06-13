@@ -35,15 +35,7 @@ public class AddFlashcardToDeckUseCase {
             throw DeckError.deckNotFound();
         }
 
-        boolean exists = deck.getFlashcards().stream()
-                .anyMatch(f -> f.getPregunta().equals(flashcardDTO.getPregunta()) && f.getRespuesta().equals(flashcardDTO.getRespuesta()));
-        if (exists) {
-            throw DeckError.flashcardAlreadyExists();
-        }
-
         validationService.validateFlashcardInput(flashcardDTO);
-        flashcardService.addFlashcard(flashcardDTO);
-        deckService.updateDeck(deck);
         return flashcardDTO;
     }
 }

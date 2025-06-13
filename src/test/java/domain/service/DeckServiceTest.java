@@ -9,6 +9,7 @@ import edu.utn.domain.service.deck.DeckService;
 import edu.utn.domain.service.flashcard.IFlashcardService;
 import edu.utn.infrastructure.ports.in.IUserPracticeInputPort;
 import edu.utn.infrastructure.ports.out.IDeckRepository;
+import edu.utn.infrastructure.ports.out.IFlashcardRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -25,14 +26,16 @@ class DeckServiceTest {
     private IDeckRepository deckRepository;
     private IEstrategiaRepeticion estrategiaRepeticion;
     private DeckService deckService;
-    IFlashcardService flashcardService;
+    private IFlashcardService flashcardService;
+    private IFlashcardRepository flashcardRepository;
 
     @BeforeEach
     void setUp() {
         deckRepository = mock(IDeckRepository.class);
         estrategiaRepeticion = mock(IEstrategiaRepeticion.class);
         flashcardService = mock(IFlashcardService.class);
-        deckService = new DeckService(deckRepository, estrategiaRepeticion, flashcardService);
+        flashcardRepository = mock(IFlashcardRepository.class);
+        deckService = new DeckService(deckRepository, estrategiaRepeticion, flashcardService, flashcardRepository);
     }
 
     @Test

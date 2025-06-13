@@ -9,31 +9,43 @@ import edu.utn.infrastructure.adapters.out.persistence.mapper.FlashcardPersisten
 import edu.utn.infrastructure.ports.out.IFlashcardRepository;
 import edu.utn.infrastructure.ports.out.JpaDeckRepository;
 import edu.utn.infrastructure.ports.out.JpaFlashcardRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Repository
+@Transactional
 public class RepositorioDeCardsPostgres implements IFlashcardRepository {
-
     private final JpaFlashcardRepository jpaRepo;
-    private final JpaDeckRepository jpaDeckRepo; // <-- Repositorio de Deck
+    private final JpaDeckRepository jpaDeckRepo;
     private final FlashcardPersistenceMapper mapper;
     private final DeckPersistenceMapper deckMapper;
 
-    public RepositorioDeCardsPostgres(JpaFlashcardRepository jpaRepo, JpaDeckRepository jpaDeckRepo) {
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    public RepositorioDeCardsPostgres(JpaFlashcardRepository jpaRepo,
+                                      JpaDeckRepository jpaDeckRepo,
+                                      FlashcardPersistenceMapper mapper,
+                                      DeckPersistenceMapper deckMapper) {
         this.jpaRepo = jpaRepo;
         this.jpaDeckRepo = jpaDeckRepo;
-        this.mapper = new FlashcardPersistenceMapper();
-        this.deckMapper = new DeckPersistenceMapper(this.mapper);
+        this.mapper = mapper;
+        this.deckMapper = deckMapper;
     }
 
     @Override
     public IFlashcard createCard(IFlashcard card) {
         DeckEntity deckEntity = jpaDeckRepo.findById(card.getDeck().getId())
                 .orElseThrow(() -> new RuntimeException("Deck no encontrado con id: " + card.getDeck().getId()));
-
         FlashcardEntity entity = FlashcardPersistenceMapper.toPersistence(card, deckEntity);
         FlashcardEntity saved = jpaRepo.save(entity);
         IDeck deckDomain = deckMapper.toDomain(deckEntity);
@@ -50,7 +62,6 @@ public class RepositorioDeCardsPostgres implements IFlashcardRepository {
                 });
     }
 
-
     @Override
     public void updateCard(IFlashcard card) {
         DeckEntity deckEntity = jpaDeckRepo.findById(card.getDeck().getId())
@@ -62,6 +73,24 @@ public class RepositorioDeCardsPostgres implements IFlashcardRepository {
 
     @Override
     public void deleteCard(UUID id) {
-        jpaRepo.deleteById(id);
+        boolean exists = jpaRepo.existsById(id);
+        if (exists) {
+            jpaRepo.deleteById(id);
+            jpaRepo.flush();
+        } else {
+            throw new RuntimeException("Card no encontrado con id: " + id);
+        }
+    }
+
+    @Override
+    public List<IFlashcard> getFlashcardsByDeckId(UUID deckId) {
+        DeckEntity deckEntity = jpaDeckRepo.findById(deckId)
+                .orElseThrow(() -> new RuntimeException("Deck no encontrado con id: " + deckId));
+
+        IDeck deckDomain = deckMapper.toDomain(deckEntity);
+
+        return jpaRepo.findByDeckId(deckId).stream()
+                .map(entity -> mapper.toDomain(entity, deckDomain))
+                .collect(Collectors.toList());
     }
 }

@@ -1,19 +1,20 @@
 package edu.utn.domain.service.flashcard;
-import edu.utn.application.dto.DeckDTO;
+
 import edu.utn.application.dto.FlashcardDTO;
 import edu.utn.application.error.FlashcardError;
-import edu.utn.application.mappers.DeckMapper;
 import edu.utn.application.mappers.FlashcardMapper;
-import edu.utn.domain.model.deck.Deck;
 import edu.utn.domain.model.deck.IDeck;
 import edu.utn.domain.model.estrategia.IEstrategiaRepeticion;
 import edu.utn.domain.model.flashcard.IFlashcard;
 import edu.utn.infrastructure.ports.in.IUserPracticeInputPort;
 import edu.utn.infrastructure.ports.out.IDeckRepository;
 import edu.utn.infrastructure.ports.out.IFlashcardRepository;
+import edu.utn.infrastructure.ports.out.JpaFlashcardRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -112,4 +113,8 @@ public class FlashcardService implements IFlashcardService {
         this.userInputPort = userInputPort;
     }
 
+    @Override
+    public List<IFlashcard> getFlashcardsByDeckId(UUID deckId) {
+        return flashcardRepository.getFlashcardsByDeckId(deckId);
+    }
 }
