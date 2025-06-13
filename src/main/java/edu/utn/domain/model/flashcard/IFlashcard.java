@@ -1,4 +1,6 @@
 package edu.utn.domain.model.flashcard;
+import edu.utn.domain.model.deck.IDeck;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -20,4 +22,8 @@ public interface IFlashcard {
     void setScore(int score);
 
     void setCreatedAt(LocalDateTime createdAt);
+
+    IDeck getDeck();
+
+    void setDeck(IDeck deck);
 }

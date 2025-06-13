@@ -10,6 +10,7 @@ import edu.utn.infrastructure.ports.out.IDeckRepository;
 import edu.utn.infrastructure.ports.out.JpaDeckRepository;
 import jakarta.transaction.Transactional;
 import org.hibernate.Hibernate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import java.util.List;
@@ -24,11 +25,13 @@ public class RepositorioDeDecksPostgres implements IDeckRepository {
     private final DeckPersistenceMapper mapper;
     private final FlashcardPersistenceMapper flashcardPersistenceMapper;
 
-
-    public RepositorioDeDecksPostgres(JpaDeckRepository jpaRepo) {
+    @Autowired
+    public RepositorioDeDecksPostgres(JpaDeckRepository jpaRepo,
+                                      DeckPersistenceMapper mapper,
+                                      FlashcardPersistenceMapper flashcardPersistenceMapper) {
         this.jpaRepo = jpaRepo;
-        mapper = new DeckPersistenceMapper();
-        flashcardPersistenceMapper = new FlashcardPersistenceMapper();
+        this.mapper = mapper;
+        this.flashcardPersistenceMapper = flashcardPersistenceMapper;
     }
 
     @Override

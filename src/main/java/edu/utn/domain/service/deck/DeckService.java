@@ -109,8 +109,10 @@ public class DeckService implements IDeckService {
     @Override
     @Transactional
     public List<FlashcardDTO> getFlashcardsByDeckId(UUID id) {
-        return deckRepository.getFlashcardsByDeckId(id).stream()
-                .map(FlashcardMapper::toDTO)
+        IDeck deck = deckRepository.getDeckById(id)
+                .orElseThrow(() -> new RuntimeException("Deck no encontrado"));
+        return deck.getFlashcards().stream()
+                .map(flashcard -> FlashcardMapper.toDTO(flashcard, deck))
                 .toList();
     }
 }

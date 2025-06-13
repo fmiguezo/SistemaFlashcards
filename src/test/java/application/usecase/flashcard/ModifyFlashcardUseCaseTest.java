@@ -87,6 +87,8 @@ class ModifyFlashcardUseCaseTest {
 
     @Test
     void execute_WithEmptyQuestion_ShouldThrowException() {
+        when(flashcardService.getFlashcardById(validFlashcardId)).thenReturn(existingFlashcard);
+
         FlashcardError exception = assertThrows(
             FlashcardError.class,
             () -> modifyFlashcardUseCase.execute(existingFlashcard, "",
@@ -155,4 +157,6 @@ class ModifyFlashcardUseCaseTest {
         assertEquals(FlashcardError.ANSWER_TOO_LONG, exception.getMessage());
         verify(flashcardService, never()).updateFlashcard(any(FlashcardDTO.class));
     }
+
+
 } 

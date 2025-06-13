@@ -42,7 +42,6 @@ public class AddFlashcardToDeckUseCase {
         }
 
         validationService.validateFlashcardInput(flashcardDTO);
-
         flashcardService.addFlashcard(flashcardDTO);
         deckService.updateDeck(deck);
         return flashcardDTO;

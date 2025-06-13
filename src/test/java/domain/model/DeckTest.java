@@ -57,7 +57,7 @@ class DeckTest {
     void testAddFlashcardToDeck() {
         IDeck deck = new Deck("Deck 1", "Descripción 1");
 
-        IFlashcard flashcard = new Flashcard("Pregunta", "Respuesta");
+        IFlashcard flashcard = new Flashcard("Pregunta", "Respuesta", deck);
         deck.getFlashcards().add(flashcard);
 
         assertEquals(1, deck.getFlashcards().size());

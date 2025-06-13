@@ -20,8 +20,7 @@ public class DeckEntity {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "deck_id")
+    @OneToMany(mappedBy = "deck", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FlashcardEntity> flashcards = new ArrayList<>();
 
     protected DeckEntity() {}
@@ -74,11 +73,10 @@ public class DeckEntity {
     }
 
     @Transactional
-    @OneToMany(mappedBy = "deck", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "deck", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     public List<FlashcardEntity> getFlashcards() {
         return flashcards;
     }
-
     public void setFlashcards(List<FlashcardEntity> flashcards) {
         this.flashcards = flashcards;
     }

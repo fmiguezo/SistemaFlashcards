@@ -1,5 +1,7 @@
 package edu.utn.domain.model.flashcard;
 
+import edu.utn.domain.model.deck.IDeck;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -12,8 +14,9 @@ public class Flashcard implements IFlashcard {
     private LocalDateTime nextReviewDate;
     private LocalDateTime lastReviewDate;
     private int score;
+    private IDeck deck;
 
-    public Flashcard(String pregunta, String respuesta) {
+    public Flashcard(String pregunta, String respuesta, IDeck deck) {
         this.id = UUID.randomUUID();
         this.pregunta = pregunta;
         this.respuesta = respuesta;
@@ -22,6 +25,7 @@ public class Flashcard implements IFlashcard {
         this.updatedAt = this.createdAt;
         this.lastReviewDate = null;
         this.score = 0;
+        this.deck = deck;
     }
 
     @Override
@@ -100,5 +104,15 @@ public class Flashcard implements IFlashcard {
     @Override
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    @Override
+    public IDeck getDeck() {
+        return deck;
+    }
+
+    @Override
+    public void setDeck(IDeck deck) {
+        this.deck = deck;
     }
 }

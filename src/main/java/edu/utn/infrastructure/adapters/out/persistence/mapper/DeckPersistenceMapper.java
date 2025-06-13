@@ -7,17 +7,19 @@ import edu.utn.domain.model.flashcard.IFlashcard;
 import edu.utn.infrastructure.adapters.out.persistence.entities.DeckEntity;
 import edu.utn.infrastructure.adapters.out.persistence.entities.FlashcardEntity;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Component;
 
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class DeckPersistenceMapper {
 
     private final FlashcardPersistenceMapper flashcardPersistenceMapper;
 
-    public DeckPersistenceMapper() {
-        this.flashcardPersistenceMapper = new FlashcardPersistenceMapper();
+    public DeckPersistenceMapper(FlashcardPersistenceMapper flashcardPersistenceMapper) {
+        this.flashcardPersistenceMapper = flashcardPersistenceMapper;
     }
 
     @Transactional
@@ -49,9 +51,10 @@ public class DeckPersistenceMapper {
 
         List<FlashcardEntity> flashcardsEntities = deck.getFlashcards()
                 .stream()
-                .map(f -> FlashcardPersistenceMapper.toPersistence((Flashcard) f)) // casteo porque en dominio es interface
+                .map(f -> FlashcardPersistenceMapper.toPersistence((Flashcard) f, entity))
                 .collect(Collectors.toList());
 
+        entity.getFlashcards().clear();
         entity.getFlashcards().addAll(flashcardsEntities);
 
         return entity;
