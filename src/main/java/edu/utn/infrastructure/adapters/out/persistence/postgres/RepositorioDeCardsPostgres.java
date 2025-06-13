@@ -74,6 +74,7 @@ public class RepositorioDeCardsPostgres implements IFlashcardRepository {
     @Override
     public void deleteCard(UUID id) {
         boolean exists = jpaRepo.existsById(id);
+        System.out.println("Intentando eliminar flashcard con id: " + id);
         if (exists) {
             jpaRepo.deleteById(id);
             jpaRepo.flush();
