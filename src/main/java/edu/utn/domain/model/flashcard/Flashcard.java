@@ -30,7 +30,7 @@ public class Flashcard implements IFlashcard {
 
     @Override
     public void setId(UUID id) {
-
+        this.id = id;
     }
 
     @Override

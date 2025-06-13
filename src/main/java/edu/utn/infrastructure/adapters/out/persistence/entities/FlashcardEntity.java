@@ -22,7 +22,7 @@ public class FlashcardEntity {
     private LocalDateTime lastReviewDate;
     private int score;
 ;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "deck_id", nullable = false)
     @JsonBackReference
     private DeckEntity deck;

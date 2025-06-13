@@ -5,11 +5,19 @@ import edu.utn.domain.model.flashcard.Flashcard;
 import edu.utn.domain.model.flashcard.IFlashcard;
 import edu.utn.infrastructure.adapters.out.persistence.entities.DeckEntity;
 import edu.utn.infrastructure.adapters.out.persistence.entities.FlashcardEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 @Component
 public class FlashcardPersistenceMapper {
-    private DeckPersistenceMapper deckPersistenceMapper = new DeckPersistenceMapper(this);
+
+    @Autowired
+    private DeckPersistenceMapper deckPersistenceMapper;
+
+    public FlashcardPersistenceMapper(@Lazy DeckPersistenceMapper deckPersistenceMapper) {
+        this.deckPersistenceMapper = deckPersistenceMapper;
+    }
 
     public IFlashcard toDomain(FlashcardEntity entity, IDeck deck) {
         if (entity == null) return null;
