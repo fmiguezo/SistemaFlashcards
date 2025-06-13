@@ -8,9 +8,9 @@ import edu.utn.domain.service.deck.IDeckService;
 import edu.utn.domain.service.flashcard.IFlashcardService;
 
 public class ValidationService {
-    private static final int FLASHCARD_QUESTION_MIN_LENGTH = 10;
+    private static final int FLASHCARD_QUESTION_MIN_LENGTH = 5;
     private static final int FLASHCARD_QUESTION_MAX_LENGTH = 100;
-    private static final int FLASHCARD_ANSWER_MIN_LENGTH = 10;
+    private static final int FLASHCARD_ANSWER_MIN_LENGTH = 5;
     private static final int FLASHCARD_ANSWER_MAX_LENGTH = 250;
 
     private static final int DECK_NAME_MAX_LENGTH = 100;
