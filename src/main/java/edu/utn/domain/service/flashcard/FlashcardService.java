@@ -64,7 +64,6 @@ public class FlashcardService implements IFlashcardService {
     @Override
     public void practiceFlashcard(FlashcardDTO flashcardDTO, IEstrategiaRepeticion estrategia, IUserPracticeInputPort userInputPort) {
         IFlashcard flashcard = FlashcardMapper.toDomain(flashcardDTO);
-
         userInputPort.showQuestion(flashcard);
         userInputPort.showAnswer(flashcard);
         boolean answer = userInputPort.askUserForAnswer(flashcard);

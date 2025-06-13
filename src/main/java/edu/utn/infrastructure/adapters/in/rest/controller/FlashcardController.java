@@ -1,9 +1,6 @@
 package edu.utn.infrastructure.adapters.in.rest.controller;
 import edu.utn.application.dto.FlashcardDTO;
-import edu.utn.application.usecase.flashcard.CreateFlashcardUseCase;
-import edu.utn.application.usecase.flashcard.ModifyFlashcardUseCase;
-import edu.utn.application.usecase.flashcard.DeleteFlashcardUseCase;
-import edu.utn.application.usecase.flashcard.GetFlashcardUseCase;
+import edu.utn.application.usecase.flashcard.*;
 import edu.utn.infrastructure.ports.in.IFlashcardController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,17 +17,19 @@ public class FlashcardController implements IFlashcardController {
     private final CreateFlashcardUseCase createFlashcardUseCase;
     private final ModifyFlashcardUseCase modifyFlashcardUseCase;
     private final DeleteFlashcardUseCase deleteFlashcardUseCase;
+    private final AddFlashcardToDeckUseCase addFlashcardToDeckUseCase;
 
     public FlashcardController(
             GetFlashcardUseCase getFlashcardUseCase,
             CreateFlashcardUseCase createFlashcardUseCase,
             ModifyFlashcardUseCase modifyFlashcardUseCase,
-            DeleteFlashcardUseCase deleteFlashcardUseCase
-    ) {
+            DeleteFlashcardUseCase deleteFlashcardUseCase,
+            AddFlashcardToDeckUseCase addFlashcardToDeckUseCase) {
         this.getFlashcardUseCase = getFlashcardUseCase;
         this.createFlashcardUseCase = createFlashcardUseCase;
         this.modifyFlashcardUseCase = modifyFlashcardUseCase;
         this.deleteFlashcardUseCase = deleteFlashcardUseCase;
+        this.addFlashcardToDeckUseCase = addFlashcardToDeckUseCase;
     }
 
     // 1) Obtener flashcard por ID
@@ -49,7 +48,8 @@ public class FlashcardController implements IFlashcardController {
             @PathVariable UUID deckId,
             @RequestBody FlashcardDTO flashcardDto
     ) {
-        FlashcardDTO created = createFlashcardUseCase.execute(flashcardDto);
+        FlashcardDTO created = createFlashcardUseCase.execute(flashcardDto.getPregunta(), flashcardDto.getRespuesta());
+        addFlashcardToDeckUseCase.execute(deckId, created);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(created);
@@ -62,7 +62,9 @@ public class FlashcardController implements IFlashcardController {
             @RequestBody FlashcardDTO flashcardDto
     ) {
         flashcardDto.setId(flashcardId);
-        FlashcardDTO updated = modifyFlashcardUseCase.execute(flashcardDto);
+        FlashcardDTO updated = modifyFlashcardUseCase.execute(flashcardDto,
+                flashcardDto.getPregunta(),
+                flashcardDto.getRespuesta());
         return ResponseEntity.ok(updated);
     }
 

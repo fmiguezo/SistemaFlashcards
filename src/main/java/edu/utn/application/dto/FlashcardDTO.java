@@ -15,39 +15,42 @@ public class FlashcardDTO {
     private LocalDateTime lastReviewDate;
     private int score;
 
-    public FlashcardDTO(UUID id, String pregunta, String respuesta, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime nextReviewDate, LocalDateTime lastReviewDate, int score) {
-        this.id = id;
+    public FlashcardDTO(String pregunta, String respuesta) {
+        this.id = null;
         this.pregunta = pregunta;
         this.respuesta = respuesta;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.nextReviewDate = nextReviewDate;
-        this.lastReviewDate = lastReviewDate;
-        this.score = score;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = null;
+        this.nextReviewDate = LocalDateTime.now();
+        this.lastReviewDate = null;
+        this.score = 0;
     }
+
     @JsonProperty("id")
     public UUID getId() {
         return id;
     }
+
     @JsonProperty("question")
     public String getPregunta() {
         return pregunta;
     }
+
     @JsonProperty("question")
     public void setPregunta(String pregunta) {
         this.pregunta = pregunta;
     }
+
     @JsonProperty("answer")
     public String getRespuesta() {
         return respuesta;
     }
+
     @JsonProperty("answer")
     public void setRespuesta(String respuesta) {
         this.respuesta = respuesta;
     }
 
-    // El resto de los campos los podemos dejar sin anotaciones JsonProperty
-    // Dado que no necesitamos renombrar en el J SON
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }

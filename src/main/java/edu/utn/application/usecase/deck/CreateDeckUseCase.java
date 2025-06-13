@@ -16,11 +16,9 @@ public class CreateDeckUseCase {
         this.validationService = new ValidationService();
     }
 
-    public DeckDTO execute(DeckDTO deckDTO) {
+    public DeckDTO execute(String nombre, String descripcion) {
+        DeckDTO deckDTO = new DeckDTO(nombre, descripcion);
         validationService.validateDeckInput(deckDTO);
-        if (deckDTO.getId() == null) {
-            deckDTO.setId(UUID.randomUUID());
-        }
         deckService.addDeck(deckDTO);
         return deckDTO;
     }

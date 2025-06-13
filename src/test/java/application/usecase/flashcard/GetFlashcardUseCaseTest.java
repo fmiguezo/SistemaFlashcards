@@ -29,25 +29,18 @@ class GetFlashcardUseCaseTest {
 
     @Test
     void execute_WithValidId_ShouldReturnFlashcard() {
-        UUID flashcardId = UUID.randomUUID();
         FlashcardDTO mockFlashcardDTO = new FlashcardDTO(
-                flashcardId,
                 "¿Cuál es la capital de Francia?",
-                "París",
-                LocalDateTime.now(),
-                LocalDateTime.now(),
-                LocalDateTime.now(),
-                LocalDateTime.now(),
-                0
+                "París"
         );
 
-        when(flashcardService.getFlashcardById(flashcardId)).thenReturn(mockFlashcardDTO);
+        when(flashcardService.getFlashcardById(mockFlashcardDTO.getId())).thenReturn(mockFlashcardDTO);
 
-        FlashcardDTO result = getFlashcardUseCase.execute(flashcardId);
+        FlashcardDTO result = getFlashcardUseCase.execute(mockFlashcardDTO.getId());
 
         assertNotNull(result);
         assertEquals(mockFlashcardDTO, result);
-        verify(flashcardService, times(1)).getFlashcardById(flashcardId);
+        verify(flashcardService, times(1)).getFlashcardById(mockFlashcardDTO.getId());
     }
 
     @Test

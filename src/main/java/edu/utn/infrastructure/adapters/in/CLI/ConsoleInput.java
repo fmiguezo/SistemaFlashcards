@@ -7,15 +7,15 @@ import org.springframework.stereotype.Component;
 import java.util.Scanner;
 
 @Component
-public class ConsoleUserPracticeController implements IUserPracticeInputPort {
+public class ConsoleInput implements IUserPracticeInputPort {
     private final Scanner scanner = new Scanner(System.in);
 
     @Override
     public void showQuestion(IFlashcard flashcard) {
         System.out.println("Pregunta: " + flashcard.getPregunta());
         String input = "";
-        while (!input.equals("r")) {
-            System.out.println("Presiona la tecla R para ver la respuesta.");
+        while (!input.equals("1")) {
+            System.out.println("Presiona la tecla 1 para ver la respuesta.");
             input = scanner.nextLine().trim().toLowerCase();
         }
     }
@@ -27,8 +27,8 @@ public class ConsoleUserPracticeController implements IUserPracticeInputPort {
 
     @Override
     public boolean askUserForAnswer(IFlashcard flashcard) {
-        System.out.print("¿Respondiste correctamente? (s/n): ");
+        System.out.print("¿Respondiste correctamente? Presioná 1 para sí, 2 para no: ");
         String input = scanner.nextLine().trim().toLowerCase();
-        return input.equals("s");
+        return input.equals("1");
     }
 }

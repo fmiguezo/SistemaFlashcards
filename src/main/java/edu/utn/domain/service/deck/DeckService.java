@@ -97,7 +97,7 @@ public class DeckService implements IDeckService {
     public void practiceDeck(DeckDTO deck, IEstrategiaRepeticion estrategia, IUserPracticeInputPort userInputPort) {
         List<FlashcardDTO> flashcardsToPractice = getFlashcardsToPractice(deck);
         for (FlashcardDTO flashcard : flashcardsToPractice) {
-            flashcardService.practiceFlashcard(flashcard, estrategia,userInputPort);
+            flashcardService.practiceFlashcard(flashcard, estrategia, userInputPort);
         }
     }
 
