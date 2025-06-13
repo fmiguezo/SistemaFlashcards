@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class DeckMapper {
     public static DeckDTO toDTO(IDeck deck) {
         List<FlashcardDTO> flashcardDTOs = deck.getFlashcards().stream()
-                .map(flashcard -> FlashcardMapper.toDTO(flashcard, deck))
+                .map(flashcard -> FlashcardMapper.toDTO(flashcard))
                 .collect(Collectors.toList());
 
         DeckDTO deckDTO = new DeckDTO(
@@ -31,7 +31,7 @@ public class DeckMapper {
 
         if (dto.getFlashcards() != null) {
             for (FlashcardDTO flashcardDTO : dto.getFlashcards()) {
-                deck.addFlashcard(FlashcardMapper.toDomain(flashcardDTO, dto));
+                deck.addFlashcard(FlashcardMapper.toDomain(flashcardDTO, deck));
             }
         }
 

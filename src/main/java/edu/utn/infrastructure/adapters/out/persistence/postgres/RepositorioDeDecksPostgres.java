@@ -24,6 +24,7 @@ public class RepositorioDeDecksPostgres implements IDeckRepository {
     private final JpaDeckRepository jpaRepo;
     private final DeckPersistenceMapper mapper;
     private final FlashcardPersistenceMapper flashcardPersistenceMapper;
+    private final DeckPersistenceMapper deckPersistenceMapper;
 
     @Autowired
     public RepositorioDeDecksPostgres(JpaDeckRepository jpaRepo,
@@ -32,6 +33,7 @@ public class RepositorioDeDecksPostgres implements IDeckRepository {
         this.jpaRepo = jpaRepo;
         this.mapper = mapper;
         this.flashcardPersistenceMapper = flashcardPersistenceMapper;
+        this.deckPersistenceMapper = new DeckPersistenceMapper(flashcardPersistenceMapper);
     }
 
     @Override
@@ -71,9 +73,12 @@ public class RepositorioDeDecksPostgres implements IDeckRepository {
     @Transactional
     public List<IFlashcard> getFlashcardsByDeckId(UUID deckId) {
         return jpaRepo.findByIdWithFlashcards(deckId)
-                .map(deck -> deck.getFlashcards().stream()
-                        .map(flashcardPersistenceMapper::toDomain)
-                        .collect(Collectors.toList()))
+                .map(deckEntity -> {
+                    IDeck deckDomain = deckPersistenceMapper.toDomain(deckEntity);
+                    return deckEntity.getFlashcards().stream()
+                            .map(flashcard -> flashcardPersistenceMapper.toDomain(flashcard, deckDomain))
+                            .collect(Collectors.toList());
+                })
                 .orElseThrow(() -> DeckError.deckNotFound());
     }
 }

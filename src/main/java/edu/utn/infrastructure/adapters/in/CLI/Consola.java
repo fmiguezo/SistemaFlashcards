@@ -48,7 +48,7 @@ public class Consola implements CommandLineRunner {
         this.flashcardRepository = flashcardRepository;
         this.consola = new ConsoleInput();
         this.estrategiaRepeticion = new EstrategiaRepeticionEstandar();
-        this.flashcardService = new FlashcardService(this.flashcardRepository, this.consola);
+        this.flashcardService = new FlashcardService(this.flashcardRepository, this.consola, this.deckRepository);
         this.deckService = new DeckService(this.deckRepository, this.estrategiaRepeticion, this.flashcardService);
         this.createDeckUseCase = new CreateDeckUseCase(this.deckService);
         this.listDecksUseCase = new ListDecksUseCase(this.deckService);
@@ -195,7 +195,7 @@ public class Consola implements CommandLineRunner {
 
         switch (opcion) {
             case "1":
-                agregarFlashcard(scanner, deck);
+                agregarFlashcard(scanner, deck.getId());
                 break;
             case "2":
                 editarFlashcard(scanner, flashcards);
@@ -210,13 +210,13 @@ public class Consola implements CommandLineRunner {
         }
     }
 
-    private void agregarFlashcard(Scanner scanner, DeckDTO deck) {
+    private void agregarFlashcard(Scanner scanner, UUID deckId) {
         System.out.print("Pregunta: ");
         String pregunta = scanner.nextLine();
         System.out.print("Respuesta: ");
         String respuesta = scanner.nextLine();
-        FlashcardDTO flashcard = createFlashcardUseCase.execute(pregunta, respuesta, deck);
-        addFlashcardToDeckUseCase.execute(deck.getId(), flashcard);
+        FlashcardDTO flashcard = createFlashcardUseCase.execute(pregunta, respuesta, deckId);
+        addFlashcardToDeckUseCase.execute(deckId, flashcard);
         System.out.println("Flashcard agregada.");
     }
 

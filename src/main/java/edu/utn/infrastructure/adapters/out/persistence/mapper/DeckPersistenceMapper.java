@@ -33,7 +33,7 @@ public class DeckPersistenceMapper {
 
         List<IFlashcard> flashcards = entity.getFlashcards()
                 .stream()
-                .map(flashcardPersistenceMapper::toDomain)
+                .map(flashcard -> flashcardPersistenceMapper.toDomainSinDeck(flashcard, deck))
                 .collect(Collectors.toList());
 
         flashcards.forEach(deck::addFlashcard);

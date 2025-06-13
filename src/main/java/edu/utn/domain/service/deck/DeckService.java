@@ -112,7 +112,7 @@ public class DeckService implements IDeckService {
         IDeck deck = deckRepository.getDeckById(id)
                 .orElseThrow(() -> new RuntimeException("Deck no encontrado"));
         return deck.getFlashcards().stream()
-                .map(flashcard -> FlashcardMapper.toDTO(flashcard, deck))
+                .map(flashcard -> FlashcardMapper.toDTO(flashcard))
                 .toList();
     }
 }

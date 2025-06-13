@@ -48,7 +48,7 @@ public class FlashcardController implements IFlashcardController {
             @PathVariable UUID deckId,
             @RequestBody FlashcardDTO flashcardDto
     ) {
-        FlashcardDTO created = createFlashcardUseCase.execute(flashcardDto.getPregunta(), flashcardDto.getRespuesta(), flashcardDto.getDeck());
+        FlashcardDTO created = createFlashcardUseCase.execute(flashcardDto.getPregunta(), flashcardDto.getRespuesta(), flashcardDto.getDeckID());
         addFlashcardToDeckUseCase.execute(deckId, created);
         return ResponseEntity
                 .status(HttpStatus.CREATED)

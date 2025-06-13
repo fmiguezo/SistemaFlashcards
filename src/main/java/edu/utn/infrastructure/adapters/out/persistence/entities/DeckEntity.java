@@ -1,5 +1,6 @@
 package edu.utn.infrastructure.adapters.out.persistence.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import edu.utn.domain.model.deck.IDeck;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
@@ -20,7 +21,8 @@ public class DeckEntity {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "deck", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "deck", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<FlashcardEntity> flashcards = new ArrayList<>();
 
     protected DeckEntity() {}

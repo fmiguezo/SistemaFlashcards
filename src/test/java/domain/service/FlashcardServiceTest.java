@@ -5,8 +5,10 @@ import edu.utn.application.dto.DeckDTO;
 import edu.utn.application.mappers.FlashcardMapper;
 import edu.utn.domain.model.deck.IDeck;
 import edu.utn.domain.model.flashcard.IFlashcard;
+import edu.utn.domain.service.deck.DeckService;
 import edu.utn.domain.service.flashcard.FlashcardService;
 import edu.utn.infrastructure.ports.in.IUserPracticeInputPort;
+import edu.utn.infrastructure.ports.out.IDeckRepository;
 import edu.utn.infrastructure.ports.out.IFlashcardRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,12 +26,15 @@ class FlashcardServiceTest {
     private FlashcardService flashcardService;
     private IUserPracticeInputPort userPracticeInputPort;
     private IDeck mockDeck;
+    private IDeckRepository deckRepository;
+
 
     @BeforeEach
     void setUp() {
         flashcardRepository = mock(IFlashcardRepository.class);
+        deckRepository = mock(IDeckRepository.class);
         userPracticeInputPort = mock(IUserPracticeInputPort.class);
-        flashcardService = new FlashcardService(flashcardRepository, userPracticeInputPort);
+        flashcardService = new FlashcardService(flashcardRepository, userPracticeInputPort, deckRepository);
 
         mockDeck = mock(IDeck.class);
     }
@@ -38,11 +43,15 @@ class FlashcardServiceTest {
     void testAddFlashcard() {
         FlashcardDTO flashcardDTO = mock(FlashcardDTO.class);
         IFlashcard flashcard = mock(IFlashcard.class);
-        DeckDTO deckDTO = mock(DeckDTO.class);
+
+        UUID deckId = UUID.randomUUID();
+        when(flashcardDTO.getDeckID()).thenReturn(deckId);
 
         try (MockedStatic<FlashcardMapper> mapperMock = mockStatic(FlashcardMapper.class)) {
-            mapperMock.when(() -> FlashcardMapper.toDomain(flashcardDTO, deckDTO)).thenReturn(flashcard);
+            mapperMock.when(() -> FlashcardMapper.toDomain(flashcardDTO, mockDeck)).thenReturn(flashcard);
+
             flashcardService.addFlashcard(flashcardDTO);
+
             verify(flashcardRepository).createCard(flashcard);
         }
     }
@@ -56,7 +65,7 @@ class FlashcardServiceTest {
         when(flashcardRepository.getCardById(id)).thenReturn(Optional.of(flashcard));
 
         try (MockedStatic<FlashcardMapper> mapperMock = mockStatic(FlashcardMapper.class)) {
-            mapperMock.when(() -> FlashcardMapper.toDTO(flashcard, mockDeck)).thenReturn(flashcardDTO);
+            mapperMock.when(() -> FlashcardMapper.toDTO(flashcard)).thenReturn(flashcardDTO);
 
             FlashcardDTO result = flashcardService.getFlashcardById(id);
 
@@ -69,11 +78,15 @@ class FlashcardServiceTest {
     void testUpdateFlashcard() {
         FlashcardDTO flashcardDTO = mock(FlashcardDTO.class);
         IFlashcard flashcard = mock(IFlashcard.class);
-        DeckDTO deckDTO = mock(DeckDTO.class);
+
+        UUID deckId = UUID.randomUUID();
+        when(flashcardDTO.getDeckID()).thenReturn(deckId);
 
         try (MockedStatic<FlashcardMapper> mapperMock = mockStatic(FlashcardMapper.class)) {
-            mapperMock.when(() -> FlashcardMapper.toDomain(flashcardDTO, deckDTO)).thenReturn(flashcard);
+            mapperMock.when(() -> FlashcardMapper.toDomain(flashcardDTO, mockDeck)).thenReturn(flashcard);
+
             flashcardService.updateFlashcard(flashcardDTO);
+
             verify(flashcardRepository).updateCard(flashcard);
         }
     }
