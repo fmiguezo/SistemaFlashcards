@@ -1,6 +1,7 @@
 package edu.utn.infrastructure.adapters.out.persistence.postgres;
 
 import edu.utn.domain.model.deck.IDeck;
+import edu.utn.domain.model.flashcard.Flashcard;
 import edu.utn.domain.model.flashcard.IFlashcard;
 import edu.utn.infrastructure.adapters.out.persistence.entities.DeckEntity;
 import edu.utn.infrastructure.adapters.out.persistence.entities.FlashcardEntity;
@@ -72,11 +73,15 @@ public class RepositorioDeCardsPostgres implements IFlashcardRepository {
     }
 
     @Override
+    @Transactional
     public void deleteCard(UUID id) {
+        FlashcardEntity entity = entityManager.find(FlashcardEntity.class, id);
         boolean exists = jpaRepo.existsById(id);
+
         System.out.println("Intentando eliminar flashcard con id: " + id);
         if (exists) {
             jpaRepo.deleteById(id);
+            entityManager.remove(entity);
             entityManager.flush();
             entityManager.clear();
             jpaRepo.flush();
