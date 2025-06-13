@@ -132,6 +132,7 @@ public class FirebaseDeckService implements IDeckRepository {
                     @Override
                     public void onDataChange(DataSnapshot deckSnapshot) {
                         DeckDTO deckDTO = mapper.convertValue(deckSnapshot.getValue(), DeckDTO.class);
+                        IDeck deck = DeckMapper.toDomain(deckDTO);
 
                         // 2) Ahora leemos las flashcards hijas
                         deckSnapshot.getRef().child("flashcards")
@@ -141,7 +142,7 @@ public class FirebaseDeckService implements IDeckRepository {
                                         if (flashSnapshot.exists()) {
                                             for (DataSnapshot child : flashSnapshot.getChildren()) {
                                                 FlashcardDTO dto = mapper.convertValue(child.getValue(), FlashcardDTO.class);
-                                                IFlashcard f = FlashcardMapper.toDomain(dto, deckDTO);
+                                                IFlashcard f = FlashcardMapper.toDomain(dto, deck);
                                                 out.add(f);
                                             }
                                         }
