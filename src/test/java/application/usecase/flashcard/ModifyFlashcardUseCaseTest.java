@@ -32,14 +32,8 @@ class ModifyFlashcardUseCaseTest {
         modifyFlashcardUseCase = new ModifyFlashcardUseCase(flashcardService);
         validFlashcardId = UUID.randomUUID();
         existingFlashcard = new FlashcardDTO(
-            validFlashcardId,
             "Nueva Pregunta",
-            "Nueva Respuesta",
-            LocalDateTime.now(),
-            null,
-            LocalDateTime.now(),
-            null,
-            0
+            "Nueva Respuesta"
         );
     }
 
@@ -49,14 +43,8 @@ class ModifyFlashcardUseCaseTest {
         doNothing().when(flashcardService).updateFlashcard(any(FlashcardDTO.class));
 
         FlashcardDTO modifiedFlashcard = new FlashcardDTO(
-                validFlashcardId,
                 "Pregunta modificada",
-                null,
-                existingFlashcard.getCreatedAt(),
-                existingFlashcard.getNextReviewDate(),
-                existingFlashcard.getUpdatedAt(),
-                null,
-                0
+                null
         );
 
         System.out.println("existingFlashcard pregunta: '" + existingFlashcard.getPregunta() + "'");
@@ -84,14 +72,8 @@ class ModifyFlashcardUseCaseTest {
     @Test
     void execute_WithNullFlashcardId_ShouldThrowException() {
         FlashcardDTO flashcardDTO = new FlashcardDTO(
-            null,
             "Nueva Pregunta",
-            "Nueva Respuesta",
-            LocalDateTime.now(),
-            null,
-            LocalDateTime.now(),
-            null,
-            0
+            "Nueva Respuesta"
         );
 
         FlashcardError exception = assertThrows(
@@ -105,14 +87,8 @@ class ModifyFlashcardUseCaseTest {
     @Test
     void execute_WithNoFieldsToModify_ShouldThrowException() {
         FlashcardDTO flashcardDTO = new FlashcardDTO(
-            validFlashcardId,
             null,
-            null,
-            LocalDateTime.now(),
-            null,
-            LocalDateTime.now(),
-            null,
-            0
+            null
         );
 
         FlashcardError exception = assertThrows(
@@ -139,14 +115,8 @@ class ModifyFlashcardUseCaseTest {
     void execute_WithEmptyQuestion_ShouldThrowException() {
         when(flashcardService.getFlashcardById(validFlashcardId)).thenReturn(existingFlashcard);
         FlashcardDTO flashcardDTO = new FlashcardDTO(
-            validFlashcardId,
             "",
-            "Nueva Respuesta",
-            LocalDateTime.now(),
-            null,
-            LocalDateTime.now(),
-            null,
-            0
+            "Nueva Respuesta"
         );
 
         FlashcardError exception = assertThrows(
@@ -161,14 +131,8 @@ class ModifyFlashcardUseCaseTest {
     void execute_WithQuestionTooShort_ShouldThrowException() {
         when(flashcardService.getFlashcardById(validFlashcardId)).thenReturn(existingFlashcard);
         FlashcardDTO flashcardDTO = new FlashcardDTO(
-            validFlashcardId,
             "a".repeat(9),
-            "Nueva Respuesta",
-            LocalDateTime.now(),
-            null,
-            LocalDateTime.now(),
-            null,
-            0
+            "Nueva Respuesta"
         );
 
         FlashcardError exception = assertThrows(
@@ -183,14 +147,8 @@ class ModifyFlashcardUseCaseTest {
     void execute_WithQuestionTooLong_ShouldThrowException() {
         when(flashcardService.getFlashcardById(validFlashcardId)).thenReturn(existingFlashcard);
         FlashcardDTO flashcardDTO = new FlashcardDTO(
-            validFlashcardId,
             "a".repeat(501),
-            "Nueva Respuesta",
-            LocalDateTime.now(),
-            null,
-            LocalDateTime.now(),
-            null,
-            0
+            "Nueva Respuesta"
         );
 
         FlashcardError exception = assertThrows(
@@ -205,14 +163,8 @@ class ModifyFlashcardUseCaseTest {
     void execute_WithSameQuestion_ShouldThrowException() {
         when(flashcardService.getFlashcardById(validFlashcardId)).thenReturn(existingFlashcard);
         FlashcardDTO flashcardDTO = new FlashcardDTO(
-            validFlashcardId,
             existingFlashcard.getPregunta(),
-            "Nueva Respuesta",
-            LocalDateTime.now(),
-            null,
-            LocalDateTime.now(),
-            null,
-            0
+            "Nueva Respuesta"
         );
 
         FlashcardError exception = assertThrows(
@@ -229,14 +181,8 @@ class ModifyFlashcardUseCaseTest {
         existingFlashcard.setPregunta("Pregunta anterior");
         existingFlashcard.setRespuesta("Respuesta anterior");
         FlashcardDTO flashcardDTO = new FlashcardDTO(
-            validFlashcardId,
             "Nueva Pregunta",
-            "",
-            LocalDateTime.now(),
-            null,
-            LocalDateTime.now(),
-            null,
-            0
+            ""
         );
 
         FlashcardError exception = assertThrows(
@@ -254,14 +200,8 @@ class ModifyFlashcardUseCaseTest {
         existingFlashcard.setRespuesta("Respuesta antigua");
         when(flashcardService.getFlashcardById(validFlashcardId)).thenReturn(existingFlashcard);
         FlashcardDTO flashcardDTO = new FlashcardDTO(
-            validFlashcardId,
             "Nueva Pregunta",
-            "a".repeat(9),
-            LocalDateTime.now(),
-            null,
-            LocalDateTime.now(),
-            null,
-            0
+            "a".repeat(9)
         );
 
         FlashcardError exception = assertThrows(
@@ -278,14 +218,8 @@ class ModifyFlashcardUseCaseTest {
         existingFlashcard.setPregunta("Pregunta anterior");
         existingFlashcard.setRespuesta("Respuesta anterior");
         FlashcardDTO flashcardDTO = new FlashcardDTO(
-            validFlashcardId,
             "Nueva Pregunta",
-            "a".repeat(501),
-            LocalDateTime.now(),
-            null,
-            LocalDateTime.now(),
-            null,
-            0
+            "a".repeat(501)
         );
 
         FlashcardError exception = assertThrows(
@@ -302,14 +236,8 @@ class ModifyFlashcardUseCaseTest {
         existingFlashcard.setPregunta("Pregunta anterior");
         existingFlashcard.setRespuesta("Respuesta actual");
         FlashcardDTO flashcardDTO = new FlashcardDTO(
-            validFlashcardId,
             "Nueva Pregunta",
-            existingFlashcard.getRespuesta(),
-            LocalDateTime.now(),
-            null,
-            LocalDateTime.now(),
-            null,
-            0
+            existingFlashcard.getRespuesta()
         );
 
         FlashcardError exception = assertThrows(

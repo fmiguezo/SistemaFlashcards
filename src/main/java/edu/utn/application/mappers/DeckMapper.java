@@ -5,6 +5,7 @@ import edu.utn.application.dto.FlashcardDTO;
 import edu.utn.domain.model.deck.Deck;
 import edu.utn.domain.model.deck.IDeck;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,12 +15,14 @@ public class DeckMapper {
                 .map(FlashcardMapper::toDTO)
                 .collect(Collectors.toList());
 
-        return new DeckDTO(
-                deck.getId(),
+        DeckDTO deckDTO = new DeckDTO(
                 deck.getNombre(),
-                deck.getDescripcion(),
-                flashcardDTOs
+                deck.getDescripcion()
         );
+        deckDTO.setId(deck.getId());
+        deckDTO.setFlashcards(flashcardDTOs);
+
+        return deckDTO;
     }
 
 
@@ -27,7 +30,7 @@ public class DeckMapper {
         IDeck deck = new Deck(dto.getNombre(), dto.getDescripcion());
 
         try {
-            java.lang.reflect.Field idField = Deck.class.getDeclaredField("id");
+            Field idField = Deck.class.getDeclaredField("id");
             idField.setAccessible(true);
             idField.set(deck, dto.getId());
         } catch (Exception e) {

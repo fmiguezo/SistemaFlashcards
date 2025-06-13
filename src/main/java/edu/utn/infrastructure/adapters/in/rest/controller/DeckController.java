@@ -69,7 +69,7 @@ public class DeckController implements IDeckController{
     // 3) Crear un deck
     @PostMapping
     public ResponseEntity<DeckDTO> createDeck(@RequestBody DeckDTO deckDto) {
-        DeckDTO created = createDeckUseCase.execute(deckDto);
+        DeckDTO created = createDeckUseCase.execute(deckDto.getNombre(), deckDto.getDescripcion());
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(created);

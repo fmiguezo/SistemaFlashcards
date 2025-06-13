@@ -33,7 +33,7 @@ class GetDeckUseCaseTest {
     @Test
     void execute_WithValidId_ShouldReturnDeckDTO() {
         UUID deckId = UUID.randomUUID();
-        DeckDTO mockDeckDTO = new DeckDTO(deckId, "Deck Name", "Description", new ArrayList<>());
+        DeckDTO mockDeckDTO = new DeckDTO( "Deck Name", "Description");
         when(deckService.getDeckById(deckId)).thenReturn(mockDeckDTO);
 
         DeckDTO result = getDeckUseCase.execute(deckId);

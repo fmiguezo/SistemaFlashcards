@@ -18,7 +18,8 @@ public class CreateFlashcardUseCase {
         this.validationService = new ValidationService();
     }
 
-    public FlashcardDTO execute(FlashcardDTO flashcardDTO) {
+    public FlashcardDTO execute(String pregunta, String respuesta) {
+        FlashcardDTO flashcardDTO = new FlashcardDTO(pregunta, respuesta);
         validationService.validateFlashcardInput(flashcardDTO);
         if (flashcardDTO.getId() == null) {
             flashcardDTO.setId(UUID.randomUUID());

@@ -38,11 +38,8 @@ class ModifyDeckUseCaseTest {
     @BeforeEach
     void setUp() {
         existingDeckDTO = new DeckDTO(
-                UUID.randomUUID(),
                 "Nombre Original",
-                "Descripción Original",
-                new ArrayList<>()
-        );
+                "Descripción Original");
 
         validationServiceSpy = Mockito.spy(new ValidationService());
 
@@ -58,10 +55,8 @@ class ModifyDeckUseCaseTest {
     @Test
     void execute_WithValidNameAndDescription_ShouldUpdateDeck() {
         DeckDTO modification = new DeckDTO(
-                existingDeckDTO.getId(),
                 "Nuevo Nombre",
-                "Nueva Descripción",
-                new ArrayList<>()
+                "Nueva Descripción"
         );
 
         doReturn(existingDeckDTO).when(validationServiceSpy).validateDeckModification(modification, deckService);
@@ -79,10 +74,8 @@ class ModifyDeckUseCaseTest {
     @Test
     void execute_WithOnlyName_ShouldUpdateNameOnly() {
         DeckDTO modification = new DeckDTO(
-                existingDeckDTO.getId(),
                 "Nombre Cambiado",
-                null,
-                new ArrayList<>()
+                null
         );
 
         doReturn(existingDeckDTO).when(validationServiceSpy).validateDeckModification(modification, deckService);
@@ -98,10 +91,8 @@ class ModifyDeckUseCaseTest {
     @Test
     void execute_WithOnlyDescription_ShouldUpdateDescriptionOnly() {
         DeckDTO modification = new DeckDTO(
-                existingDeckDTO.getId(),
                 null,
-                "Descripción Cambiada",
-                new ArrayList<>()
+                "Descripción Cambiada"
         );
 
         doReturn(existingDeckDTO).when(validationServiceSpy).validateDeckModification(modification, deckService);
@@ -117,10 +108,8 @@ class ModifyDeckUseCaseTest {
     @Test
     void execute_WhenValidationFails_ShouldThrowDeckError() {
         DeckDTO modification = new DeckDTO(
-                existingDeckDTO.getId(),
                 "Nombre inválido",
-                "Descripción inválida",
-                new ArrayList<>()
+                "Descripción inválida"
         );
 
         doThrow(new DeckError("Error de validación")).when(validationServiceSpy)

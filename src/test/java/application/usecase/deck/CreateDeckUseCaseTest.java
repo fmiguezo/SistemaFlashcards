@@ -29,14 +29,13 @@ class CreateDeckUseCaseTest {
     @BeforeEach
     void setUp() {
         createDeckUseCase = new CreateDeckUseCase(deckService);
-        validDeckDTO = new DeckDTO(null, "Deck de prueba", "Descripción de prueba", new ArrayList<>());
     }
 
     @Test
     void execute_WithValidDeckDTO_ShouldCreateDeck() {
         doNothing().when(deckService).addDeck(any(DeckDTO.class));
 
-        DeckDTO result = createDeckUseCase.execute(validDeckDTO);
+        DeckDTO result = createDeckUseCase.execute("Deck de prueba", "Descripción de prueba");
 
         assertNotNull(result);
         assertEquals(validDeckDTO.getNombre(), result.getNombre());
@@ -49,12 +48,9 @@ class CreateDeckUseCaseTest {
     @Test
     void execute_WithValidDeckDTOAndNullDescription_ShouldCreateDeck() {
         doNothing().when(deckService).addDeck(any(DeckDTO.class));
-        DeckDTO deckDTO = new DeckDTO(null, "Deck de prueba", null, new ArrayList<>());
-
-        DeckDTO result = createDeckUseCase.execute(deckDTO);
-
+        DeckDTO result = createDeckUseCase.execute("Deck de prueba", null);
         assertNotNull(result);
-        assertEquals(deckDTO.getNombre(), result.getNombre());
+        assertEquals(result.getNombre(), result.getNombre());
         assertNull(result.getDescripcion());
         assertNotNull(result.getId());
         assertTrue(result.getFlashcards().isEmpty());
@@ -62,22 +58,10 @@ class CreateDeckUseCaseTest {
     }
 
     @Test
-    void execute_WithNullDeckDTO_ShouldThrowException() {
-        DeckError exception = assertThrows(
-            DeckError.class,
-            () -> createDeckUseCase.execute(null)
-        );
-        assertEquals(DeckError.NULL_DECK, exception.getMessage());
-        verify(deckService, never()).addDeck(any(DeckDTO.class));
-    }
-
-    @Test
     void execute_WithNullName_ShouldThrowException() {
-        DeckDTO deckDTO = new DeckDTO(null, null, "Descripción de prueba", new ArrayList<>());
-
         DeckError exception = assertThrows(
             DeckError.class,
-            () -> createDeckUseCase.execute(deckDTO)
+            () -> createDeckUseCase.execute(null, "Descripción de prueba")
         );
         assertEquals(DeckError.EMPTY_NAME, exception.getMessage());
         verify(deckService, never()).addDeck(any(DeckDTO.class));
@@ -85,11 +69,9 @@ class CreateDeckUseCaseTest {
 
     @Test
     void execute_WithEmptyName_ShouldThrowException() {
-        DeckDTO deckDTO = new DeckDTO(null, "", "Descripción de prueba", new ArrayList<>());
-
         DeckError exception = assertThrows(
             DeckError.class,
-            () -> createDeckUseCase.execute(deckDTO)
+            () -> createDeckUseCase.execute(null, "Descripción de prueba")
         );
         assertEquals(DeckError.EMPTY_NAME, exception.getMessage());
         verify(deckService, never()).addDeck(any(DeckDTO.class));
@@ -97,23 +79,18 @@ class CreateDeckUseCaseTest {
 
     @Test
     void execute_WithNameTooLong_ShouldThrowException() {
-        DeckDTO deckDTO = new DeckDTO(null, "a".repeat(101), "Descripción de prueba", new ArrayList<>());
-
         DeckError exception = assertThrows(
             DeckError.class,
-            () -> createDeckUseCase.execute(deckDTO)
-        );
+            () -> createDeckUseCase.execute("a".repeat(101), "Descripción de prueba"));
         assertEquals(DeckError.NAME_TOO_LONG, exception.getMessage());
         verify(deckService, never()).addDeck(any(DeckDTO.class));
     }
 
     @Test
     void execute_WithDescriptionTooLong_ShouldThrowException() {
-        DeckDTO deckDTO = new DeckDTO(null, "Deck de prueba", "a".repeat(251), new ArrayList<>());
-
         DeckError exception = assertThrows(
             DeckError.class,
-            () -> createDeckUseCase.execute(deckDTO)
+            () -> createDeckUseCase.execute("Deck de prueba", "a".repeat(251))
         );
         assertEquals(DeckError.DESCRIPTION_TOO_LONG, exception.getMessage());
         verify(deckService, never()).addDeck(any(DeckDTO.class));
