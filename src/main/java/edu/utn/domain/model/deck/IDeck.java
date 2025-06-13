@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface IDeck {
+    void setId(UUID id);
     UUID getId();
     String getNombre();
     String getDescripcion();
@@ -17,4 +18,8 @@ public interface IDeck {
     void setUpdatedAt(LocalDateTime updatedAt);
     List<IFlashcard> getFlashcards();
     void addFlashcard(IFlashcard flashcard);
+
+    void setCreatedAt(LocalDateTime createdAt);
+
+    void setFlashcards(List<IFlashcard> flashcards);
 }

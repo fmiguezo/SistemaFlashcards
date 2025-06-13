@@ -29,14 +29,6 @@ public class DeckMapper {
     public static IDeck toDomain(DeckDTO dto) {
         IDeck deck = new Deck(dto.getNombre(), dto.getDescripcion());
 
-        try {
-            Field idField = Deck.class.getDeclaredField("id");
-            idField.setAccessible(true);
-            idField.set(deck, dto.getId());
-        } catch (Exception e) {
-            throw new RuntimeException("No se pudo asignar el ID al Deck por reflexión", e);
-        }
-
         if (dto.getFlashcards() != null) {
             for (FlashcardDTO flashcardDTO : dto.getFlashcards()) {
                 deck.addFlashcard(FlashcardMapper.toDomain(flashcardDTO));

@@ -13,17 +13,17 @@ public class DeckDTO {
     private List<FlashcardDTO> flashcards;
 
     public DeckDTO(String nombre, String descripcion) {
-        this.id = UUID.randomUUID();
+        this.id = null;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.flashcards = new ArrayList<>();
     }
 
     @JsonProperty("id")
-
     public UUID getId() {
         return id;
     }
+
     @JsonProperty("name")
     public String getNombre() {
         return nombre;

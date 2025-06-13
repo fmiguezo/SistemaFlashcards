@@ -1,5 +1,4 @@
 package edu.utn.domain.model.flashcard;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -23,6 +22,11 @@ public class Flashcard implements IFlashcard {
         this.updatedAt = this.createdAt;
         this.lastReviewDate = null;
         this.score = 0;
+    }
+
+    @Override
+    public void setId(UUID id) {
+
     }
 
     @Override
@@ -91,5 +95,10 @@ public class Flashcard implements IFlashcard {
     @Override
     public void setScore(int score) {
         this.score = score;
+    }
+
+    @Override
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }
