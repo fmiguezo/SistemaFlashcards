@@ -194,3 +194,288 @@ spring.jpa.hibernate.ddl-auto=update
 ```bash
 ./mvnw spring-boot:run
 ```
+
+# Documentación de Clases
+
+## 1. Capa de Entrada
+
+### `edu.utn.Main`
+
+**Responsabilidad:** Punto de arranque de la aplicación. Inicializa componentes (CLI o Web).
+
+**Métodos:**
+
+```java
+public static void main(String[] args);
+```
+
+### CLI (`edu.utn.infrastructure.adapters.in.CLI`)
+
+**Responsabilidad:** Interfaz de línea de comandos; muestra menús y procesa opciones.
+
+**Métodos:**
+
+```java
+void menuPrincipal();
+void ejecutarOpcion(int opcion);
+// ...
+```
+
+### ConsoleInput
+
+**Responsabilidad:** Lectura y parseo de entradas de usuario por consola.
+
+**Métodos:**
+
+```java
+int leerEntero(String prompt);
+String leerTexto(String prompt);
+// ...
+```
+
+### REST Controllers (`edu.utn.infrastructure.adapters.in.rest.controller`)
+
+#### DeckController
+
+**Responsabilidad:** Exponer endpoints CRUD para decks (`/api/decks`).
+
+**Métodos:**
+
+```java
+ResponseEntity<List<DeckDTO>> getAll();
+ResponseEntity<DeckDTO> getById(UUID id);
+ResponseEntity<DeckDTO> create(DeckDTO dto);
+ResponseEntity<DeckDTO> modify(UUID id, DeckDTO dto);
+ResponseEntity<Void> delete(UUID id);
+ResponseEntity<Void> practice(UUID id);
+```
+
+#### FlashcardController
+
+**Responsabilidad:** Endpoints CRUD para flashcards (`/api/flashcards`).
+
+**Métodos:**
+
+```java
+ResponseEntity<List<FlashcardDTO>> getAllByDeck(UUID deckId);
+ResponseEntity<FlashcardDTO> getById(UUID id);
+ResponseEntity<FlashcardDTO> create(FlashcardDTO dto);
+ResponseEntity<FlashcardDTO> modify(UUID id, FlashcardDTO dto);
+ResponseEntity<Void> delete(UUID id);
+```
+
+#### WebUserPracticeController
+
+**Responsabilidad:** Implementa `IUserPracticeInputPort` para práctica vía web.
+
+**Métodos:**
+
+```java
+void showQuestion(Flashcard flashcard);
+String askUserForAnswer(Flashcard flashcard);
+void showAnswer(Flashcard flashcard);
+```
+
+#### ExceptionHandler
+
+**Responsabilidad:** Manejador global de excepciones (`@RestControllerAdvice`).
+
+**Manejadores:**
+
+```java
+//@ExceptionHandler(DeckNoExisteException.class)
+//@ExceptionHandler(FlashcardError.class)
+// ...
+```
+
+## 2. DTOs y Errores
+
+### DTOs (`edu.utn.application.dto`)
+
+#### DeckDTO
+
+**Atributos:**
+
+* `UUID id`
+* `String nombre`
+* `String descripcion`
+
+**Responsabilidad:** Transportar datos de decks entre capas.
+
+**Métodos:** Constructores, getters y setters.
+
+#### FlashcardDTO
+
+**Atributos:**
+
+* `UUID id`
+* `String pregunta`
+* `String respuesta`
+
+**Responsabilidad:** Transportar datos de flashcards entre capas.
+
+**Métodos:** Constructores, getters y setters.
+
+### Errores (`edu.utn.application.error`)
+
+* `DeckError`, `FlashcardError`
+  **Responsabilidad:** Excepciones de negocio para validar reglas (nulos, longitudes, existencia).
+  **Constructores:** Mensajes específicos de validación.
+
+## 3. Mappers
+
+### `DeckMapper` (`edu.utn.application.mappers`)
+
+**Responsabilidad:** Convertir entre `Deck` y `DeckDTO`.
+
+**Métodos:**
+
+```java
+Deck toDomain(DeckDTO dto);
+DeckDTO toDto(Deck deck);
+```
+
+### `FlashcardMapper`
+
+**Responsabilidad:** Convertir entre `Flashcard` y `FlashcardDTO`.
+
+**Métodos:**
+
+```java
+Flashcard toDomain(FlashcardDTO dto);
+FlashcardDTO toDto(Flashcard card);
+```
+
+### Persistencia (`infrastructure.adapters.out.persistence.mapper`)
+
+#### `DeckPersistenceMapper`
+
+**Responsabilidad:** Mapear entre `DeckEntity` (JPA) y `Deck` (dominio).
+
+**Métodos:**
+
+```java
+Deck toDomain(DeckEntity entity);
+DeckEntity toEntity(Deck deck);
+```
+
+#### `FlashcardPersistenceMapper`
+
+**Responsabilidad:** Mapear entre `FlashcardEntity` y `Flashcard`.
+
+**Métodos:**
+
+```java
+Flashcard toDomain(FlashcardEntity entity);
+FlashcardEntity toEntity(Flashcard card);
+```
+
+## 4. Casos de Uso
+
+### Decks (`edu.utn.application.usecase.deck`)
+
+* **CreateDeckUseCase:** Valida y crea un deck.
+* **GetDeckUseCase:** Obtiene un deck por ID.
+* **ListDecksUseCase:** Lista todos los decks.
+* **ModifyDeckUseCase:** Actualiza datos de un deck existente.
+* **DeleteDeckUseCase:** Elimina un deck.
+* **PracticeDeckUseCase:** Orquesta la sesión de práctica de un deck.
+
+### Flashcards (`edu.utn.application.usecase.flashcard`)
+
+* **AddFlashcardToDeckUseCase:** Agrega una flashcard a un deck.
+* **CreateFlashcardUseCase**, **GetFlashcardUseCase**, **ListFlashcardsUseCase**, **ModifyFlashcardUseCase**, **DeleteFlashcardUseCase:** Operaciones CRUD para flashcards.
+
+## 5. Modelo de Dominio
+
+### Entidades (`edu.utn.domain.model`)
+
+#### `Deck`
+
+**Atributos:**
+
+* `UUID id`
+* `String nombre`
+* `String descripcion`
+* `LocalDateTime createdAt, updatedAt`
+* `List<Flashcard>`
+
+**Responsabilidad:** Lógica de negocio de deck (agregar flashcards, timestamps).
+
+#### `Flashcard`
+
+**Atributos:**
+
+* `UUID id`
+* `String pregunta`
+* `String respuesta`
+* `LocalDateTime createdAt, updatedAt`
+
+**Responsabilidad:** Representar una flashcard con sus datos y timestamps.
+
+### Estrategia de Repetición (`model.estrategia`)
+
+* **`IEstrategiaRepeticion`**: Interfaz para definir orden de práctica.
+* **`EstrategiaRepeticionEstandar`**: Implementación por defecto.
+
+## 6. Servicios de Dominio
+
+### Deck (`edu.utn.domain.service.deck`)
+
+* **`IDeckService`**: Interfaz de operaciones de negocio de decks.
+* **`DeckService`**: Implementación; orquesta validaciones y llamado a repositorios.
+
+### Flashcard (`edu.utn.domain.service.flashcard`)
+
+* **`IFlashcardService`**: Interfaz de operaciones de flashcards.
+* **`FlashcardService`**: Implementación de lógica de flashcards.
+
+### Validación (`edu.utn.domain.service.validation`)
+
+* **`ValidationService`**
+  **Responsabilidad:** Validar campos de entrada de DTOs.
+
+**Métodos:** Validaciones de nulos, longitudes, existencia.
+
+## 7. Puertos
+
+### Inbound (`infrastructure.ports.in`)
+
+* **`IUserPracticeInputPort`**: Interfaz para interacción con el usuario durante práctica.
+
+### Outbound (`infrastructure.ports.out`)
+
+* **`IDeckRepository`, `IFlashcardRepository`**: CRUD de persistencia.
+
+## 8. Adaptadores de Persistencia
+
+### Entities (`infrastructure.adapters.out.persistence.entities`)
+
+* `DeckEntity`, `FlashcardEntity`: Clases JPA anotadas.
+
+### Firebase (`infrastructure.adapters.out.firebase`)
+
+* `FirebaseDeckService`: Persiste decks en Firebase.
+
+### JSON (`infrastructure.adapters.out.json`)
+
+* `RepositorioDeDecksJson`, `RepositorioDeCardsJson`: Archivos JSON como almacenamiento.
+
+### PostgreSQL (`infrastructure.adapters.out.postgres`)
+
+* `RepositorioDeDecksPostgres`, `RepositorioDeCardsPostgres`: Repositorios en PostgreSQL.
+
+### Excepciones (`infrastructure.adapters.out.exception`)
+
+* `ArchivoNoEncontradoException`, `DeckNoExisteException`, `DeckVacioException`.
+
+## 9. Configuración
+
+### `FirebaseConfig`
+
+**Responsabilidad:** Bean de inicialización y configuración de Firebase.
+
+### `RepositoryConfig`
+
+**Responsabilidad:** Inyectar la implementación adecuada de repositorios según el perfil activo (`json`, `postgres`, `firebase`).
+
