@@ -37,19 +37,9 @@ class AddFlashcardToDeckUseCaseTest {
     void setUp() {
         addFlashcardToDeckUseCase = new AddFlashcardToDeckUseCase(deckService, flashcardService);
         validDeckId = UUID.randomUUID();
-
-        existingDeck = new DeckDTO(validDeckId, "Test Deck", "Test Description", new ArrayList<>());
-
-        newFlashcardDTO = new FlashcardDTO(
-                null,
-                "New Question",
-                "New Answer",
-                LocalDateTime.now(),
-                null,
-                LocalDateTime.now(),
-                null,
-                0
-        );
+        existingDeck = new DeckDTO("Test Deck", "Test Description");
+        existingDeck.setId(validDeckId);
+        newFlashcardDTO = new FlashcardDTO("New Question","New Answer");
     }
 
     @Test

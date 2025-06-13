@@ -24,16 +24,11 @@ class ValidationServiceTest {
     void setUp() {
         validationService = new ValidationService();
         validFlashcardDTO = new FlashcardDTO(
-            UUID.randomUUID(),
             "Pregunta válida",
-            "Respuesta válida",
-            null, null, null, null, 0
-        );
+            "Respuesta válida");
         validDeckDTO = new DeckDTO(
-            UUID.randomUUID(),
             "Nombre válido",
-            "Descripción válida",
-            null
+            "Descripción válida"
         );
     }
 
@@ -50,7 +45,7 @@ class ValidationServiceTest {
 
     @Test
     void validateFlashcardInput_emptyQuestion() {
-        FlashcardDTO dto = new FlashcardDTO(null, "", "Respuesta", null, null, null, null, 0);
+        FlashcardDTO dto = new FlashcardDTO("", "Respuesta");
         FlashcardError ex = assertThrows(FlashcardError.class, () -> validationService.validateFlashcardInput(dto));
         assertEquals(FlashcardError.EMPTY_QUESTION, ex.getMessage());
     }
@@ -58,14 +53,14 @@ class ValidationServiceTest {
     @Test
     void validateFlashcardInput_questionTooLong() {
         String longQuestion = "a".repeat(101);
-        FlashcardDTO dto = new FlashcardDTO(null, longQuestion, "Respuesta", null, null, null, null, 0);
+        FlashcardDTO dto = new FlashcardDTO("", "Respuesta");
         FlashcardError ex = assertThrows(FlashcardError.class, () -> validationService.validateFlashcardInput(dto));
         assertEquals(FlashcardError.QUESTION_TOO_LONG, ex.getMessage());
     }
 
     @Test
     void validateFlashcardInput_emptyAnswer() {
-        FlashcardDTO dto = new FlashcardDTO(null, "Pregunta", "", null, null, null, null, 0);
+        FlashcardDTO dto = new FlashcardDTO("Pregunta", "");
         FlashcardError ex = assertThrows(FlashcardError.class, () -> validationService.validateFlashcardInput(dto));
         assertEquals(FlashcardError.EMPTY_ANSWER, ex.getMessage());
     }
@@ -73,7 +68,7 @@ class ValidationServiceTest {
     @Test
     void validateFlashcardInput_answerTooLong() {
         String longAnswer = "a".repeat(251);
-        FlashcardDTO dto = new FlashcardDTO(null, "Pregunta", longAnswer, null, null, null, null, 0);
+        FlashcardDTO dto = new FlashcardDTO( "Pregunta", longAnswer);
         FlashcardError ex = assertThrows(FlashcardError.class, () -> validationService.validateFlashcardInput(dto));
         assertEquals(FlashcardError.ANSWER_TOO_LONG, ex.getMessage());
     }
@@ -91,7 +86,7 @@ class ValidationServiceTest {
 
     @Test
     void validateDeckInput_emptyName() {
-        DeckDTO dto = new DeckDTO(null, "", "desc", null);
+        DeckDTO dto = new DeckDTO("", "desc");
         DeckError ex = assertThrows(DeckError.class, () -> validationService.validateDeckInput(dto));
         assertEquals(DeckError.EMPTY_NAME, ex.getMessage());
     }
@@ -99,7 +94,7 @@ class ValidationServiceTest {
     @Test
     void validateDeckInput_nameTooLong() {
         String longName = "a".repeat(101);
-        DeckDTO dto = new DeckDTO(null, longName, "desc", null);
+        DeckDTO dto = new DeckDTO( longName, "desc");
         DeckError ex = assertThrows(DeckError.class, () -> validationService.validateDeckInput(dto));
         assertEquals(DeckError.NAME_TOO_LONG, ex.getMessage());
     }
@@ -107,7 +102,7 @@ class ValidationServiceTest {
     @Test
     void validateDeckInput_descriptionTooLong() {
         String longDesc = "a".repeat(251);
-        DeckDTO dto = new DeckDTO(null, "nombre", longDesc, null);
+        DeckDTO dto = new DeckDTO("nombre", longDesc);
         DeckError ex = assertThrows(DeckError.class, () -> validationService.validateDeckInput(dto));
         assertEquals(DeckError.DESCRIPTION_TOO_LONG, ex.getMessage());
     }
@@ -135,7 +130,7 @@ class ValidationServiceTest {
     @Test
     void validateFlashcardModification_nullId() {
         IFlashcardService mockService = mock(IFlashcardService.class);
-        FlashcardDTO dto = new FlashcardDTO(null, "Pregunta", "Respuesta", null, null, null, null, 0);
+        FlashcardDTO dto = new FlashcardDTO( "Pregunta", "Respuesta");
         FlashcardError ex = assertThrows(FlashcardError.class, () -> validationService.validateFlashcardModification(dto, mockService));
         assertEquals(FlashcardError.NULL_FLASHCARD_ID, ex.getMessage());
     }
@@ -143,7 +138,7 @@ class ValidationServiceTest {
     @Test
     void validateFlashcardModification_noFieldsToModify() {
         IFlashcardService mockService = mock(IFlashcardService.class);
-        FlashcardDTO dto = new FlashcardDTO(UUID.randomUUID(), null, null, null, null, null, null, 0);
+        FlashcardDTO dto = new FlashcardDTO(null, null);
         FlashcardError ex = assertThrows(FlashcardError.class, () -> validationService.validateFlashcardModification(dto, mockService));
         assertEquals(FlashcardError.NO_FIELDS_TO_MODIFY, ex.getMessage());
     }
@@ -203,7 +198,7 @@ class ValidationServiceTest {
     @Test
     void validateDeckModification_nullId() {
         IDeckService mockService = mock(IDeckService.class);
-        DeckDTO dto = new DeckDTO(null, "Nombre", "Descripción", null);
+        DeckDTO dto = new DeckDTO("Nombre", "Descripción");
         DeckError ex = assertThrows(DeckError.class, () -> validationService.validateDeckModification(dto, mockService));
         assertEquals(DeckError.NULL_DECK_ID, ex.getMessage());
     }
@@ -211,7 +206,7 @@ class ValidationServiceTest {
     @Test
     void validateDeckModification_noFieldsToModify() {
         IDeckService mockService = mock(IDeckService.class);
-        DeckDTO dto = new DeckDTO(UUID.randomUUID(), null, null, null);
+        DeckDTO dto = new DeckDTO( null,  null);
         DeckError ex = assertThrows(DeckError.class, () -> validationService.validateDeckModification(dto, mockService));
         assertEquals(DeckError.NO_FIELDS_TO_MODIFY, ex.getMessage());
     }

@@ -9,15 +9,15 @@ import java.lang.reflect.Field;
 public class FlashcardMapper {
     public static FlashcardDTO toDTO(IFlashcard flashcard) {
         FlashcardDTO dto = new FlashcardDTO(
-                flashcard.getId(),
                 flashcard.getPregunta(),
-                flashcard.getRespuesta(),
-                flashcard.getCreatedAt(),
-                flashcard.getUpdatedAt(),
-                flashcard.getNextReviewDate(),
-                flashcard.getLastReviewDate(),
-                flashcard.getScore()
+                flashcard.getRespuesta()
         );
+        dto.setId(flashcard.getId());
+        dto.setCreatedAt(flashcard.getCreatedAt());
+        dto.setUpdatedAt(flashcard.getUpdatedAt());
+        dto.setNextReviewDate(flashcard.getNextReviewDate());
+        dto.setLastReviewDate(flashcard.getLastReviewDate());
+        dto.setScore(flashcard.getScore());
         return dto;
     }
 
