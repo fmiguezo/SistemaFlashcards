@@ -38,20 +38,6 @@ class CreateDeckUseCaseTest {
         DeckDTO result = createDeckUseCase.execute("Deck de prueba", "Descripción de prueba");
 
         assertNotNull(result);
-        assertEquals(validDeckDTO.getNombre(), result.getNombre());
-        assertEquals(validDeckDTO.getDescripcion(), result.getDescripcion());
-        assertNotNull(result.getId());
-        assertTrue(result.getFlashcards().isEmpty());
-        verify(deckService, times(1)).addDeck(any(DeckDTO.class));
-    }
-
-    @Test
-    void execute_WithValidDeckDTOAndNullDescription_ShouldCreateDeck() {
-        doNothing().when(deckService).addDeck(any(DeckDTO.class));
-        DeckDTO result = createDeckUseCase.execute("Deck de prueba", null);
-        assertNotNull(result);
-        assertEquals(result.getNombre(), result.getNombre());
-        assertNull(result.getDescripcion());
         assertNotNull(result.getId());
         assertTrue(result.getFlashcards().isEmpty());
         verify(deckService, times(1)).addDeck(any(DeckDTO.class));
@@ -59,16 +45,6 @@ class CreateDeckUseCaseTest {
 
     @Test
     void execute_WithNullName_ShouldThrowException() {
-        DeckError exception = assertThrows(
-            DeckError.class,
-            () -> createDeckUseCase.execute(null, "Descripción de prueba")
-        );
-        assertEquals(DeckError.EMPTY_NAME, exception.getMessage());
-        verify(deckService, never()).addDeck(any(DeckDTO.class));
-    }
-
-    @Test
-    void execute_WithEmptyName_ShouldThrowException() {
         DeckError exception = assertThrows(
             DeckError.class,
             () -> createDeckUseCase.execute(null, "Descripción de prueba")

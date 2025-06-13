@@ -69,7 +69,7 @@ class CreateFlashcardUseCaseTest {
         FlashcardError exception = assertThrows(
             FlashcardError.class,
             () -> createFlashcardUseCase.execute("a".repeat(101),
-                    validFlashcardDTO.getRespuesta()));
+                    "Respuesta válida"));
         assertEquals(FlashcardError.QUESTION_TOO_LONG, exception.getMessage());
         verify(flashcardService, never()).addFlashcard(any(FlashcardDTO.class));
     }
@@ -78,8 +78,8 @@ class CreateFlashcardUseCaseTest {
     void execute_WithNullAnswer_ShouldThrowException() {
         FlashcardError exception = assertThrows(
             FlashcardError.class,
-            () -> createFlashcardUseCase.execute(null,
-                    validFlashcardDTO.getPregunta())
+            () -> createFlashcardUseCase.execute("Pregunta válida",
+                    null)
         );
         assertEquals(FlashcardError.EMPTY_ANSWER, exception.getMessage());
         verify(flashcardService, never()).addFlashcard(any(FlashcardDTO.class));
@@ -89,8 +89,8 @@ class CreateFlashcardUseCaseTest {
     void execute_WithEmptyAnswer_ShouldThrowException() {
         FlashcardError exception = assertThrows(
             FlashcardError.class,
-            () -> createFlashcardUseCase.execute(null,
-                    validFlashcardDTO.getPregunta())
+            () -> createFlashcardUseCase.execute("Pregunta válida",
+                    "")
         );
         assertEquals(FlashcardError.EMPTY_ANSWER, exception.getMessage());
         verify(flashcardService, never()).addFlashcard(any(FlashcardDTO.class));
@@ -100,7 +100,7 @@ class CreateFlashcardUseCaseTest {
     void execute_WithAnswerTooLong_ShouldThrowException() {
         FlashcardError exception = assertThrows(
             FlashcardError.class,
-            () -> createFlashcardUseCase.execute(validFlashcardDTO.getPregunta(),
+            () -> createFlashcardUseCase.execute("Pregunta válida",
                     "a".repeat(251))
         );
         assertEquals(FlashcardError.ANSWER_TOO_LONG, exception.getMessage());

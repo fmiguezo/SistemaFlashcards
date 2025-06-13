@@ -13,7 +13,7 @@ public class DeckDTO {
     private List<FlashcardDTO> flashcards;
 
     public DeckDTO(String nombre, String descripcion) {
-        this.id = null;
+        this.id = UUID.randomUUID();
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.flashcards = new ArrayList<>();

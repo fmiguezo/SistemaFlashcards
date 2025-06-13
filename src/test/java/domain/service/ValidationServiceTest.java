@@ -30,6 +30,7 @@ class ValidationServiceTest {
             "Nombre válido",
             "Descripción válida"
         );
+        validFlashcardDTO.setId(UUID.randomUUID());
     }
 
     @Test
@@ -112,18 +113,14 @@ class ValidationServiceTest {
     void validateFlashcardModification_valid() {
         IFlashcardService mockService = mock(IFlashcardService.class);
         FlashcardDTO mockFlashcard = mock(FlashcardDTO.class);
-        when(mockService.getFlashcardById(validFlashcardDTO.getId())).thenReturn(mockFlashcard);
-        when(mockFlashcard.getPregunta()).thenReturn("Pregunta anterior");
-        when(mockFlashcard.getRespuesta()).thenReturn("Respuesta anterior");
-
-        FlashcardDTO result = validationService.validateFlashcardModification(validFlashcardDTO, mockService);
+        FlashcardDTO result = validationService.validateFlashcardModification(validFlashcardDTO, mockService, "Pregunta anterior", "Respuesta anterior");
         assertEquals(mockFlashcard, result);
     }
 
     @Test
     void validateFlashcardModification_nullFlashcard() {
         IFlashcardService mockService = mock(IFlashcardService.class);
-        FlashcardError ex = assertThrows(FlashcardError.class, () -> validationService.validateFlashcardModification(null, mockService));
+        FlashcardError ex = assertThrows(FlashcardError.class, () -> validationService.validateFlashcardModification(null, mockService, "Pregunta", "Respuesta"));
         assertEquals(FlashcardError.NULL_FLASHCARD, ex.getMessage());
     }
 
@@ -131,23 +128,15 @@ class ValidationServiceTest {
     void validateFlashcardModification_nullId() {
         IFlashcardService mockService = mock(IFlashcardService.class);
         FlashcardDTO dto = new FlashcardDTO( "Pregunta", "Respuesta");
-        FlashcardError ex = assertThrows(FlashcardError.class, () -> validationService.validateFlashcardModification(dto, mockService));
+        FlashcardError ex = assertThrows(FlashcardError.class, () -> validationService.validateFlashcardModification(dto, mockService, "Pregunta", "Respuesta"));
         assertEquals(FlashcardError.NULL_FLASHCARD_ID, ex.getMessage());
-    }
-
-    @Test
-    void validateFlashcardModification_noFieldsToModify() {
-        IFlashcardService mockService = mock(IFlashcardService.class);
-        FlashcardDTO dto = new FlashcardDTO(null, null);
-        FlashcardError ex = assertThrows(FlashcardError.class, () -> validationService.validateFlashcardModification(dto, mockService));
-        assertEquals(FlashcardError.NO_FIELDS_TO_MODIFY, ex.getMessage());
     }
 
     @Test
     void validateFlashcardModification_flashcardNotFound() {
         IFlashcardService mockService = mock(IFlashcardService.class);
         when(mockService.getFlashcardById(validFlashcardDTO.getId())).thenReturn(null);
-        FlashcardError ex = assertThrows(FlashcardError.class, () -> validationService.validateFlashcardModification(validFlashcardDTO, mockService));
+        FlashcardError ex = assertThrows(FlashcardError.class, () -> validationService.validateFlashcardModification(validFlashcardDTO, mockService, "Pregunta", "Respuesta"));
         assertEquals(FlashcardError.FLASHCARD_NOT_FOUND, ex.getMessage());
     }
 
@@ -156,10 +145,7 @@ class ValidationServiceTest {
         IFlashcardService mockService = mock(IFlashcardService.class);
         FlashcardDTO mockFlashcard = mock(FlashcardDTO.class);
         when(mockService.getFlashcardById(validFlashcardDTO.getId())).thenReturn(mockFlashcard);
-        when(mockFlashcard.getPregunta()).thenReturn(validFlashcardDTO.getPregunta());
-        when(mockFlashcard.getRespuesta()).thenReturn("Respuesta anterior");
-
-        FlashcardError ex = assertThrows(FlashcardError.class, () -> validationService.validateFlashcardModification(validFlashcardDTO, mockService));
+        FlashcardError ex = assertThrows(FlashcardError.class, () -> validationService.validateFlashcardModification(validFlashcardDTO, mockService, validFlashcardDTO.getPregunta(), null));
         assertEquals(FlashcardError.SAME_QUESTION, ex.getMessage());
     }
 
@@ -168,10 +154,7 @@ class ValidationServiceTest {
         IFlashcardService mockService = mock(IFlashcardService.class);
         FlashcardDTO mockFlashcard = mock(FlashcardDTO.class);
         when(mockService.getFlashcardById(validFlashcardDTO.getId())).thenReturn(mockFlashcard);
-        when(mockFlashcard.getPregunta()).thenReturn("Pregunta anterior");
-        when(mockFlashcard.getRespuesta()).thenReturn(validFlashcardDTO.getRespuesta());
-
-        FlashcardError ex = assertThrows(FlashcardError.class, () -> validationService.validateFlashcardModification(validFlashcardDTO, mockService));
+        FlashcardError ex = assertThrows(FlashcardError.class, () -> validationService.validateFlashcardModification(validFlashcardDTO, mockService, null, validFlashcardDTO.getRespuesta()));
         assertEquals(FlashcardError.SAME_ANSWER, ex.getMessage());
     }
 

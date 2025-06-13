@@ -2,6 +2,8 @@ package edu.utn.infrastructure.adapters.out.persistence.entities;
 
 import edu.utn.domain.model.deck.IDeck;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +73,7 @@ public class DeckEntity {
         this.updatedAt = updatedAt;
     }
 
+    @Transactional
     public List<FlashcardEntity> getFlashcards() {
         return flashcards;
     }

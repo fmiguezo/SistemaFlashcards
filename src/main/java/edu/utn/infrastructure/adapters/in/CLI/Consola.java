@@ -14,6 +14,7 @@ import edu.utn.domain.service.flashcard.IFlashcardService;
 import edu.utn.infrastructure.ports.in.IUserPracticeInputPort;
 import edu.utn.infrastructure.ports.out.IDeckRepository;
 import edu.utn.infrastructure.ports.out.IFlashcardRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -229,9 +230,7 @@ public class Consola implements CommandLineRunner {
         String nuevaPregunta = scanner.nextLine();
         System.out.print("Nueva respuesta: ");
         String nuevaRespuesta = scanner.nextLine();
-        f.setPregunta(nuevaPregunta);
-        f.setRespuesta(nuevaRespuesta);
-        modifyFlashcardUseCase.execute(f);
+        modifyFlashcardUseCase.execute(f, nuevaPregunta, nuevaRespuesta);
         System.out.println("Flashcard actualizada.");
     }
 

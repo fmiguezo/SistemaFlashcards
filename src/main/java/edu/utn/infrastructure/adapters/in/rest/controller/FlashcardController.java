@@ -62,7 +62,9 @@ public class FlashcardController implements IFlashcardController {
             @RequestBody FlashcardDTO flashcardDto
     ) {
         flashcardDto.setId(flashcardId);
-        FlashcardDTO updated = modifyFlashcardUseCase.execute(flashcardDto);
+        FlashcardDTO updated = modifyFlashcardUseCase.execute(flashcardDto,
+                flashcardDto.getPregunta(),
+                flashcardDto.getRespuesta());
         return ResponseEntity.ok(updated);
     }
 
