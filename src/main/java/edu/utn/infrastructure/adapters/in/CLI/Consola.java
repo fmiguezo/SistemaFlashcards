@@ -195,7 +195,7 @@ public class Consola implements CommandLineRunner {
 
         switch (opcion) {
             case "1":
-                agregarFlashcard(scanner, deck.getId());
+                agregarFlashcard(scanner, deck);
                 break;
             case "2":
                 editarFlashcard(scanner, flashcards);
@@ -210,13 +210,13 @@ public class Consola implements CommandLineRunner {
         }
     }
 
-    private void agregarFlashcard(Scanner scanner, UUID deckId) {
+    private void agregarFlashcard(Scanner scanner, DeckDTO deck) {
         System.out.print("Pregunta: ");
         String pregunta = scanner.nextLine();
         System.out.print("Respuesta: ");
         String respuesta = scanner.nextLine();
-        FlashcardDTO flashcard = createFlashcardUseCase.execute(pregunta, respuesta);
-        addFlashcardToDeckUseCase.execute(deckId, flashcard);
+        FlashcardDTO flashcard = createFlashcardUseCase.execute(pregunta, respuesta, deck);
+        addFlashcardToDeckUseCase.execute(deck.getId(), flashcard);
         System.out.println("Flashcard agregada.");
     }
 

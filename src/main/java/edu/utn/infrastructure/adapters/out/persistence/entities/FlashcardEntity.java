@@ -1,5 +1,6 @@
 package edu.utn.infrastructure.adapters.out.persistence.entities;
 
+import edu.utn.domain.model.deck.IDeck;
 import edu.utn.domain.model.flashcard.IFlashcard;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -19,6 +20,10 @@ public class FlashcardEntity {
     private LocalDateTime nextReviewDate;
     private LocalDateTime lastReviewDate;
     private int score;
+;
+    @ManyToOne
+    @JoinColumn(name = "deck_id", nullable = false)
+    private DeckEntity deck;
 
     protected FlashcardEntity() {}
 
@@ -95,5 +100,13 @@ public class FlashcardEntity {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public DeckEntity getDeck() {
+        return deck;
+    }
+
+    public void setDeck(DeckEntity deck) {
+        this.deck = deck;
     }
 }

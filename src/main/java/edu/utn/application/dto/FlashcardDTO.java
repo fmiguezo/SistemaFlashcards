@@ -14,8 +14,9 @@ public class FlashcardDTO {
     private LocalDateTime nextReviewDate;
     private LocalDateTime lastReviewDate;
     private int score;
+    private DeckDTO deck;
 
-    public FlashcardDTO(String pregunta, String respuesta) {
+    public FlashcardDTO(String pregunta, String respuesta, DeckDTO deck) {
         this.id = null;
         this.pregunta = pregunta;
         this.respuesta = respuesta;
@@ -24,6 +25,7 @@ public class FlashcardDTO {
         this.nextReviewDate = LocalDateTime.now();
         this.lastReviewDate = null;
         this.score = 0;
+        this.deck = deck;
     }
 
     @JsonProperty("id")
@@ -93,5 +95,13 @@ public class FlashcardDTO {
 
     public void setId(UUID uuid) {
         this.id = uuid;
+    }
+
+    public DeckDTO getDeck() {
+        return deck;
+    }
+
+    public void setDeck(DeckDTO deck) {
+        this.deck = deck;
     }
 }

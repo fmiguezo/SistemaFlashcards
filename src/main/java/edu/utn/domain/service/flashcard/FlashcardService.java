@@ -1,7 +1,11 @@
 package edu.utn.domain.service.flashcard;
+import edu.utn.application.dto.DeckDTO;
 import edu.utn.application.dto.FlashcardDTO;
 import edu.utn.application.error.FlashcardError;
+import edu.utn.application.mappers.DeckMapper;
 import edu.utn.application.mappers.FlashcardMapper;
+import edu.utn.domain.model.deck.Deck;
+import edu.utn.domain.model.deck.IDeck;
 import edu.utn.domain.model.estrategia.IEstrategiaRepeticion;
 import edu.utn.domain.model.flashcard.IFlashcard;
 import edu.utn.infrastructure.ports.in.IUserPracticeInputPort;
@@ -23,7 +27,8 @@ public class FlashcardService implements IFlashcardService {
 
     @Override
     public void addFlashcard(FlashcardDTO flashcardDTO) {
-        IFlashcard flashcard = FlashcardMapper.toDomain(flashcardDTO);
+        DeckDTO deckDTO = flashcardDTO.getDeck();
+        IFlashcard flashcard = FlashcardMapper.toDomain(flashcardDTO, deckDTO);
         flashcardRepository.createCard(flashcard);
     }
 
@@ -31,12 +36,14 @@ public class FlashcardService implements IFlashcardService {
     public FlashcardDTO getFlashcardById(UUID id) {
         IFlashcard flashcard = flashcardRepository.getCardById(id)
                 .orElseThrow(FlashcardError::flashcardNotFound);
-        return FlashcardMapper.toDTO(flashcard);
+        IDeck deck = flashcard.getDeck();
+        return FlashcardMapper.toDTO(flashcard, deck);
     }
 
     @Override
     public void updateFlashcard(FlashcardDTO flashcardDTO) {
-        IFlashcard flashcard = FlashcardMapper.toDomain(flashcardDTO);
+        DeckDTO deckDTO = flashcardDTO.getDeck();
+        IFlashcard flashcard = FlashcardMapper.toDomain(flashcardDTO, deckDTO);
         flashcardRepository.updateCard(flashcard);
     }
 
@@ -63,7 +70,8 @@ public class FlashcardService implements IFlashcardService {
 
     @Override
     public void practiceFlashcard(FlashcardDTO flashcardDTO, IEstrategiaRepeticion estrategia, IUserPracticeInputPort userInputPort) {
-        IFlashcard flashcard = FlashcardMapper.toDomain(flashcardDTO);
+        DeckDTO deckDTO = flashcardDTO.getDeck();
+        IFlashcard flashcard = FlashcardMapper.toDomain(flashcardDTO, deckDTO);
         userInputPort.showQuestion(flashcard);
         userInputPort.showAnswer(flashcard);
         boolean answer = userInputPort.askUserForAnswer(flashcard);
