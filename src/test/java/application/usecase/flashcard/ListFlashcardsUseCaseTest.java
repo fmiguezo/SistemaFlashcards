@@ -10,11 +10,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import edu.utn.application.dto.FlashcardDTO;
@@ -26,10 +26,17 @@ class ListFlashcardsUseCaseTest {
     private IDeckService deckService;
 
     private ListFlashcardsUseCase listFlashcardsUseCase;
+    private DeckDTO testDeck;    // deck compartido para los DTOs
+    private UUID validDeckId;
 
     @BeforeEach
     void setUp() {
         listFlashcardsUseCase = new ListFlashcardsUseCase(deckService);
+
+        // Preparo un DeckDTO con ID
+        validDeckId = UUID.randomUUID();
+        testDeck = new DeckDTO("DeckTest", "DescTest");
+        testDeck.setId(validDeckId);
     }
 
     @Test
@@ -52,24 +59,27 @@ class ListFlashcardsUseCaseTest {
 
     @Test
     void execute_WithValidDeckId_ShouldReturnFlashcardsList() {
-        UUID deckId = UUID.randomUUID();
+        // GIVEN
+        UUID deckId = validDeckId;
 
-        DeckDTO deckDTO = new DeckDTO("Nombre", "Descripción");
-        List<FlashcardDTO> flashcards = List.of(
-                new FlashcardDTO("Pregunta 1", "Respuesta 1"),
-                new FlashcardDTO( "Pregunta 2", "Respuesta 2")
-        );
+        // Preparar los FlashcardDTO usando el constructor de 3 parámetros
+        FlashcardDTO fc1 = new FlashcardDTO("Pregunta 1", "Respuesta 1", testDeck);
+        FlashcardDTO fc2 = new FlashcardDTO("Pregunta 2", "Respuesta 2", testDeck);
 
-        when(deckService.getDeckById(deckId)).thenReturn(deckDTO);
+        List<FlashcardDTO> flashcards = List.of(fc1, fc2);
+
+        when(deckService.getDeckById(deckId)).thenReturn(testDeck);
         when(deckService.getFlashcardsByDeckId(deckId)).thenReturn(flashcards);
 
+        // WHEN
         List<FlashcardDTO> result = listFlashcardsUseCase.execute(deckId);
 
+        // THEN
         assertNotNull(result);
         assertEquals(2, result.size());
         assertEquals("Pregunta 1", result.get(0).getPregunta());
+
         verify(deckService).getDeckById(deckId);
         verify(deckService).getFlashcardsByDeckId(deckId);
     }
 }
-
