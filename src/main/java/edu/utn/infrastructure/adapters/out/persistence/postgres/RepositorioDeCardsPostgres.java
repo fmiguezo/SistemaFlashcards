@@ -77,6 +77,8 @@ public class RepositorioDeCardsPostgres implements IFlashcardRepository {
         System.out.println("Intentando eliminar flashcard con id: " + id);
         if (exists) {
             jpaRepo.deleteById(id);
+            entityManager.flush();
+            entityManager.clear();
             jpaRepo.flush();
         } else {
             throw new RuntimeException("Card no encontrado con id: " + id);
