@@ -16,6 +16,7 @@ import edu.utn.infrastructure.ports.out.IDeckRepository;
 import edu.utn.infrastructure.ports.out.IFlashcardRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -67,7 +68,8 @@ public class Consola implements CommandLineRunner {
         new Thread(this::iniciarMenuPrincipal).start();
     }
 
-    private void iniciarMenuPrincipal() {
+    @Async
+    public void iniciarMenuPrincipal() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("\n=== BIENVENIDO AL SISTEMA DE FLASHCARDS ===");

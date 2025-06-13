@@ -6,6 +6,7 @@ import edu.utn.domain.model.flashcard.Flashcard;
 import edu.utn.domain.model.flashcard.IFlashcard;
 import edu.utn.infrastructure.adapters.out.persistence.entities.DeckEntity;
 import edu.utn.infrastructure.adapters.out.persistence.entities.FlashcardEntity;
+import jakarta.transaction.Transactional;
 
 
 import java.util.List;
@@ -19,11 +20,13 @@ public class DeckPersistenceMapper {
         this.flashcardPersistenceMapper = new FlashcardPersistenceMapper();
     }
 
+    @Transactional
     public IDeck toDomain(DeckEntity entity) {
         if (entity == null) return null;
 
         IDeck deck = new Deck(entity.getNombre(), entity.getDescripcion());
-
+        deck.setId(entity.getId());
+        deck.setCreatedAt(entity.getCreatedAt());
         deck.setUpdatedAt(entity.getUpdatedAt());
 
         List<IFlashcard> flashcards = entity.getFlashcards()
@@ -36,7 +39,8 @@ public class DeckPersistenceMapper {
         return deck;
     }
 
-    public static DeckEntity toPersistence(IDeck deck) {
+    @Transactional
+    public DeckEntity toPersistence(IDeck deck) {
         if (deck == null) return null;
 
         DeckEntity entity = new DeckEntity(deck.getNombre(), deck.getDescripcion());

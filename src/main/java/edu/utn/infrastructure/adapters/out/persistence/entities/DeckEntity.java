@@ -74,6 +74,7 @@ public class DeckEntity {
     }
 
     @Transactional
+    @OneToMany(mappedBy = "deck", fetch = FetchType.EAGER)
     public List<FlashcardEntity> getFlashcards() {
         return flashcards;
     }
