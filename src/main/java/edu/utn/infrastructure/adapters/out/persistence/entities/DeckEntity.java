@@ -1,7 +1,10 @@
 package edu.utn.infrastructure.adapters.out.persistence.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import edu.utn.domain.model.deck.IDeck;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +21,8 @@ public class DeckEntity {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "deck_id")
+    @OneToMany(mappedBy = "deck", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<FlashcardEntity> flashcards = new ArrayList<>();
 
     protected DeckEntity() {}
@@ -71,10 +74,11 @@ public class DeckEntity {
         this.updatedAt = updatedAt;
     }
 
+    @Transactional
+    @OneToMany(mappedBy = "deck", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     public List<FlashcardEntity> getFlashcards() {
         return flashcards;
     }
-
     public void setFlashcards(List<FlashcardEntity> flashcards) {
         this.flashcards = flashcards;
     }

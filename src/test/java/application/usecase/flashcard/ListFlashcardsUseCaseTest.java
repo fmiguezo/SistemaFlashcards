@@ -54,10 +54,10 @@ class ListFlashcardsUseCaseTest {
     void execute_WithValidDeckId_ShouldReturnFlashcardsList() {
         UUID deckId = UUID.randomUUID();
 
-        DeckDTO deckDTO = new DeckDTO(deckId, "Nombre", "Descripción", new ArrayList<>());
+        DeckDTO deckDTO = new DeckDTO("Nombre", "Descripción");
         List<FlashcardDTO> flashcards = List.of(
-                new FlashcardDTO(UUID.randomUUID(), "Pregunta 1", "Respuesta 1", null, null, null, null, 0),
-                new FlashcardDTO(UUID.randomUUID(), "Pregunta 2", "Respuesta 2", null, null, null, null, 0)
+                new FlashcardDTO("Pregunta 1", "Respuesta 1"),
+                new FlashcardDTO( "Pregunta 2", "Respuesta 2")
         );
 
         when(deckService.getDeckById(deckId)).thenReturn(deckDTO);

@@ -15,17 +15,10 @@ public class ModifyFlashcardUseCase {
         this.validationService = new ValidationService();
     }
 
-    public FlashcardDTO execute(FlashcardDTO flashcardDTO) {
-        FlashcardDTO existingFlashcard = validationService.validateFlashcardModification(flashcardDTO, flashcardService);
-
-        if (flashcardDTO.getPregunta() != null) {
-            existingFlashcard.setPregunta(flashcardDTO.getPregunta());
-        }
-
-        if (flashcardDTO.getRespuesta() != null) {
-            existingFlashcard.setRespuesta(flashcardDTO.getRespuesta());
-        }
-
+    public FlashcardDTO execute(FlashcardDTO flashcardDTO, String pregunta, String respuesta) {
+        FlashcardDTO existingFlashcard = validationService.validateFlashcardModification(flashcardDTO, flashcardService, pregunta, respuesta);
+        existingFlashcard.setPregunta(pregunta);
+        existingFlashcard.setRespuesta(respuesta);
         flashcardService.updateFlashcard(existingFlashcard);
         return existingFlashcard;
     }

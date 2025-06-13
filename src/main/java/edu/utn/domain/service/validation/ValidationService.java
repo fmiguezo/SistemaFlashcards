@@ -31,7 +31,7 @@ public class ValidationService {
         }
         
         String respuesta = flashcardDTO.getRespuesta();
-        if (respuesta == null || respuesta.trim().isEmpty()) {
+        if (respuesta == null || respuesta.trim().isEmpty() || respuesta.equals("")) {
             throw FlashcardError.emptyAnswer();
         }
         
@@ -40,7 +40,19 @@ public class ValidationService {
         }
     }
 
-    public FlashcardDTO validateFlashcardModification(FlashcardDTO flashcardDTO, IFlashcardService flashcardService) {
+    public FlashcardDTO validateFlashcardModification(FlashcardDTO flashcardDTO, IFlashcardService flashcardService, String pregunta, String respuesta) {
+        if (pregunta == null && respuesta == null) {
+            throw FlashcardError.noFieldsToModify();
+        }
+
+        if (pregunta != null && pregunta.trim().isEmpty()) {
+            throw FlashcardError.emptyQuestion();
+        }
+
+        if (respuesta != null && respuesta.trim().isEmpty()) {
+            throw FlashcardError.emptyAnswer();
+        }
+
         if (flashcardDTO == null) {
             throw FlashcardError.nullFlashcard();
         }
@@ -49,41 +61,37 @@ public class ValidationService {
             throw FlashcardError.nullFlashcardId();
         }
 
-        if (flashcardDTO.getPregunta() == null && flashcardDTO.getRespuesta() == null) {
-            throw FlashcardError.noFieldsToModify();
-        }
-
         FlashcardDTO existingFlashcard = flashcardService.getFlashcardById(flashcardDTO.getId());
         if (existingFlashcard == null) {
             throw FlashcardError.flashcardNotFound();
         }
 
         if (flashcardDTO.getPregunta() != null) {
-            if (flashcardDTO.getPregunta().trim().isEmpty()) {
+            if (pregunta == null) {
                 throw FlashcardError.emptyQuestion();
             }
-            if (flashcardDTO.getPregunta().length() < FLASHCARD_QUESTION_MIN_LENGTH) {
+            if (pregunta.length() < FLASHCARD_QUESTION_MIN_LENGTH) {
                 throw FlashcardError.questionTooShort();
             }
-            if (flashcardDTO.getPregunta().length() > FLASHCARD_QUESTION_MAX_LENGTH) {
+            if (pregunta.length() > FLASHCARD_QUESTION_MAX_LENGTH) {
                 throw FlashcardError.questionTooLong();
             }
-            if (flashcardDTO.getPregunta().equals(existingFlashcard.getPregunta())) {
+            if (flashcardDTO.getPregunta().equals(pregunta) && respuesta == null) {
                 throw FlashcardError.sameQuestion();
             }
         }
 
         if (flashcardDTO.getRespuesta() != null) {
-            if (flashcardDTO.getRespuesta().trim().isEmpty()) {
+            if (respuesta == null) {
                 throw FlashcardError.emptyAnswer();
             }
-            if (flashcardDTO.getRespuesta().length() < FLASHCARD_ANSWER_MIN_LENGTH) {
+            if (respuesta.length() < FLASHCARD_ANSWER_MIN_LENGTH) {
                 throw FlashcardError.answerTooShort();
             }
-            if (flashcardDTO.getRespuesta().length() > FLASHCARD_ANSWER_MAX_LENGTH) {
+            if (respuesta.length() > FLASHCARD_ANSWER_MAX_LENGTH) {
                 throw FlashcardError.answerTooLong();
             }
-            if (flashcardDTO.getRespuesta().equals(existingFlashcard.getRespuesta())) {
+            if (flashcardDTO.getRespuesta().equals(respuesta) && pregunta == null) {
                 throw FlashcardError.sameAnswer();
             }
         }

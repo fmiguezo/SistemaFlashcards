@@ -9,6 +9,7 @@ import edu.utn.domain.model.estrategia.IEstrategiaRepeticion;
 import edu.utn.domain.service.flashcard.IFlashcardService;
 import edu.utn.infrastructure.ports.in.IUserPracticeInputPort;
 import edu.utn.infrastructure.ports.out.IDeckRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -55,6 +56,7 @@ public class DeckService implements IDeckService {
     }
 
     @Override
+    @Transactional
     public DeckDTO getDeckById(UUID id) {
         IDeck deck = deckRepository.getDeckById(id)
                 .orElseThrow(DeckError::deckNotFound);
@@ -74,6 +76,7 @@ public class DeckService implements IDeckService {
     }
 
     @Override
+    @Transactional
     public List<DeckDTO> getAllDecks() {
         List<IDeck> decks = deckRepository.getAllDecks();
         return decks.stream()
@@ -82,6 +85,7 @@ public class DeckService implements IDeckService {
     }
 
     @Override
+    @Transactional
     public List<FlashcardDTO> getFlashcardsToPractice(DeckDTO deck) {
         List<FlashcardDTO> flashcards = deck.getFlashcards();
         return flashcards.stream()
@@ -94,17 +98,21 @@ public class DeckService implements IDeckService {
 
 
     @Override
+    @Transactional
     public void practiceDeck(DeckDTO deck, IEstrategiaRepeticion estrategia, IUserPracticeInputPort userInputPort) {
         List<FlashcardDTO> flashcardsToPractice = getFlashcardsToPractice(deck);
         for (FlashcardDTO flashcard : flashcardsToPractice) {
-            flashcardService.practiceFlashcard(flashcard, estrategia,userInputPort);
+            flashcardService.practiceFlashcard(flashcard, estrategia, userInputPort);
         }
     }
 
     @Override
+    @Transactional
     public List<FlashcardDTO> getFlashcardsByDeckId(UUID id) {
-        return deckRepository.getFlashcardsByDeckId(id).stream()
-                .map(FlashcardMapper::toDTO)
+        IDeck deck = deckRepository.getDeckById(id)
+                .orElseThrow(() -> new RuntimeException("Deck no encontrado"));
+        return deck.getFlashcards().stream()
+                .map(flashcard -> FlashcardMapper.toDTO(flashcard))
                 .toList();
     }
 }

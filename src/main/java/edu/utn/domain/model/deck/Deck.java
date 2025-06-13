@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class Deck implements IDeck {
-
     private UUID id;
     private String nombre;
     private String descripcion;
@@ -23,6 +22,7 @@ public class Deck implements IDeck {
         this.createdAt = LocalDateTime.now();
     }
 
+
     @Override
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -36,6 +36,11 @@ public class Deck implements IDeck {
     @Override
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     @Override
@@ -71,5 +76,15 @@ public class Deck implements IDeck {
     @Override
     public void addFlashcard(IFlashcard flashcard) {
         flashcards.add(flashcard);
+    }
+
+    @Override
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    @Override
+    public void setFlashcards(List<IFlashcard> flashcards) {
+        this.flashcards = flashcards;
     }
 }

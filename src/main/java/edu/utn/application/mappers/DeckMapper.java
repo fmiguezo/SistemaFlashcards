@@ -5,38 +5,33 @@ import edu.utn.application.dto.FlashcardDTO;
 import edu.utn.domain.model.deck.Deck;
 import edu.utn.domain.model.deck.IDeck;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class DeckMapper {
     public static DeckDTO toDTO(IDeck deck) {
         List<FlashcardDTO> flashcardDTOs = deck.getFlashcards().stream()
-                .map(FlashcardMapper::toDTO)
+                .map(flashcard -> FlashcardMapper.toDTO(flashcard))
                 .collect(Collectors.toList());
 
-        return new DeckDTO(
-                deck.getId(),
+        DeckDTO deckDTO = new DeckDTO(
                 deck.getNombre(),
-                deck.getDescripcion(),
-                flashcardDTOs
+                deck.getDescripcion()
         );
+        deckDTO.setId(deck.getId());
+        deckDTO.setFlashcards(flashcardDTOs);
+
+        return deckDTO;
     }
 
 
     public static IDeck toDomain(DeckDTO dto) {
         IDeck deck = new Deck(dto.getNombre(), dto.getDescripcion());
 
-        try {
-            java.lang.reflect.Field idField = Deck.class.getDeclaredField("id");
-            idField.setAccessible(true);
-            idField.set(deck, dto.getId());
-        } catch (Exception e) {
-            throw new RuntimeException("No se pudo asignar el ID al Deck por reflexión", e);
-        }
-
         if (dto.getFlashcards() != null) {
             for (FlashcardDTO flashcardDTO : dto.getFlashcards()) {
-                deck.addFlashcard(FlashcardMapper.toDomain(flashcardDTO));
+                deck.addFlashcard(FlashcardMapper.toDomain(flashcardDTO, deck));
             }
         }
 

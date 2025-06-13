@@ -37,10 +37,8 @@ class PracticeDeckUseCaseTest {
         MockitoAnnotations.openMocks(this);
         useCase = new PracticeDeckUseCase(deckService);
         deck = new DeckDTO(
-                UUID.randomUUID(),
                 "Test Deck",
-                "Test Description",
-                new ArrayList<>()
+                "Test Description"
         );
     }
 

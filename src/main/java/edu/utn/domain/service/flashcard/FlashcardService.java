@@ -1,10 +1,15 @@
 package edu.utn.domain.service.flashcard;
+import edu.utn.application.dto.DeckDTO;
 import edu.utn.application.dto.FlashcardDTO;
 import edu.utn.application.error.FlashcardError;
+import edu.utn.application.mappers.DeckMapper;
 import edu.utn.application.mappers.FlashcardMapper;
+import edu.utn.domain.model.deck.Deck;
+import edu.utn.domain.model.deck.IDeck;
 import edu.utn.domain.model.estrategia.IEstrategiaRepeticion;
 import edu.utn.domain.model.flashcard.IFlashcard;
 import edu.utn.infrastructure.ports.in.IUserPracticeInputPort;
+import edu.utn.infrastructure.ports.out.IDeckRepository;
 import edu.utn.infrastructure.ports.out.IFlashcardRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,15 +20,22 @@ import java.util.UUID;
 public class FlashcardService implements IFlashcardService {
     private IFlashcardRepository flashcardRepository;
     private IUserPracticeInputPort userInputPort;
+    private IDeckRepository deckRepository;
 
-    public FlashcardService(IFlashcardRepository flashcardRepository, IUserPracticeInputPort userInput) {
+    public FlashcardService(IFlashcardRepository flashcardRepository, IUserPracticeInputPort userInput, IDeckRepository deckRepository) {
         this.flashcardRepository = flashcardRepository;
         this.userInputPort = userInput;
+        this.deckRepository = deckRepository;
     }
 
     @Override
     public void addFlashcard(FlashcardDTO flashcardDTO) {
-        IFlashcard flashcard = FlashcardMapper.toDomain(flashcardDTO);
+        UUID deckId = flashcardDTO.getDeckID();
+
+        IDeck deckDomain = deckRepository.getDeckById(deckId)
+                .orElseThrow(() -> new RuntimeException("Deck no encontrado con id: " + deckId));
+
+        IFlashcard flashcard = FlashcardMapper.toDomain(flashcardDTO, deckDomain);
         flashcardRepository.createCard(flashcard);
     }
 
@@ -36,7 +48,12 @@ public class FlashcardService implements IFlashcardService {
 
     @Override
     public void updateFlashcard(FlashcardDTO flashcardDTO) {
-        IFlashcard flashcard = FlashcardMapper.toDomain(flashcardDTO);
+        UUID deckId = flashcardDTO.getDeckID();
+
+        IDeck deckDomain = deckRepository.getDeckById(deckId)
+                .orElseThrow(() -> new RuntimeException("Deck no encontrado con id: " + deckId));
+
+        IFlashcard flashcard = FlashcardMapper.toDomain(flashcardDTO, deckDomain);
         flashcardRepository.updateCard(flashcard);
     }
 
@@ -63,8 +80,11 @@ public class FlashcardService implements IFlashcardService {
 
     @Override
     public void practiceFlashcard(FlashcardDTO flashcardDTO, IEstrategiaRepeticion estrategia, IUserPracticeInputPort userInputPort) {
-        IFlashcard flashcard = FlashcardMapper.toDomain(flashcardDTO);
+        UUID deckId = flashcardDTO.getDeckID();
 
+        IDeck deckDomain = deckRepository.getDeckById(deckId)
+                .orElseThrow(() -> new RuntimeException("Deck no encontrado con id: " + deckId));
+        IFlashcard flashcard = FlashcardMapper.toDomain(flashcardDTO, deckDomain);
         userInputPort.showQuestion(flashcard);
         userInputPort.showAnswer(flashcard);
         boolean answer = userInputPort.askUserForAnswer(flashcard);
