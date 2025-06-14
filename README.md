@@ -1,5 +1,5 @@
 
-# 📚 Sistema de Flashcards
+# 📚 Sistema de Flashcards -  ⚠️ En desarrollo ⚠️
 
 Este repositorio contiene un sistema de gestión de flashcards desarrollado en Java, utilizando principios de **arquitectura hexagonal (Ports & Adapters)** para lograr un alto desacoplamiento entre la lógica de negocio y la infraestructura.
 
