@@ -21,12 +21,6 @@ Una *flashcard* es una tarjeta que contiene una pregunta (front) y una respuesta
 
 ---
 
-## 🧱 Estructura del proyecto (Hexagonal)
-
-[Contenido con árbol del proyecto y subcarpetas — copiado tal cual del mensaje del usuario para mantener fidelidad]
-
----
-
 ## 📂 ¿Qué hay en cada carpeta?
 
 El proyecto sigue una arquitectura hexagonal. Aquí se explica la función de cada carpeta y qué debe contener:
